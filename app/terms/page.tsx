@@ -29,12 +29,12 @@ export default function TermsPage() {
                 <div className="space-y-12 text-muted-foreground/80 leading-relaxed font-medium">
                     <section>
                         <h2 className="text-xl font-black uppercase italic text-foreground mb-4 tracking-tight">01. Service Deployment</h2>
-                        <p>SubScout AI provides an intelligence layer for subscription tracking. By initializing the protocol, you grant us permission to analyze your authorized email nodes and export data to your Google Sheets storage.</p>
+                        <p>Sub Scouter AI provides an intelligence layer for subscription tracking. By initializing the protocol, you grant us permission to analyze your authorized email nodes and export data to your Google Sheets storage.</p>
                     </section>
 
                     <section>
                         <h2 className="text-xl font-black uppercase italic text-foreground mb-4 tracking-tight">02. Operative Responsibility</h2>
-                        <p>You are responsible for maintaining the security of your own Google and Clerk credentials. SubScout AI is not liable for data loss occurring due to user negligence or unauthorized access at the storage layer.</p>
+                        <p>You are responsible for maintaining the security of your own Google and Clerk credentials. Sub Scouter AI is not liable for data loss occurring due to user negligence or unauthorized access at the storage layer.</p>
                     </section>
 
                     <section>
@@ -44,11 +44,11 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-xl font-black uppercase italic text-foreground mb-4 tracking-tight">04. Protocol Termination</h2>
-                        <p>We reserve the right to terminate access for any user violating the integrity of the SubScout network or attempting unauthorized extractions.</p>
+                        <p>We reserve the right to terminate access for any user violating the integrity of the Sub Scouter network or attempting unauthorized extractions.</p>
                     </section>
 
                     <section className="pt-10 border-t border-border/10 text-[10px] font-black uppercase tracking-widest">
-                        Protocol Version: 2026.01 / SubScout AI
+                        Protocol Version: 2026.01 / Sub Scouter AI
                     </section>
                 </div>
             </motion.div>

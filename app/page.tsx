@@ -58,7 +58,7 @@ export default function Dashboard() {
           const integrations = await getIntegrations();
           setLinkedEmails(integrations);
         } catch (e) {
-          console.error("[SubScout] Initial sync failure:", e);
+          console.error("[Sub Scouter] Initial sync failure:", e);
         } finally {
           setIsLoading(false);
         }
@@ -108,7 +108,7 @@ export default function Dashboard() {
     try {
       await saveIntegration(newConn);
     } catch (e) {
-      console.error("[SubScout] Connection persistence failure:", e);
+      console.error("[Sub Scouter] Connection persistence failure:", e);
     } finally {
       setIsLoading(false);
     }

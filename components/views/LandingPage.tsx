@@ -113,7 +113,7 @@ const Navbar = () => {
                     <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.5)]">
                         <Layers size={18} className="text-black" />
                     </div>
-                    <span className="text-white font-bold text-lg tracking-tight">SubScout</span>
+                    <span className="text-white font-bold text-lg tracking-tight">Sub Scouter</span>
                 </div>
 
                 <div className="hidden md:flex items-center gap-8">
@@ -454,7 +454,7 @@ const Footer = () => {
                 </div>
 
                 <p className="mt-12 text-xs text-gray-700">
-                    © 2026 SubScout AI Inc. All rights reserved.
+                    © 2026 Sub Scouter AI Inc. All rights reserved.
                     <br />Designed With Care.
                 </p>
             </div>

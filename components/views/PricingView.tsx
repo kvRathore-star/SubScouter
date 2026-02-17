@@ -20,7 +20,7 @@ const PricingView: React.FC<PricingViewProps> = ({ currentTier, onUpgrade }) => 
             const { url } = await createCheckoutSession(priceId);
             if (url) window.location.href = url;
         } catch (e) {
-            console.error("[SubScout] Checkout failed:", e);
+            console.error("[Sub Scouter] Checkout failed:", e);
             alert("Provisioning failed. Please check your connection or contact support.");
         } finally {
             setIsUpgrading(false);

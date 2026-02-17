@@ -59,7 +59,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           }}>
             <Sparkles style={{ width: 16, height: 16, color: 'white' }} />
           </div>
-          <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.01em' }}>SubScout</span>
+          <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.01em' }}>Sub Scouter</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <button onClick={toggleTheme} style={{ padding: 8, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', color: '#94a3b8' }}>
@@ -115,7 +115,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
               <Sparkles className="group-hover:rotate-12 transition-transform duration-500" style={{ width: 22, height: 22, color: 'white' }} />
             </div>
             <div>
-              <h1 className="font-heading" style={{ fontSize: 20, fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1.1, color: 'var(--foreground)', textTransform: 'uppercase', fontStyle: 'italic' }}>SubScout<span className="text-brand">AI</span></h1>
+              <h1 className="font-heading" style={{ fontSize: 20, fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1.1, color: 'var(--foreground)', textTransform: 'uppercase', fontStyle: 'italic' }}>Sub Scouter<span className="text-brand">AI</span></h1>
               <p style={{ fontSize: 8, fontWeight: 900, color: 'var(--brand)', marginTop: 4, letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.8 }}>Sovereign Protocol v1.4</p>
             </div>
           </div>
@@ -235,7 +235,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           </div>
 
           <footer style={{ marginTop: 64, paddingTop: 20, borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--muted-foreground)' }}>
-            <span>© 2026 SubScout AI</span>
+            <span>© 2026 Sub Scouter AI</span>
             <span>All data stays on your device</span>
           </footer>
         </div>

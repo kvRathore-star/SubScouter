@@ -10,16 +10,16 @@ const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono'
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
 
 export const metadata: Metadata = {
-  title: 'SubScout AI — Smart Subscription Tracker',
+  title: 'Sub Scouter — Smart Subscription Tracker',
   description: 'Track, manage, and save on your recurring subscriptions with AI-powered email scanning. Zero database, zero cost — your data stays yours.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'SubScout',
+    title: 'Sub Scouter',
   },
   openGraph: {
-    title: 'SubScout AI — Smart Subscription Tracker',
+    title: 'Sub Scouter — Smart Subscription Tracker',
     description: 'Stop losing money on forgotten subscriptions. AI scans your inbox and tracks everything automatically.',
     type: 'website',
   },

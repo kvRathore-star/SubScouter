@@ -4,6 +4,7 @@ import { Subscription, LinkedEmail } from "@/types/index";
 import { scanInboxAction, scanManualContentAction } from '@/actions/scout';
 import AILoader from '../features/AILoader';
 import { Mail, Scan, Plus, Check, Globe, AlertCircle, RefreshCw, FileText, Sparkles } from "lucide-react";
+import { InvoiceUploadModal } from '@/components/modals/InvoiceUploadModal';
 
 interface ConnectionsViewProps {
   emails: LinkedEmail[];
@@ -27,6 +28,7 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
   tier,
 }) => {
   const [scanning, setScanning] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
   const [discovered, setDiscovered] = useState<any[]>([]);
   const [added, setAdded] = useState<Set<string>>(new Set());
   const [manualText, setManualText] = useState('');
@@ -75,6 +77,25 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
     } finally {
       setScanningManual(false);
     }
+  };
+
+  const handleInvoiceImport = (subscriptions: any[]) => {
+    subscriptions.forEach(sub => {
+      onAddSubscription({
+        id: Math.random().toString(36).substring(2),
+        name: sub.name,
+        amount: sub.amount,
+        currency: sub.currency || 'USD',
+        billingCycle: sub.frequency === 'Yearly' ? 'Yearly' : 'Monthly',
+        category: 'Other',
+        nextBillingDate: sub.date || new Date().toISOString().split('T')[0],
+        status: 'active',
+        isTrial: false,
+        confidence: 1.0,
+        startDate: new Date().toISOString().split('T')[0],
+        logoUrl: `https://logo.clearbit.com/${sub.name.toLowerCase().replace(/\s/g, '')}.com`,
+      });
+    });
   };
 
   return (
@@ -198,6 +219,28 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
         </div>
       )}
 
+      {/* Document Intelligence */}
+      <div className="card-glass p-8 mb-8 border-2 border-indigo-500/20 bg-indigo-500/5">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="flex-1 text-center lg:text-left">
+            <div className="flex items-center justify-center lg:justify-start gap-3 mb-2">
+              <h3 className="text-lg font-black tracking-tight uppercase italic leading-none">Document Intelligence</h3>
+              <span className="bg-indigo-500 text-white text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md">New</span>
+            </div>
+            <p className="text-sm text-muted-foreground font-medium opacity-70">
+              Upload bank statements or invoices (PDF/Image). Our AI model will extract recurring subscriptions automatically.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowUploadModal(true)}
+            className="btn-primary flex items-center gap-3 px-10 py-4 text-xs font-black uppercase tracking-widest shadow-2xl shadow-indigo-500/20 min-w-[200px] justify-center"
+          >
+            <FileText className="w-4 h-4" />
+            <span>Upload Statement</span>
+          </button>
+        </div>
+      </div>
+
       {/* Manual Input Core */}
       <div className="card-glass p-8">
         <div className="flex items-center gap-4 mb-8">
@@ -233,6 +276,12 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
           For Apple nodes, ensure you use an App-Specific Password. For encrypted providers like Proton, use your forwarded receipts with the manual scanner above.
         </p>
       </div>
+
+      <InvoiceUploadModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onImport={handleInvoiceImport}
+      />
     </div>
   );
 };

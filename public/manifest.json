@@ -1,6 +1,6 @@
 {
-    "name": "SubScout AI",
-    "short_name": "SubScout",
+    "name": "Sub Scouter",
+    "short_name": "Sub Scouter",
     "description": "Smart subscription tracker powered by AI. Track, manage, and save on your recurring expenses.",
     "start_url": "/",
     "display": "standalone",
