@@ -410,34 +410,36 @@ export default function Dashboard() {
           </div>
 
           {/* ═══ INTELLIGENCE GRID ═══ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 pb-32">
-            <AnimatePresence>
-              {sortedAndFilteredSubs.map((sub, i) => (
-                <motion.div
-                  key={sub.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <SubscriptionCard
-                    subscription={sub}
-                    onCancel={handleCancel}
-                    onPause={handlePause}
-                    onReApply={handleResume}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+          <div className="relative isolate">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 pb-32">
+              <AnimatePresence>
+                {sortedAndFilteredSubs.map((sub, i) => (
+                  <motion.div
+                    key={sub.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <SubscriptionCard
+                      subscription={sub}
+                      onCancel={handleCancel}
+                      onPause={handlePause}
+                      onReApply={handleResume}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
 
-            {sortedAndFilteredSubs.length === 0 && (
-              <div className="col-span-full py-20">
-                <EmptyState
-                  onDiscovery={() => setShowOnboarding(true)}
-                  title="Sensor Silence"
-                  description="No financial nodes identified in the current sector."
-                />
-              </div>
-            )}
+              {sortedAndFilteredSubs.length === 0 && (
+                <div className="col-span-full py-20">
+                  <EmptyState
+                    onDiscovery={() => setShowOnboarding(true)}
+                    title="Sensor Silence"
+                    description="No financial nodes identified in the current sector."
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

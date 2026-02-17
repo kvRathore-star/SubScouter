@@ -45,7 +45,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
     <div style={{ display: 'flex', height: '100vh', width: '100%', fontFamily: 'var(--font-sans)', background: 'var(--background)', color: 'var(--foreground)' }}>
       {/* ═══ MOBILE HEADER ═══ */}
       <div className="md:hidden" style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 16px', height: 56,
         background: 'color-mix(in srgb, var(--card) 85%, transparent)', backdropFilter: 'blur(20px) saturate(180%)',
@@ -73,7 +73,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
 
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden" style={{ position: 'fixed', inset: 0, zIndex: 40 }}>
+        <div className="md:hidden" style={{ position: 'fixed', inset: 0, zIndex: 90 }}>
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)' }} onClick={() => setMobileMenuOpen(false)} />
           <div style={{
             position: 'absolute', top: 56, left: 0, right: 0,
@@ -244,7 +244,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
 
       {/* ═══ MOBILE BOTTOM TABS ═══ */}
       <div className="md:hidden" style={{
-        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50,
+        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100,
         display: 'flex',
         background: 'color-mix(in srgb, var(--card) 92%, transparent)', backdropFilter: 'blur(20px) saturate(180%)',
         borderTop: '1px solid var(--border)',

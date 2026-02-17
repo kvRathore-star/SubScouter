@@ -142,7 +142,7 @@ const Navbar = () => {
 const Hero = () => {
     const { signIn } = useAppAuth();
     return (
-        <section className="relative pt-48 pb-40 overflow-hidden px-6 perspective-container">
+        <section className="relative pt-32 pb-40 overflow-hidden px-6 perspective-container">
             {/* Dynamic Background */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[800px] bg-indigo-600/20 blur-[120px] rounded-full pointer-events-none opacity-40 mix-blend-screen" />
             <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-purple-600/10 blur-[100px] rounded-full pointer-events-none" />
@@ -187,66 +187,29 @@ const Hero = () => {
 
                 {/* --- 3D Floating Stack Component (10/10 Quality) --- */}
                 <div className="relative w-full max-w-[480px] mx-auto perspective-[2000px] group">
-
-                    {/* Main Card Container with sophisticated 3D float */}
                     <div className="relative transform transition-all duration-1000 ease-out animate-float-slow preserve-3d rotate-y-[-12deg] rotate-x-[8deg] group-hover:rotate-y-[-5deg] group-hover:rotate-x-[5deg]">
-
                         {/* Ambient Glow behind card */}
                         <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/30 to-purple-500/30 blur-[80px] rounded-[3rem] -z-10 translate-z-[-50px]" />
 
-                        {/* Main Glass Panel */}
-                        <div className="relative bg-[#0a0a0a]/80 backdrop-blur-2xl border border-white/[0.08] rounded-[2.5rem] p-8 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.7)] overflow-hidden">
-
-                            {/* Noise Texture Overlay */}
-                            <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay pointer-events-none" />
-
-                            {/* Glossy Reflection Gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.1] via-transparent to-black/[0.2] pointer-events-none rounded-[2.5rem]" />
-
-                            {/* Card Header */}
-                            <div className="relative z-10 flex items-center justify-between mb-8 pb-6 border-b border-white/[0.06]">
-                                <div>
-                                    <div className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Total Monthly Burn</div>
-                                    <div className="text-5xl text-white font-bold tracking-tighter drop-shadow-lg">$342.50</div>
+                        {/* Replacing placeholder with the requested aspect-video backdrop-blur-xl div */}
+                        <div className="aspect-video w-full rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-xl relative overflow-hidden flex items-center justify-center group/vid shadow-[0_50px_100px_-20px_rgba(0,0,0,0.7)]">
+                            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10" />
+                            <div className="relative z-10 flex flex-col items-center gap-4">
+                                <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center backdrop-blur-md pulse-glow">
+                                    <Sparkles className="text-white w-8 h-8" />
                                 </div>
-                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex items-center justify-center border border-white/[0.08] shadow-inner backdrop-blur-md">
-                                    <TrendingUp size={24} className="text-indigo-400" />
-                                </div>
+                                <span className="text-[10px] font-black tracking-[0.4em] text-white/40 uppercase italic">Industrial Luxury Engine</span>
                             </div>
 
-                            {/* List */}
-                            <div className="relative z-10 space-y-3">
-                                <div className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em] mb-4 pl-1">Active Stack</div>
-
+                            {/* Inner cards from original implementation */}
+                            <div className="absolute inset-x-8 bottom-8 z-20 space-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                                 <UISubscriptionRow
-                                    name="Adobe Creative Cloud"
-                                    cost="54.99"
-                                    icon={<span className="font-black text-xl">A</span>}
-                                    color="bg-gradient-to-br from-red-500 to-red-600 text-white shadow-lg shadow-red-500/20"
-                                    status="Renews in 2 days"
+                                    name="Masterclass"
+                                    cost="15.00"
+                                    icon={<span className="font-black text-xl">M</span>}
+                                    color="bg-gradient-to-br from-gray-800 to-black text-white"
+                                    status="Live Scan Active"
                                 />
-
-                                <UISubscriptionRow
-                                    name="Netflix Premium"
-                                    cost="22.99"
-                                    icon={<span className="font-black text-xl">N</span>}
-                                    color="bg-gradient-to-br from-red-600 to-red-800 text-white shadow-lg shadow-red-600/20"
-                                    status="Price hike detected"
-                                />
-
-                                <UISubscriptionRow
-                                    name="Midjourney"
-                                    cost="30.00"
-                                    icon={<Bot size={20} />}
-                                    color="bg-gradient-to-br from-gray-800 to-black text-white border border-white/20 shadow-lg"
-                                    status="High utilization"
-                                />
-                            </div>
-
-                            {/* Footer */}
-                            <div className="relative z-10 mt-8 pt-6 border-t border-white/[0.06] flex justify-between items-center text-xs">
-                                <span className="text-gray-500 font-medium tracking-wide">Optimization Potential</span>
-                                <span className="text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20 shadow-[0_0_15px_-5px_rgba(16,185,129,0.4)]">+$89.00/mo</span>
                             </div>
                         </div>
 
@@ -265,7 +228,6 @@ const Hero = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
