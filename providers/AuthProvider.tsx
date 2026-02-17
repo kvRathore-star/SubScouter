@@ -64,12 +64,15 @@ function ClerkWrapper({ children }: { children: ReactNode }) {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    if (SKIP_AUTH) {
+    const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+    // Build-time safety: If key is missing (e.g. during static generation) or auth is skipped, use Mock
+    if (SKIP_AUTH || !publishableKey) {
         return <MockProvider>{children}</MockProvider>;
     }
 
     return (
-        <ClerkProvider>
+        <ClerkProvider publishableKey={publishableKey}>
             <ClerkWrapper>{children}</ClerkWrapper>
         </ClerkProvider>
     );
