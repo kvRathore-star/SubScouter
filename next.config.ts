@@ -7,8 +7,9 @@ const nextConfig: NextConfig = {
     // Temporary: Ignore type errors to unblock build while debugging hang
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
+  typescript: {
+    // Temporary: Ignore type errors to unblock build while debugging hang
+    ignoreBuildErrors: true,
   },
 };
 

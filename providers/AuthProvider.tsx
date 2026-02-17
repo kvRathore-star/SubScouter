@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { ClerkProvider, useUser, useAuth } from '@clerk/nextjs';
+import { ClerkProvider, useUser, useAuth, useClerk } from '@clerk/nextjs';
 
 interface AuthContextType {
     user: any;
@@ -50,13 +50,14 @@ function MockProvider({ children }: { children: ReactNode }) {
 function ClerkWrapper({ children }: { children: ReactNode }) {
     const { user, isLoaded, isSignedIn } = useUser();
     const { signOut } = useAuth();
+    const clerk = useClerk();
 
     const value = {
         user: user || null,
         isLoaded: !!isLoaded,
         isSignedIn: !!isSignedIn,
         signOut: signOut || (() => { }),
-        signIn: () => { }, // Handled by Clerk components in the UI
+        signIn: () => clerk.openSignIn(),
         isMock: false,
     };
 
