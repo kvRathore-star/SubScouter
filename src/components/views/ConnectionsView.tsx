@@ -12,6 +12,7 @@ interface ConnectionsViewProps {
   onAddSubscription: (sub: Subscription) => void;
   onManualScout: () => void;
   tier: 'free' | 'pro';
+  isSignedIn: boolean;
 }
 
 const ConnectionsView: React.FC<ConnectionsViewProps> = ({
@@ -19,6 +20,7 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
   onConnect,
   onAddSubscription,
   tier,
+  isSignedIn,
 }) => {
   const [scanning, setScanning] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);

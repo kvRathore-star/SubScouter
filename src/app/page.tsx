@@ -31,9 +31,9 @@ export default function Dashboard() {
   const { subscriptions, isLoading: isDataLoading, refresh } = useDashboardData();
   const { saveSubscriptions, deleteSubscription } = useScoutStore();
 
-  if (isLoaded && !isSignedIn) {
-    return <PortalView />;
-  }
+  // if (isLoaded && !isSignedIn) {
+  //   return <PortalView />;
+  // }
 
   const [linkedEmails, setLinkedEmails] = useState<LinkedEmail[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -227,7 +227,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      {currentView === 'connections' && <ConnectionsView emails={linkedEmails} onConnect={handleConnect} onAddSubscription={handleAdd} onManualScout={handleManualScout} tier={userTier} />}
+      {currentView === 'connections' && <ConnectionsView emails={linkedEmails} onConnect={handleConnect} onAddSubscription={handleAdd} onManualScout={handleManualScout} tier={userTier} isSignedIn={isSignedIn} />}
 
       {currentView === 'statistics' && <StatisticsView chartData={chartData} subscriptions={subscriptions} />}
 

@@ -157,19 +157,28 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
               )}
             </div>
 
-            <div className="flex items-center gap-3 cursor-pointer group">
-              <div className="text-right">
-                <p className="text-sm font-black text-[#0f172a] tracking-tight group-hover:text-brand transition-colors">{user?.name || 'Alex Thompson'}</p>
-                <p className="text-[10px] font-bold text-brand uppercase tracking-widest">{tier === 'pro' ? 'Elite Operative' : 'Free Agent'}</p>
+            {user ? (
+              <div className="flex items-center gap-3 cursor-pointer group">
+                <div className="text-right">
+                  <p className="text-sm font-black text-[#0f172a] tracking-tight group-hover:text-brand transition-colors">{user.name || 'Sovereign Agent'}</p>
+                  <p className="text-[10px] font-bold text-brand uppercase tracking-widest">{tier === 'pro' ? 'Elite Operative' : 'Free Agent'}</p>
+                </div>
+                <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-transparent group-hover:border-brand/20 transition-all">
+                  <img
+                    src={user.image || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=100&auto=format&fit=crop"}
+                    alt="User"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
-              <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-transparent group-hover:border-brand/20 transition-all">
-                <img
-                  src={user?.image || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=100&auto=format&fit=crop"}
-                  alt="User"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
+            ) : (
+              <button
+                onClick={() => (window as any).location.href = '/'}
+                className="bg-brand text-white px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-brand/20 hover:scale-105 transition-all"
+              >
+                Connect Node
+              </button>
+            )}
           </div>
         </div>
 
