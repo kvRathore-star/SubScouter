@@ -1,38 +1,36 @@
 'use client';
 
-import useSWR from 'swr';
-import { getSubscriptions } from '@/actions/sheets';
+import { useEffect, useState } from 'react';
+import { useScoutStore } from './useScoutStore';
 import { Subscription } from '@/types/index';
 
 /**
- * THE SHADOW CACHING HOOK
- * Implements SWR with localStorage persistence to achieve <100ms hydration.
- * In a Zero-DB architecture, the client's cache is the first line of defense.
+ * THE LOCAL-FIRST DATA HOOK
+ * Replaces SWR with useScoutStore (IndexedDB).
+ * Provides ultra-fast, offline-ready data for the dashboard.
  */
 export function useDashboardData() {
-    const { data, error, mutate, isLoading } = useSWR<Subscription[]>(
-        'dashboard_subscriptions',
-        async () => {
-            const subs = await getSubscriptions();
-            // Shadow update to localStorage for next session's ultra-fast start
-            localStorage.setItem('subscout_shadow_cache', JSON.stringify(subs));
-            return subs;
-        },
-        {
-            revalidateOnFocus: false,
-            revalidateOnReconnect: true,
-            fallbackData: (() => {
-                if (typeof window === 'undefined') return [];
-                const shadow = localStorage.getItem('subscout_shadow_cache');
-                return shadow ? JSON.parse(shadow) : [];
-            })()
+    const { getAllSubscriptions, loading } = useScoutStore();
+    const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const refresh = async () => {
+        setIsLoading(true);
+        const data = await getAllSubscriptions();
+        setSubscriptions(data);
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        if (!loading) {
+            refresh();
         }
-    );
+    }, [loading]);
 
     return {
-        subscriptions: data || [],
-        isLoading,
-        isError: !!error,
-        refresh: mutate
+        subscriptions,
+        isLoading: isLoading || loading,
+        isError: false,
+        refresh
     };
 }

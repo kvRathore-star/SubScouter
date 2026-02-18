@@ -128,7 +128,7 @@ const AddEmailConnectionModal: React.FC<AddEmailConnectionModalProps> = ({ onClo
                             <div className="flex items-center gap-4 p-4 rounded-2xl bg-brand/5 border border-brand/10 mb-8">
                                 <ShieldCheck className="w-5 h-5 text-brand shrink-0" />
                                 <p className="text-[10px] font-black uppercase tracking-tight text-brand leading-relaxed">
-                                    Credentials are encrypted and stored in your private Google Drive vault. We never transmit them to our servers.
+                                    Credentials are AES-GCM encrypted and stored in your local identity vault (IndexedDB). We never transmit them to our servers.
                                 </p>
                             </div>
 

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Check, Star, Sparkles } from "lucide-react";
+import { Check, Star, Sparkles, CreditCard } from "lucide-react";
 import { createCheckoutSession } from "@/actions/stripe";
 
 interface PricingViewProps {
@@ -15,12 +15,18 @@ const PricingView: React.FC<PricingViewProps> = ({ currentTier, onUpgrade }) => 
     const handleUpgrade = async () => {
         setIsUpgrading(true);
         try {
-            // In production, these IDs would come from environment variables or a config file
-            const priceId = billingCycle === 'monthly' ? 'price_monthly_placeholder' : 'price_yearly_placeholder';
-            const { url } = await createCheckoutSession(priceId);
+            const priceId = billingCycle === 'monthly'
+                ? process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID
+                : process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID;
+
+            if (!priceId && process.env.NODE_ENV === 'production') {
+                throw new Error("Missing Price ID");
+            }
+
+            const { url } = await createCheckoutSession(priceId || 'price_mock');
             if (url) window.location.href = url;
         } catch (e) {
-            console.error("[Sub Scouter] Checkout failed:", e);
+            console.error("[SubScout] Checkout failed:", e);
             alert("Provisioning failed. Please check your connection or contact support.");
         } finally {
             setIsUpgrading(false);
@@ -30,146 +36,149 @@ const PricingView: React.FC<PricingViewProps> = ({ currentTier, onUpgrade }) => 
     const plans = [
         {
             id: 'free' as const,
-            name: 'Free',
+            name: 'Free Agent',
             price: { monthly: 0, yearly: 0 },
-            description: 'Perfect for getting started',
+            description: 'Essential localized scouts for individuals.',
             features: [
-                'Up to 5 subscriptions',
-                'Manual entry',
-                'Basic spending insights',
-                'Local data storage',
-                'Light & dark mode',
+                'Up to 5 active nodes',
+                'Manual extraction logs',
+                'Local data vaulting',
+                'Basic spending heuristics',
             ],
             highlight: false,
         },
         {
             id: 'pro' as const,
-            name: 'Pro',
+            name: 'Elite Operative',
             price: { monthly: 4.99, yearly: 49.99 },
-            description: 'For power users who want it all',
+            description: 'Advanced AI intelligence for power users.',
             features: [
-                'Unlimited subscriptions',
-                'AI-powered email scanning',
-                'Smart renewal alerts',
-                'CSV & PDF export',
-                'Multi-currency support',
-                'Cancel assistance AI',
-                'Subscription advice AI',
-                'Priority support',
+                'Unlimited active nodes',
+                'AI-powered IMAP scouting',
+                'One-click cancel assistance',
+                'PDF audit reports',
+                'High-fidelity analytics',
+                'Priority R2 sync frequency',
             ],
             highlight: true,
-            badge: 'Most Popular',
+            badge: 'Elite Protocol',
         },
     ];
 
     return (
-        <div className="animate-in fade-in duration-500">
-            <div className="mb-8 sm:mb-10">
-                <h2 className="text-xl sm:text-2xl font-bold mb-2">Plans & Pricing</h2>
-                <p className="text-sm text-muted-foreground max-w-md">Simple pricing. No hidden fees. Start free and upgrade when you need more.</p>
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="mb-12">
+                <h2 className="text-[32px] font-black tracking-tight text-[#0f172a] mb-2">Billing & Plans</h2>
+                <p className="text-[#64748b] font-medium tracking-tight">Manage your subscription tier and payment methods.</p>
             </div>
 
-            {/* Billing Toggle */}
-            <div className="flex items-center justify-center gap-3 mb-8 sm:mb-10">
-                <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>Monthly</span>
-                <button
-                    onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
-                    className={`relative w-12 h-6 rounded-full transition-colors ${billingCycle === 'yearly' ? 'bg-primary' : 'bg-accent'}`}
-                >
-                    <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${billingCycle === 'yearly' ? 'translate-x-6' : 'translate-x-0.5'}`} />
-                </button>
-                <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                    Yearly
-                    <span className="ml-1.5 text-[10px] text-primary font-semibold">Save 17%</span>
-                </span>
+            {/* Billing Cycle Switcher */}
+            <div className="flex justify-center mb-16">
+                <div className="bg-[#f1f5f9] p-1.5 rounded-[20px] flex gap-1 shadow-inner border border-[#e2e8f0]">
+                    <button
+                        onClick={() => setBillingCycle('monthly')}
+                        className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${billingCycle === 'monthly' ? 'bg-white text-[#0f172a] shadow-lg' : 'text-[#64748b]'}`}
+                    >
+                        Monthly
+                    </button>
+                    <button
+                        onClick={() => setBillingCycle('yearly')}
+                        className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${billingCycle === 'yearly' ? 'bg-[#0f172a] text-white shadow-lg' : 'text-[#64748b]'}`}
+                    >
+                        Yearly <span className="ml-2 text-brand">-20%</span>
+                    </button>
+                </div>
             </div>
 
             {/* Plan Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-3xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto mb-20">
                 {plans.map(plan => (
                     <div
                         key={plan.id}
-                        className={`card-glass p-5 sm:p-7 relative transition-all ${plan.highlight ? 'border-primary/40 ring-1 ring-primary/20' : ''} ${currentTier === plan.id ? 'ring-2 ring-primary' : ''}`}
+                        className={`bg-white rounded-[40px] p-10 border transition-all duration-300 relative overflow-hidden flex flex-col ${plan.highlight
+                            ? 'border-brand/40 shadow-2xl shadow-brand/10'
+                            : 'border-[#e2e8f0] shadow-sm hover:shadow-xl'
+                            }`}
                     >
                         {plan.badge && (
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-primary-foreground text-[10px] font-semibold rounded-full flex items-center gap-1.5">
-                                <Star className="w-3 h-3" /> {plan.badge}
+                            <div className="absolute top-0 right-0 py-2 px-10 bg-brand text-white text-[10px] font-black uppercase tracking-widest translate-x-10 translate-y-6 rotate-45 shadow-lg">
+                                {plan.badge}
                             </div>
                         )}
 
-                        {currentTier === plan.id && (
-                            <div className="absolute top-3 right-3 px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-semibold rounded-full">
-                                Current
-                            </div>
-                        )}
-
-                        <h3 className="text-lg font-bold mb-0.5">{plan.name}</h3>
-                        <p className="text-xs text-muted-foreground mb-5">{plan.description}</p>
-
-                        <div className="flex items-baseline gap-1 mb-6">
-                            <span className="text-3xl sm:text-4xl font-bold currency">
-                                ${billingCycle === 'monthly' ? plan.price.monthly.toFixed(2) : plan.price.yearly.toFixed(2)}
-                            </span>
-                            <span className="text-sm text-muted-foreground">
-                                {plan.price.monthly === 0 ? 'forever' : `/${billingCycle === 'monthly' ? 'mo' : 'yr'}`}
-                            </span>
+                        <div className="mb-8">
+                            <h3 className="text-xl font-black text-[#0f172a] mb-1 tracking-tight">{plan.name}</h3>
+                            <p className="text-[#64748b] text-sm font-medium">{plan.description}</p>
                         </div>
 
-                        <div className="space-y-3 mb-7">
-                            {plan.features.map((f, j) => (
-                                <div key={j} className="flex items-center gap-2.5">
-                                    <Check className={`w-4 h-4 shrink-0 ${plan.highlight ? 'text-primary' : 'text-muted-foreground'}`} />
-                                    <span className="text-sm">{f}</span>
+                        <div className="mb-10 flex items-baseline gap-1">
+                            <span className="text-5xl font-black text-[#0f172a] tracking-tighter tabular-nums">
+                                ${billingCycle === 'monthly' ? plan.price.monthly : Math.floor(plan.price.yearly / 12)}
+                            </span>
+                            <span className="text-[#64748b] font-bold text-sm">/mo</span>
+                            {billingCycle === 'yearly' && plan.price.yearly > 0 && (
+                                <span className="ml-3 text-[10px] font-black text-brand uppercase tracking-widest bg-brand/5 px-2 py-1 rounded-md">Billed Yearly</span>
+                            )}
+                        </div>
+
+                        <div className="space-y-4 mb-12 flex-1">
+                            {plan.features.map((feature, i) => (
+                                <div key={i} className="flex items-start gap-4">
+                                    <div className={`mt-1 w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${plan.highlight ? 'bg-brand/10 text-brand' : 'bg-[#f1f5f9] text-[#94a3b8]'}`}>
+                                        <Check className="w-3 h-3" strokeWidth={3} />
+                                    </div>
+                                    <span className="text-sm font-bold text-[#475569] tracking-tight">{feature}</span>
                                 </div>
                             ))}
                         </div>
 
-                        {currentTier !== plan.id ? (
-                            <button
-                                onClick={plan.id === 'pro' ? handleUpgrade : undefined}
-                                disabled={isUpgrading}
-                                className={`w-full py-3 font-medium rounded-lg transition-all ${plan.highlight ? 'btn-primary' : 'btn-ghost'} ${isUpgrading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            >
-                                {isUpgrading ? 'Preparing...' : plan.id === 'pro' ? 'Upgrade to Pro' : 'Current Plan'}
-                            </button>
-                        ) : (
-                            <div className="w-full py-3 text-center text-sm text-muted-foreground font-medium flex items-center justify-center gap-2">
-                                <Sparkles className="w-4 h-4 text-primary" /> You're on this plan
-                            </div>
-                        )}
+                        <button
+                            onClick={plan.id === 'pro' ? handleUpgrade : undefined}
+                            disabled={isUpgrading || (currentTier === plan.id)}
+                            className={`w-full py-5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all ${currentTier === plan.id
+                                ? 'bg-[#f8fafc] text-[#94a3b8] cursor-default'
+                                : plan.highlight
+                                    ? 'bg-brand text-white shadow-xl shadow-brand/20 hover:scale-[1.02]'
+                                    : 'bg-[#0f172a] text-white hover:bg-[#1e293b]'
+                                }`}
+                        >
+                            {currentTier === plan.id ? (
+                                <span className="flex items-center justify-center gap-2 italic">
+                                    <Sparkles className="w-4 h-4" /> ACTIVE PROTOCOL
+                                </span>
+                            ) : (
+                                isUpgrading ? 'Provisioning...' : `Select ${plan.name}`
+                            )}
+                        </button>
                     </div>
                 ))}
             </div>
 
-            {/* Feature Comparison */}
-            <div className="mt-10 sm:mt-14 max-w-3xl mx-auto">
-                <h3 className="text-sm font-semibold text-center mb-6">Feature Comparison</h3>
-                <div className="card-glass overflow-hidden">
-                    <table className="w-full text-sm">
+            {/* Comparison Logic */}
+            <div className="bg-[#f8fafc] border border-[#e2e8f0] rounded-[40px] p-10">
+                <h3 className="text-xl font-black text-[#0f172a] mb-10 text-center tracking-tight">Detailed Capabilities</h3>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
                         <thead>
-                            <tr className="border-b border-border">
-                                <th className="text-left font-medium text-muted-foreground p-3 sm:p-4">Feature</th>
-                                <th className="text-center font-medium text-muted-foreground p-3 sm:p-4 w-24">Free</th>
-                                <th className="text-center font-medium text-primary p-3 sm:p-4 w-24">Pro</th>
+                            <tr className="border-b border-[#e2e8f0]">
+                                <th className="pb-6 text-[10px] font-black text-[#64748b] uppercase tracking-widest">Protocol Component</th>
+                                <th className="pb-6 text-center text-[10px] font-black text-[#64748b] uppercase tracking-widest w-32">Free Agent</th>
+                                <th className="pb-6 text-center text-[10px] font-black text-brand uppercase tracking-widest w-32">Elite</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y divide-[#f1f5f9]">
                             {[
-                                ['Subscriptions', '5', 'Unlimited'],
-                                ['Email AI Scanning', '—', '✓'],
-                                ['Manual Entry', '✓', '✓'],
-                                ['Spending Insights', 'Basic', 'Advanced'],
-                                ['Renewal Alerts', '—', '✓'],
-                                ['Export (CSV/PDF)', '—', '✓'],
-                                ['Multi-Currency', '—', '✓'],
-                                ['Cancel Help AI', '—', '✓'],
-                                ['Theme Modes', '✓', '✓'],
-                                ['PWA Install', '✓', '✓'],
-                            ].map(([feat, free, pro], i) => (
-                                <tr key={i} className="border-b border-border/50 last:border-0 hover:bg-accent/30 transition-colors">
-                                    <td className="p-3 sm:p-4 text-xs sm:text-sm">{feat}</td>
-                                    <td className="p-3 sm:p-4 text-center text-xs sm:text-sm text-muted-foreground">{free}</td>
-                                    <td className="p-3 sm:p-4 text-center text-xs sm:text-sm">{pro}</td>
+                                { name: 'Active extraction nodes', free: '5', pro: 'Unlimited' },
+                                { name: 'AI Email Intelligence', free: 'Manual only', pro: 'Full Auto' },
+                                { name: 'Localized data encryption', free: '✓', pro: '✓' },
+                                { name: 'PDF Audit Reports', free: '-', pro: '✓' },
+                                { name: 'Cancel Assistance AI', free: '-', pro: '✓' },
+                                { name: 'Sync Persistence (R2)', free: '24h', pro: 'On-Demand' },
+                            ].map((row, i) => (
+                                <tr key={i} className="group">
+                                    <td className="py-5 text-sm font-bold text-[#0f172a] tracking-tight">{row.name}</td>
+                                    <td className="py-5 text-center text-sm font-medium text-[#64748b]">{row.free}</td>
+                                    <td className="py-5 text-center text-sm font-black text-brand">{row.pro}</td>
                                 </tr>
                             ))}
                         </tbody>

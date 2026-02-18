@@ -1,0 +1,22 @@
+name = "subscouter"
+main = ".next/standalone/server.js"
+compatibility_date = "2024-11-01"
+
+# D1 Database Binding (REPLACE WITH YOUR ACTUAL DB ID)
+[[d1_databases]]
+binding = "DB"
+database_name = "subscouter-db"
+database_id = "PASTE_YOUR_D1_DATABASE_ID_HERE"
+
+# R2 Bucket Binding
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "subscouter-storage"
+
+[vars]
+# STRIPE_WEBHOOK_SECRET should be set via 'wrangler secret put'
+# STRIPE_WEBHOOK_SECRET = "sk_..." 
+
+[site]
+bucket = ".next/standalone/.next/static"
+base_dir = ".next/standalone"

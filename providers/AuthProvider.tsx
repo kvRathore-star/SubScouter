@@ -1,28 +1,42 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { ClerkProvider, useUser, useAuth, useClerk } from '@clerk/nextjs';
+import React, { createContext, useContext, ReactNode } from 'react';
+import { useSession, authClient } from '@/lib/auth-client';
 
 interface AuthContextType {
     user: any;
     isLoaded: boolean;
     isSignedIn: boolean;
-    signOut: () => void;
-    signIn: () => void; // Added for mock flow testing
+    signOut: () => Promise<void>;
+    signIn: () => Promise<void>;
     isMock: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const SKIP_AUTH = process.env.NEXT_PUBLIC_SKIP_AUTH === 'true';
+/**
+ * THE AUTHENTICATION PROXY
+ * Wraps Better Auth into the existing AppAuth context for minimal UI disruption.
+ */
+export function AuthProvider({ children }: { children: ReactNode }) {
+    const session = useSession();
 
-const MOCK_USER = {
-    id: 'user_2n9v1M7fXpLqZ5tM8K0jW1r4',
-    firstName: 'Cipher',
-    lastName: 'Operative',
-    primaryEmailAddress: { emailAddress: 'cipher@subscout.ai' },
-    publicMetadata: { spreadsheetId: 'mock_spreadsheet_id' },
-};
+    const value = {
+        user: session.data?.user || null,
+        isLoaded: !session.isPending,
+        isSignedIn: !!session.data?.user,
+        signOut: async () => {
+            await authClient.signOut();
+        },
+        signIn: async () => {
+            // Default to Google for simplicity, or redirect to /login
+            await authClient.signIn.social({ provider: "google" });
+        },
+        isMock: false,
+    };
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
 
 export function useAppAuth() {
     const context = useContext(AuthContext);
@@ -30,51 +44,4 @@ export function useAppAuth() {
         throw new Error('useAppAuth must be used within an AuthProvider');
     }
     return context;
-}
-
-function MockProvider({ children }: { children: ReactNode }) {
-    const [isSignedIn, setIsSignedIn] = useState(false); // Start signed out for flow testing
-
-    const value = {
-        user: isSignedIn ? MOCK_USER : null,
-        isLoaded: true,
-        isSignedIn,
-        signOut: () => setIsSignedIn(false),
-        signIn: () => setIsSignedIn(true),
-        isMock: true,
-    };
-
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-function ClerkWrapper({ children }: { children: ReactNode }) {
-    const { user, isLoaded, isSignedIn } = useUser();
-    const { signOut } = useAuth();
-    const clerk = useClerk();
-
-    const value = {
-        user: user || null,
-        isLoaded: !!isLoaded,
-        isSignedIn: !!isSignedIn,
-        signOut: signOut || (() => { }),
-        signIn: () => clerk.openSignIn(),
-        isMock: false,
-    };
-
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function AuthProvider({ children }: { children: ReactNode }) {
-    const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
-    // Build-time safety: If key is missing (e.g. during static generation) or auth is skipped, use Mock
-    if (SKIP_AUTH || !publishableKey) {
-        return <MockProvider>{children}</MockProvider>;
-    }
-
-    return (
-        <ClerkProvider publishableKey={publishableKey}>
-            <ClerkWrapper>{children}</ClerkWrapper>
-        </ClerkProvider>
-    );
 }
