@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+export const runtime = 'edge';
 import { ImapScoutService } from "@/services/imapScoutService";
 import { GeminiScoutService } from "@/services/geminiService";
 

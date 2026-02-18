@@ -1,4 +1,5 @@
 "use client";
+export const runtime = 'edge';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAppAuth } from '@/hooks/useAppAuth';
