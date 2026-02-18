@@ -1,3 +1,5 @@
+"use client";
+
 import { Subscription } from "@/types";
 import { FileText, Download, Sparkles } from "lucide-react";
 
