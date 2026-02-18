@@ -6,6 +6,8 @@ import { NextRequest } from "next/server";
  * THE AUTHENTICATION HANDLER
  * Bridges Better Auth with Next.js App Router on Cloudflare.
  */
+export const runtime = "edge";
+
 export async function POST(request: NextRequest) {
     // Access D1 from the request context or environment
     // Note: On Cloudflare, D1 is typically in process.env.DB in newer Next.js versions on Pages/Workers

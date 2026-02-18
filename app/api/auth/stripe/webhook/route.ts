@@ -7,6 +7,8 @@ import { stripe } from "@/lib/stripe";
  * Explicit webhook handler for Stripe events.
  * Better Auth handles the base logic, but we can hook into it here.
  */
+export const runtime = "edge";
+
 export async function POST(request: NextRequest) {
     const d1 = (process.env as any).DB as D1Database;
     const auth = getAuth(d1);

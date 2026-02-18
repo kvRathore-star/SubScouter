@@ -7,6 +7,8 @@ import { GeminiScoutService } from "@/services/geminiService";
  * Orchestrates IMAP scanning and Gemini parsing.
  * Stateless and optimized for Cloudflare Workers.
  */
+export const runtime = "edge";
+
 export async function POST(request: NextRequest) {
     try {
         const { credentials } = await request.json();
