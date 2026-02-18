@@ -1,3 +1,10 @@
+export interface MailSnippet {
+    subject: string;
+    from: string;
+    date: Date;
+    snippet: string;
+}
+
 /**
  * THE UNIVERSAL SCOUT (IMAP Engine)
  * Connects to user inboxes to find subscription traces.
@@ -55,12 +62,13 @@ export class ImapScoutService {
 
             // Limit to 50 most recent matching messages for stability
             let count = 0;
-            for await (const msg of client.fetch(query, { envelope: true, source: { start: 0, end: 1000 } })) {
+            // Use correct imapflow fetch signature
+            for await (const msg of client.fetch(query, { envelope: true, source: { start: 0 } })) {
                 if (count >= 50) break;
                 snippets.push({
-                    subject: msg.envelope.subject || "",
-                    from: msg.envelope.from?.[0]?.address || "",
-                    date: msg.envelope.date || new Date(),
+                    subject: msg.envelope?.subject || "",
+                    from: msg.envelope?.from?.[0]?.address || "",
+                    date: msg.envelope?.date || new Date(),
                     snippet: msg.source?.toString().substring(0, 1000) || "",
                 });
                 count++;
