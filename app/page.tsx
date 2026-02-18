@@ -13,12 +13,7 @@ import StatisticsView from '@/components/views/StatisticsView';
 import ConnectionsView from '@/components/views/ConnectionsView';
 import PricingView from '@/components/views/PricingView';
 import AccountView from '@/components/views/AccountView';
-import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal';
-import { DashboardSkeleton } from '@/components/layout/Skeleton';
-import LoadingOverlay from '@/components/features/LoadingOverlay';
-import EmptyState from '@/components/features/EmptyState';
-import { Subscription, SpendingStats, LinkedEmail, FilterTab } from '@/types/index';
-import { Plus, Sparkles } from "lucide-react"
+import PortalView from '@/components/views/PortalView';
 
 /**
  * THE SOVEREIGN DASHBOARD
@@ -28,6 +23,10 @@ export default function Dashboard() {
   const { isLoaded, isSignedIn, user, signOut } = useAppAuth();
   const { subscriptions, isLoading: isDataLoading, refresh } = useDashboardData();
   const { saveSubscriptions, deleteSubscription } = useScoutStore();
+
+  if (isLoaded && !isSignedIn) {
+    return <PortalView />;
+  }
 
   const [linkedEmails, setLinkedEmails] = useState<LinkedEmail[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);

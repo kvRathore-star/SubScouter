@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useAppAuth } from './useAppAuth';
 import { useScoutStore } from './useScoutStore';
 import { Subscription } from '@/types/index';
 
@@ -10,11 +11,16 @@ import { Subscription } from '@/types/index';
  * Provides ultra-fast, offline-ready data for the dashboard.
  */
 export function useDashboardData() {
+    const { isLoaded, isSignedIn } = useAppAuth();
     const { getAllSubscriptions, loading } = useScoutStore();
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const refresh = async () => {
+        if (!isSignedIn) {
+            setIsLoading(false);
+            return;
+        }
         setIsLoading(true);
         const data = await getAllSubscriptions();
         setSubscriptions(data);
@@ -22,10 +28,10 @@ export function useDashboardData() {
     };
 
     useEffect(() => {
-        if (!loading) {
+        if (!loading && isLoaded) {
             refresh();
         }
-    }, [loading]);
+    }, [loading, isLoaded, isSignedIn]);
 
     return {
         subscriptions,
