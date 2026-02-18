@@ -14,6 +14,13 @@ import ConnectionsView from '@/components/views/ConnectionsView';
 import PricingView from '@/components/views/PricingView';
 import AccountView from '@/components/views/AccountView';
 import PortalView from '@/components/views/PortalView';
+import { DashboardSkeleton } from '@/components/layout/Skeleton';
+import LoadingOverlay from '@/components/features/LoadingOverlay';
+import EmptyState from '@/components/features/EmptyState';
+import { Subscription, SpendingStats, LinkedEmail, FilterTab } from '@/types/index';
+import { Plus, Sparkles } from "lucide-react"
+import CommandCenter from '@/components/features/CommandCenter';
+import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal';
 
 /**
  * THE SOVEREIGN DASHBOARD
