@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useAppAuth } from '@/hooks/useAppAuth';
 import { useTheme } from '@/providers/ThemeProvider';
 import {
-  Dashboard as DashboardIcon,
+  LayoutDashboard as DashboardIcon,
   Link as LinkIcon,
   CreditCard,
   BarChart3,
