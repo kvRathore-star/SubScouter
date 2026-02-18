@@ -26,6 +26,12 @@ export const getAuth = (d1: D1Database) => {
             google: {
                 clientId: process.env.GOOGLE_CLIENT_ID as string,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+                scope: ["https://www.googleapis.com/auth/gmail.readonly"],
+            },
+            microsoft: {
+                clientId: process.env.MICROSOFT_CLIENT_ID as string,
+                clientSecret: process.env.MICROSOFT_CLIENT_SECRET as string,
+                scope: ["https://graph.microsoft.com/Mail.Read"],
             },
         },
         secondaryStorage: {

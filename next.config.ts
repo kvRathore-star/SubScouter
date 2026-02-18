@@ -10,7 +10,10 @@ const nextConfig: NextConfig = {
     // Temporary: Ignore lint errors to unblock production deployment
     ignoreDuringBuilds: true,
   },
-  serverExternalPackages: ["imapflow", "better-auth", "@better-auth/stripe", "stripe", "drizzle-orm"],
+  experimental: {
+    serverComponentsExternalPackages: ["@better-auth/stripe", "drizzle-orm"],
+  },
+  serverExternalPackages: ["better-auth", "stripe"],
   transpilePackages: [
     "recharts",
     "framer-motion",
