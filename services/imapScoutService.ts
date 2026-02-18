@@ -1,12 +1,3 @@
-import { ImapFlow } from "imapflow";
-
-export interface MailSnippet {
-    subject: string;
-    from: string;
-    date: Date;
-    snippet: string;
-}
-
 /**
  * THE UNIVERSAL SCOUT (IMAP Engine)
  * Connects to user inboxes to find subscription traces.
@@ -18,6 +9,9 @@ export class ImapScoutService {
         secure: boolean;
         auth: { user: string; pass: string; accessToken?: string };
     }, retries = 3): Promise<MailSnippet[]> {
+        // Dynamic import to bypass build-time static analysis of Node libs
+        const { ImapFlow } = await import("imapflow");
+
         const client = new ImapFlow({
             host: config.host,
             port: config.port,
