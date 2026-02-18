@@ -11,13 +11,14 @@ export const runtime = "edge";
 export async function POST(request: NextRequest) {
     // Access D1 from the request context or environment
     // Note: On Cloudflare, D1 is typically in process.env.DB in newer Next.js versions on Pages/Workers
-    const d1 = (process.env as any).DB as D1Database;
-    const auth = getAuth(d1);
-    return toNextJsHandler(auth)(request);
-}
+    export async function POST(request: NextRequest) {
+        const auth = getAuth((process.env as any).DB);
+        const handler = toNextJsHandler(auth);
+        return handler.POST(request);
+    }
 
-export async function GET(request: NextRequest) {
-    const d1 = (process.env as any).DB as D1Database;
-    const auth = getAuth(d1);
-    return toNextJsHandler(auth)(request);
-}
+    export async function GET(request: NextRequest) {
+        const auth = getAuth((process.env as any).DB);
+        const handler = toNextJsHandler(auth);
+        return handler.GET(request);
+    }
