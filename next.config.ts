@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
     // Temporary: Ignore lint errors to unblock production deployment
     ignoreDuringBuilds: true,
   },
+  serverExternalPackages: ["imapflow", "better-auth", "@better-auth/stripe"],
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.resolve.fallback = {
@@ -18,6 +19,8 @@ const nextConfig: NextConfig = {
         tls: false,
         fs: false,
         child_process: false,
+        dns: false,
+        os: false,
       };
     }
     return config;
