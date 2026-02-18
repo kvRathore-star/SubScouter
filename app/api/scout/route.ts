@@ -5,10 +5,8 @@ import { GeminiScoutService } from "@/services/geminiService";
 /**
  * THE SCOUT API
  * Orchestrates IMAP scanning and Gemini parsing.
- * Stateless and optimized for Cloudflare Workers.
+ * Note: This runs in the standard runtime to support imapflow (Node.js).
  */
-export const runtime = "edge";
-
 export async function POST(request: NextRequest) {
     try {
         const { credentials } = await request.json();
