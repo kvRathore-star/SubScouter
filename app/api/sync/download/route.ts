@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: "Missing userId" }, { status: 400 });
         }
 
-        const bucket = (process.env as any).STORAGE as R2Bucket;
+        const bucket = (process.env as any).STORAGE as any;
         if (!bucket) {
             return NextResponse.json({ error: "Cloud storage not configured" }, { status: 503 });
         }

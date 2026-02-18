@@ -1,16 +1,3 @@
-"use client";
-
-import { generate } from "@pdfme/generator";
-import { text } from "@pdfme/schemas";
-import { Subscription } from "@/types";
-
-/**
- * THE AUDIT GENERATOR
- * Generates high-fidelity PDF reports using the client's CPU.
- * Zero server cost for reporting.
- */
-import { generate } from "@pdfme/generator";
-import { text } from "@pdfme/schemas";
 import { Subscription } from "@/types";
 import { FileText, Download, Sparkles } from "lucide-react";
 
@@ -19,6 +6,10 @@ import { FileText, Download, Sparkles } from "lucide-react";
  * Generates encrypted-ready PDF reports on the client device.
  */
 export const generateAuditReport = async (subscriptions: Subscription[]) => {
+    // Dynamic import to prevent build-time Webpack errors
+    const { generate } = await import("@pdfme/generator");
+    const { text } = await import("@pdfme/schemas");
+
     const template = {
         basePdf: { width: 210, height: 297 },
         schemas: [
