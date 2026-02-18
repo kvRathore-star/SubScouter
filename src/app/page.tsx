@@ -29,7 +29,16 @@ import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal
 export default function Dashboard() {
   const { isLoaded, isSignedIn, user, signOut } = useAppAuth();
   const { subscriptions, isLoading: isDataLoading, refresh } = useDashboardData();
-  const { saveSubscriptions, deleteSubscription } = useScoutStore();
+  const { saveSubscriptions, deleteSubscription, syncToCloud, restoreFromCloud } = useScoutStore();
+
+  // Automatic Restoration Check
+  useEffect(() => {
+    if (isSignedIn && user && subscriptions.length === 0 && !isDataLoading) {
+      restoreFromCloud(user.id).then((restored) => {
+        if (restored) refresh();
+      });
+    }
+  }, [isSignedIn, user, subscriptions.length, isDataLoading]);
 
   // if (isLoaded && !isSignedIn) {
   //   return <PortalView />;
@@ -118,32 +127,36 @@ export default function Dashboard() {
       usageScore: 100
     };
     await saveSubscriptions([newSub]);
+    if (isSignedIn && user) await syncToCloud(user.id);
     refresh();
-  }, [saveSubscriptions, refresh]);
+  }, [saveSubscriptions, refresh, isSignedIn, user, syncToCloud]);
 
   const handleCancel = useCallback(async (id: string) => {
     const sub = subscriptions.find(s => s.id === id);
     if (sub) {
       await saveSubscriptions([{ ...sub, status: 'canceled' as const }]);
+      if (isSignedIn && user) await syncToCloud(user.id);
       refresh();
     }
-  }, [subscriptions, saveSubscriptions, refresh]);
+  }, [subscriptions, saveSubscriptions, refresh, isSignedIn, user, syncToCloud]);
 
   const handlePause = useCallback(async (id: string) => {
     const sub = subscriptions.find(s => s.id === id);
     if (sub) {
       await saveSubscriptions([{ ...sub, status: 'paused' as const }]);
+      if (isSignedIn && user) await syncToCloud(user.id);
       refresh();
     }
-  }, [subscriptions, saveSubscriptions, refresh]);
+  }, [subscriptions, saveSubscriptions, refresh, isSignedIn, user, syncToCloud]);
 
   const handleResume = useCallback(async (id: string) => {
     const sub = subscriptions.find(s => s.id === id);
     if (sub) {
       await saveSubscriptions([{ ...sub, status: 'active' as const }]);
+      if (isSignedIn && user) await syncToCloud(user.id);
       refresh();
     }
-  }, [subscriptions, saveSubscriptions, refresh]);
+  }, [subscriptions, saveSubscriptions, refresh, isSignedIn, user, syncToCloud]);
 
   const handleManualScout = useCallback(async () => {
     // Orchestrate client-side scan logic here
