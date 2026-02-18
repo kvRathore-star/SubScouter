@@ -37,18 +37,18 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [] }) => {
       <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
         <div className="flex items-center gap-4">
           <div>
-            <h2 className="text-[32px] font-black tracking-tight text-[#0f172a] mb-2">Intelligence Charts</h2>
-            <p className="text-[#64748b] font-medium tracking-tight">Macro-level analysis of your subscription ecosystem.</p>
+            <h2 className="text-[32px] font-black tracking-tight text-foreground mb-2">Intelligence Charts</h2>
+            <p className="text-muted-foreground font-medium tracking-tight">Macro-level analysis of your subscription ecosystem.</p>
           </div>
-          <span className="bg-[#1e293b] text-white text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md">Preview</span>
+          <span className="bg-brand/10 text-brand border border-brand/20 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md">Live Preview</span>
         </div>
         <SubscriptionReportButton subscriptions={subscriptions} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
         {/* Volume Allocation Card */}
-        <div className="bg-white rounded-[32px] p-10 border border-[#e2e8f0] shadow-sm">
-          <h3 className="text-xl font-black text-[#0f172a] mb-8 tracking-tight">Volume Allocation</h3>
+        <div className="card-glass p-10 bg-card/50">
+          <h3 className="text-xl font-black text-foreground mb-8 tracking-tight">Volume Allocation</h3>
           <div className="h-[300px] w-full relative">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -76,19 +76,19 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [] }) => {
             {displayData.map((entry, index) => (
               <div key={index} className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-                <span className="text-[10px] font-black text-[#64748b] tracking-wider uppercase">{entry.name}</span>
+                <span className="text-[10px] font-black text-muted-foreground/50 tracking-wider uppercase">{entry.name}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Historical Burn Rate Card */}
-        <div className="bg-white rounded-[32px] p-10 border border-[#e2e8f0] shadow-sm">
-          <h3 className="text-xl font-black text-[#0f172a] mb-8 tracking-tight">Historical Burn Rate</h3>
+        <div className="card-glass p-10 bg-card/50">
+          <h3 className="text-xl font-black text-foreground mb-8 tracking-tight">Historical Burn Rate</h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={burnoutData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
                 <XAxis
                   dataKey="month"
                   axisLine={false}
