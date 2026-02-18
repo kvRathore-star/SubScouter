@@ -5,7 +5,6 @@ import { useTheme } from '@/providers/ThemeProvider';
 import { useAppAuth } from '@/hooks/useAppAuth';
 import { CURRENCIES } from '@/types/index';
 import { Sun, Moon, Bell, Globe, User, Shield, Trash2, LogOut, LogIn } from "lucide-react";
-import { SignInButton } from "@clerk/nextjs";
 
 const SettingsView: React.FC = () => {
   const { user, signOut, isSignedIn, isMock } = useAppAuth();
@@ -36,11 +35,11 @@ const SettingsView: React.FC = () => {
         </div>
         <div className="p-8 flex items-center gap-8">
           <div className="w-20 h-20 rounded-3xl bg-brand/10 border border-brand/20 flex items-center justify-center text-brand text-3xl font-black shadow-inner shadow-brand/10">
-            {user?.firstName?.charAt(0) || 'U'}
+            {user?.name?.charAt(0) || 'U'}
           </div>
           <div>
-            <h4 className="text-xl font-black tracking-tight uppercase italic">{user?.firstName || 'Unknown Operator'}</h4>
-            <p className="text-sm text-muted-foreground font-bold tracking-wider opacity-60">{user?.emailAddresses?.[0]?.emailAddress || 'cipher@subscout.ai'}</p>
+            <h4 className="text-xl font-black tracking-tight uppercase italic">{user?.name || 'Unknown Operator'}</h4>
+            <p className="text-sm text-muted-foreground font-bold tracking-wider opacity-60">{user?.email || 'cipher@subscout.ai'}</p>
           </div>
         </div>
 
@@ -56,13 +55,14 @@ const SettingsView: React.FC = () => {
             </button>
           )}
 
-          {!isMock && (
-            <SignInButton mode="modal">
-              <button className="btn-ghost flex items-center gap-2 text-[10px] font-black tracking-[0.2em] px-6 py-3 border-brand/10 hover:border-brand/30 transition-all text-muted-foreground hover:text-brand uppercase">
-                <LogIn className="w-3.5 h-3.5" />
-                Initialize New Auth
-              </button>
-            </SignInButton>
+          {!isSignedIn && (
+            <button
+              onClick={() => window.location.href = '/sign-in'}
+              className="btn-ghost flex items-center gap-2 text-[10px] font-black tracking-[0.2em] px-6 py-3 border-brand/10 hover:border-brand/30 transition-all text-muted-foreground hover:text-brand uppercase"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              Initialize New Auth
+            </button>
           )}
         </div>
       </div>
@@ -187,9 +187,8 @@ const SettingsView: React.FC = () => {
         </div>
       </div>
 
-      {/* Pricing Section */}
       <div className="mt-16 pt-16 border-t border-border/50">
-        <PricingView currentTier={(user?.publicMetadata?.plan as any) || 'free'} />
+        <PricingView currentTier={(user as any)?.plan || 'free'} />
       </div>
     </div>
   );
