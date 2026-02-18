@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { Transaction } from '@/actions/sheets';
 import { Subscription } from '@/types/index';
 import { SubscriptionReportButton } from '../features/SubscriptionReport';
 import { FileText, Sparkles } from 'lucide-react';
@@ -9,10 +8,9 @@ import { FileText, Sparkles } from 'lucide-react';
 interface StatisticsViewProps {
   chartData?: { name: string; value: number }[];
   subscriptions: Subscription[];
-  transactions?: Transaction[];
 }
 
-const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [] }) => {
+const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [], subscriptions }) => {
   // Use mock data if chartData is empty to show the premium design
   const displayData = chartData.length > 0 ? chartData : [
     { name: 'ENTERTAINMENT', value: 300 },
