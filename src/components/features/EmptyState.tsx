@@ -16,11 +16,11 @@ interface EmptyStateProps {
 const EmptyState: React.FC<EmptyStateProps> = ({ icon = 'ghost', title, description, action, onDiscovery }) => {
     return (
         <div className="card-glass flex flex-col items-center justify-center p-20 sm:p-24 text-center min-h-[400px]">
-            <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center mb-8 shadow-inner">
+            <div className="w-20 h-20 rounded-full bg-brand/5 flex items-center justify-center mb-8 shadow-inner border border-brand/10">
                 {icon === 'ghost' ? (
-                    <Ghost className="w-8 h-8 text-muted-foreground" />
+                    <Ghost className="w-8 h-8 text-brand/40" />
                 ) : (
-                    <Search className="w-8 h-8 text-muted-foreground" />
+                    <Search className="w-8 h-8 text-brand/40" />
                 )}
             </div>
             <h3 className="text-2xl font-black text-foreground mb-3 tracking-tighter uppercase italic">{title}</h3>
