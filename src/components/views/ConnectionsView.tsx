@@ -86,6 +86,19 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
         </div>
       </div>
 
+      {!isSignedIn && (
+        <div className="mt-8 p-8 bg-brand/5 border border-brand/10 rounded-[32px] text-center">
+          <h3 className="text-sm font-black text-brand uppercase tracking-[0.2em] mb-2">Cloud Intelligence Offline</h3>
+          <p className="text-xs text-[#64748b] font-medium mb-6">Connect your Sovereign Node to enable automated AI discovery and secure cloud synchronization.</p>
+          <button
+            onClick={() => window.location.href = '/'}
+            className="btn-primary px-10"
+          >
+            Initialize Connection
+          </button>
+        </div>
+      )}
+
       {scanning && <AILoader />}
 
       {/* Connected Nodes List (Secondary) */}
