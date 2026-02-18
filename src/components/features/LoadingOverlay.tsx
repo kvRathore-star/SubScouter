@@ -27,6 +27,27 @@ const LoadingOverlay: React.FC<{ message?: string }> = ({ message = "Synchronizi
                 {message}
             </p>
 
+            <button
+                onClick={() => {
+                    localStorage.clear();
+                    window.location.href = '/';
+                }}
+                style={{
+                    marginTop: 24,
+                    fontSize: 10,
+                    fontWeight: 900,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    color: 'var(--primary)',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    opacity: 0.5
+                }}
+            >
+                Emergency Recalibration
+            </button>
+
             <style jsx global>{`
         @keyframes pulse {
           0%, 100% { opacity: 1; transform: scale(1); }

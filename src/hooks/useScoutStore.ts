@@ -21,18 +21,31 @@ export const useScoutStore = () => {
 
     useEffect(() => {
         const init = async () => {
-            const _db = await openDB(DB_NAME, 1, {
-                upgrade(db) {
-                    if (!db.objectStoreNames.contains(STORES.SUBSCRIPTIONS)) {
-                        db.createObjectStore(STORES.SUBSCRIPTIONS, { keyPath: 'id' });
-                    }
-                    if (!db.objectStoreNames.contains(STORES.METADATA)) {
-                        db.createObjectStore(STORES.METADATA);
-                    }
-                },
-            });
-            setDb(_db);
-            setLoading(false);
+            try {
+                // Safety timeout: Don't hang the app for more than 3 seconds on DB init
+                const timeout = setTimeout(() => {
+                    console.warn("DB Initialization timed out. Falling back to memory mode.");
+                    setLoading(false);
+                }, 3000);
+
+                const _db = await openDB(DB_NAME, 1, {
+                    upgrade(db) {
+                        if (!db.objectStoreNames.contains(STORES.SUBSCRIPTIONS)) {
+                            db.createObjectStore(STORES.SUBSCRIPTIONS, { keyPath: 'id' });
+                        }
+                        if (!db.objectStoreNames.contains(STORES.METADATA)) {
+                            db.createObjectStore(STORES.METADATA);
+                        }
+                    },
+                });
+
+                clearTimeout(timeout);
+                setDb(_db);
+                setLoading(false);
+            } catch (err) {
+                console.error("Critical: Failed to initialize Sovereign Engine:", err);
+                setLoading(false); // Release the UI lock even on failure
+            }
         };
         init();
     }, []);

@@ -30,6 +30,12 @@ export function useDashboardData() {
     useEffect(() => {
         if (!loading && isLoaded) {
             refresh();
+        } else if (isLoaded) {
+            // Safety: If scout store is taking too long (>4s), force-release the loading overlay
+            const timer = setTimeout(() => {
+                if (isLoading) setIsLoading(false);
+            }, 4000);
+            return () => clearTimeout(timer);
         }
     }, [loading, isLoaded, isSignedIn]);
 
