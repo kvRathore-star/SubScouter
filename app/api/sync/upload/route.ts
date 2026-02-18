@@ -15,6 +15,9 @@ export async function POST(request: NextRequest) {
         }
 
         const bucket = (process.env as any).STORAGE as R2Bucket;
+        if (!bucket) {
+            return NextResponse.json({ error: "Cloud storage not configured" }, { status: 503 });
+        }
         const key = `backups/${userId}/latest.json`;
 
         await bucket.put(key, await file.arrayBuffer(), {

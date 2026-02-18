@@ -6,12 +6,12 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "subscouter-db"
-database_id = "PASTE_YOUR_D1_DATABASE_ID_HERE"
+database_id = "64726430-85a0-4a89-9337-b2b2dcfab1d2"
 
-# R2 Bucket Binding
-[[r2_buckets]]
-binding = "STORAGE"
-bucket_name = "subscouter-storage"
+# R2 Bucket Binding (Optional - Set up later)
+# [[r2_buckets]]
+# binding = "STORAGE"
+# bucket_name = "subscouter-storage"
 
 [vars]
 # STRIPE_WEBHOOK_SECRET should be set via 'wrangler secret put'
