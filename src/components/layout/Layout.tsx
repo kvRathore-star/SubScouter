@@ -48,7 +48,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
   ];
 
   return (
-    <div className="flex h-screen w-full bg-[#f8fafc] text-[#0f172a] font-sans selection:bg-brand/10">
+    <div className="flex h-screen w-full bg-[#020617] text-foreground font-sans selection:bg-brand/10">
       {/* Mobile Backdrop */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -63,7 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
       </AnimatePresence>
 
       {/* ═══ SIDEBAR ═══ */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-[260px] bg-white border-r border-[#e2e8f0] transition-transform duration-500 lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-[260px] bg-card border-r border-border transition-transform duration-500 lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full">
           {/* Logo Section */}
           <div className="p-6 flex items-center justify-between">
@@ -71,7 +71,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
               <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center shadow-lg shadow-brand/20">
                 <span className="text-white font-black text-xl">S</span>
               </div>
-              <h1 className="text-[17px] font-black tracking-tight text-[#0f172a]">SubScout AI</h1>
+              <h1 className="text-[17px] font-black tracking-tight text-foreground">SubScout AI</h1>
             </div>
             {/* Mobile Close Button */}
             <button className="lg:hidden p-2 text-[#64748b]" onClick={() => setSidebarOpen(false)}>
@@ -88,8 +88,8 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
                   key={item.id}
                   onClick={() => setView(item.id)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${active
-                    ? 'bg-[#f1f5f9] text-brand border border-[#e2e8f0]'
-                    : 'text-[#64748b] hover:bg-[#f8fafc] hover:text-[#0f172a]'
+                    ? 'bg-brand/10 text-brand border border-brand/20'
+                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     }`}
                 >
                   <item.icon className={`w-5 h-5 ${active ? 'text-brand' : 'group-hover:text-[#0f172a]'}`} strokeWidth={1.5} />
@@ -120,19 +120,19 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
       {/* ═══ MAIN CONTENT AREA ═══ */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
-        <header className="h-16 bg-white border-b border-[#e2e8f0] flex items-center justify-between px-8">
+        <header className="h-16 bg-card border-b border-border flex items-center justify-between px-8">
           <div className="flex-1 text-center">
             <h2 className="text-sm font-bold text-[#64748b] tracking-tight">SubScout AI</h2>
           </div>
 
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-1.5 text-[#64748b] hover:text-[#0f172a] cursor-pointer transition-colors" onClick={() => (window as any).toggleCommandPalette?.()}>
+            <div className="flex items-center gap-1.5 text-muted-foreground hover:text-brand cursor-pointer transition-colors" onClick={() => (window as any).toggleCommandPalette?.()}>
               <Monitor className="w-4 h-4" />
               <span className="text-xs font-bold tracking-tight">Command</span>
-              <span className="text-[9px] font-black bg-[#f1f5f9] px-1.5 py-0.5 rounded border border-[#e2e8f0]">⌘K</span>
+              <span className="text-[9px] font-black bg-muted px-1.5 py-0.5 rounded border border-border">⌘K</span>
             </div>
-            <RefreshCcw className="w-4 h-4 text-[#64748b] hover:text-[#0f172a] cursor-pointer transition-colors" />
-            <Maximize2 className="w-4 h-4 text-[#64748b] hover:text-[#0f172a] cursor-pointer transition-colors" />
+            <RefreshCcw className="w-4 h-4 text-muted-foreground hover:text-brand cursor-pointer transition-colors" />
+            <Maximize2 className="w-4 h-4 text-muted-foreground hover:text-brand cursor-pointer transition-colors" />
           </div>
         </header>
 
@@ -147,7 +147,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
 
           <div className="flex items-center gap-6">
             <div className="relative cursor-pointer">
-              <div className="w-10 h-10 bg-[#f8fafc] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#64748b] hover:text-brand hover:border-brand/30 transition-all">
+              <div className="w-10 h-10 bg-muted/50 border border-border rounded-full flex items-center justify-center text-muted-foreground hover:text-brand hover:border-brand/30 transition-all">
                 <Bell className="w-5 h-5" />
               </div>
               {notificationCount > 0 && (
@@ -160,7 +160,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
             {user ? (
               <div className="flex items-center gap-3 cursor-pointer group">
                 <div className="text-right">
-                  <p className="text-sm font-black text-[#0f172a] tracking-tight group-hover:text-brand transition-colors">{user.name || 'Sovereign Agent'}</p>
+                  <p className="text-sm font-black text-foreground tracking-tight group-hover:text-brand transition-colors">{user.name || 'Sovereign Agent'}</p>
                   <p className="text-[10px] font-bold text-brand uppercase tracking-widest">{tier === 'pro' ? 'Elite Operative' : 'Free Agent'}</p>
                 </div>
                 <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-transparent group-hover:border-brand/20 transition-all">

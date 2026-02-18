@@ -76,18 +76,27 @@ export default function Dashboard() {
   }, []);
 
   const stats: SpendingStats = useMemo(() => {
+    if (!Array.isArray(subscriptions)) return {
+      totalMonthly: 0, totalYearly: 0, potentialSavings: 0,
+      activeCount: 0, unusedCount: 0, renewalSoonCount: 0,
+      trialCount: 0, canceledCount: 0
+    };
+
     return {
-      totalMonthly: subscriptions.reduce((acc, s) => acc + (s.status === 'active' ? s.amount : 0), 0),
-      totalYearly: subscriptions.reduce((acc, s) => acc + (s.status === 'active' ? s.amount * 12 : 0), 0),
-      potentialSavings: subscriptions.filter(s => (s.usageScore || 0) < 30).reduce((acc, s) => acc + s.amount, 0),
-      activeCount: subscriptions.filter(s => s.status === 'active').length,
-      unusedCount: subscriptions.filter(s => (s.usageScore || 0) < 30).length,
-      renewalSoonCount: subscriptions.filter(s => {
-        const days = Math.ceil((new Date(s.nextBillingDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-        return days <= 7 && days >= 0;
+      totalMonthly: (subscriptions || []).reduce((acc, s) => acc + (s.status === 'active' ? (s.amount || 0) : 0), 0),
+      totalYearly: (subscriptions || []).reduce((acc, s) => acc + (s.status === 'active' ? (s.amount || 0) * 12 : 0), 0),
+      potentialSavings: (subscriptions || []).filter(s => (s.usageScore || 0) < 30).reduce((acc, s) => acc + (s.amount || 0), 0),
+      activeCount: (subscriptions || []).filter(s => s.status === 'active').length,
+      unusedCount: (subscriptions || []).filter(s => (s.usageScore || 0) < 30).length,
+      renewalSoonCount: (subscriptions || []).filter(s => {
+        if (!s.nextBillingDate) return false;
+        try {
+          const days = Math.ceil((new Date(s.nextBillingDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+          return days <= 7 && days >= 0;
+        } catch { return false; }
       }).length,
-      trialCount: subscriptions.filter(s => s.isTrial).length,
-      canceledCount: subscriptions.filter(s => s.status === 'canceled').length,
+      trialCount: (subscriptions || []).filter(s => s.isTrial).length,
+      canceledCount: (subscriptions || []).filter(s => s.status === 'canceled').length,
     };
   }, [subscriptions]);
 

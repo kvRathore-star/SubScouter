@@ -15,7 +15,7 @@ const PrivacySentinel: React.FC = () => {
             </div>
             <div className="flex flex-col">
                 <span className="text-[10px] font-black tracking-widest text-brand uppercase">Privacy Sentinel</span>
-                <span className="text-[11px] text-muted-foreground font-medium">Data stored in your Google Sheet</span>
+                <span className="text-[11px] text-muted-foreground font-medium">Data stored in your Sovereign Node</span>
             </div>
             <Database className="w-3 h-3 text-muted-foreground/30 ml-2" />
         </motion.div>
