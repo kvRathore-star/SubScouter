@@ -29,8 +29,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             await authClient.signOut();
         },
         signIn: async () => {
-            // Default to Google for simplicity, or redirect to /login
-            await authClient.signIn.social({ provider: "google" });
+            try {
+                // Default to Google for simplicity
+                await authClient.signIn.social({
+                    provider: "google",
+                    callbackURL: "/"
+                });
+            } catch (err) {
+                console.error("Auth Failure:", err);
+                alert("Sovereign Node Connection Failed. Please ensure your environment secrets (Google Client ID) are configured in Cloudflare.");
+            }
         },
         isMock: false,
     };
