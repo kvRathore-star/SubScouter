@@ -9,6 +9,15 @@ import { Subscription } from "@/types";
  * Generates high-fidelity PDF reports using the client's CPU.
  * Zero server cost for reporting.
  */
+import { generate } from "@pdfme/generator";
+import { text } from "@pdfme/schemas";
+import { Subscription } from "@/types";
+import { FileText, Download, Sparkles } from "lucide-react";
+
+/**
+ * THE SOVEREIGN AUDITOR
+ * Generates encrypted-ready PDF reports on the client device.
+ */
 export const generateAuditReport = async (subscriptions: Subscription[]) => {
     const template = {
         basePdf: { width: 210, height: 297 },
@@ -18,16 +27,26 @@ export const generateAuditReport = async (subscriptions: Subscription[]) => {
                     type: "text",
                     position: { x: 20, y: 20 },
                     width: 170,
+                    height: 15,
+                    fontSize: 24,
+                    fontWeight: 'bold',
+                    fontColor: "#0f172a",
+                },
+                meta: {
+                    type: "text",
+                    position: { x: 20, y: 35 },
+                    width: 170,
                     height: 10,
-                    fontSize: 20,
-                    fontColor: "#333",
+                    fontSize: 10,
+                    fontColor: "#64748b",
                 },
                 content: {
                     type: "text",
-                    position: { x: 20, y: 40 },
+                    position: { x: 20, y: 55 },
                     width: 170,
                     height: 200,
-                    fontSize: 12,
+                    fontSize: 11,
+                    lineHeight: 1.5,
                 }
             }
         ],
@@ -35,8 +54,12 @@ export const generateAuditReport = async (subscriptions: Subscription[]) => {
 
     const inputs = [
         {
-            title: "SubScouter: Subscription Audit Report",
-            content: subscriptions.map(s => `${s.name}: ${s.currency} ${s.amount} (${s.billingCycle})`).join("\n")
+            title: "SUBSCOUTER: NODE AUDIT REPORT",
+            meta: `GENERATED: ${new Date().toLocaleString()} | PROTOCOL: SOVEREIGN_ENCRYPTION_ACTIVE`,
+            content: subscriptions.map(s => {
+                const status = s.status.toUpperCase();
+                return `[${status}] ${s.name.padEnd(20)} | ${s.currency} ${s.amount.toFixed(2).padStart(8)} | CYCLE: ${s.billingCycle.toUpperCase()}`;
+            }).join("\n") + `\n\n------------------------------------------------\nTOTAL MONTHLY BURN: $${subscriptions.reduce((acc, s) => acc + (s.status === 'active' ? s.amount : 0), 0).toFixed(2)}`
         }
     ];
 
@@ -46,17 +69,22 @@ export const generateAuditReport = async (subscriptions: Subscription[]) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `SubScouter_Audit_${new Date().toISOString().split('T')[0]}.pdf`;
+    a.download = `SubScouter_Intelligence_Rollup_${new Date().toISOString().split('T')[0]}.pdf`;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
 };
 
 export const SubscriptionReportButton = ({ subscriptions }: { subscriptions: Subscription[] }) => {
     return (
         <button
             onClick={() => generateAuditReport(subscriptions)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-lg active:scale-95"
+            className="group relative flex items-center gap-3 px-8 py-4 bg-[#0f172a] text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl shadow-[#0f172a]/20 hover:scale-[1.02] active:scale-[0.98] transition-all overflow-hidden italic"
         >
-            Generate Audit Report (PDF)
+            <div className="absolute inset-0 bg-gradient-to-r from-brand/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <FileText className="w-4 h-4 text-brand" />
+            <span>Extract Intelligence Rollup (PDF)</span>
+            <Download className="w-3.5 h-3.5 opacity-40 group-hover:translate-y-0.5 transition-transform" />
         </button>
     );
 };

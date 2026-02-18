@@ -2,12 +2,14 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Transaction } from '@/actions/sheets';
+import { Subscription } from '@/types/index';
+import { SubscriptionReportButton } from '../features/SubscriptionReport';
+import { FileText, Sparkles } from 'lucide-react';
 
 interface StatisticsViewProps {
   chartData?: { name: string; value: number }[];
+  subscriptions: Subscription[];
   transactions?: Transaction[];
-  userName?: string;
-  userEmail?: string;
 }
 
 const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [] }) => {
@@ -32,12 +34,15 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [] }) => {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="mb-12 flex items-center gap-4">
-        <div>
-          <h2 className="text-[32px] font-black tracking-tight text-[#0f172a] mb-2">Intelligence Charts</h2>
-          <p className="text-[#64748b] font-medium tracking-tight">Macro-level analysis of your subscription ecosystem.</p>
+      <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+        <div className="flex items-center gap-4">
+          <div>
+            <h2 className="text-[32px] font-black tracking-tight text-[#0f172a] mb-2">Intelligence Charts</h2>
+            <p className="text-[#64748b] font-medium tracking-tight">Macro-level analysis of your subscription ecosystem.</p>
+          </div>
+          <span className="bg-[#1e293b] text-white text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md">Preview</span>
         </div>
-        <span className="bg-[#1e293b] text-white text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md">Preview</span>
+        <SubscriptionReportButton subscriptions={subscriptions} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">

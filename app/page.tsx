@@ -222,7 +222,7 @@ export default function Dashboard() {
 
       {currentView === 'connections' && <ConnectionsView emails={linkedEmails} onConnect={handleConnect} onAddSubscription={handleAdd} onManualScout={handleManualScout} tier={userTier} />}
 
-      {currentView === 'statistics' && <StatisticsView chartData={chartData} />}
+      {currentView === 'statistics' && <StatisticsView chartData={chartData} subscriptions={subscriptions} />}
 
       {currentView === 'settings' && <AccountView tier={userTier} />}
 

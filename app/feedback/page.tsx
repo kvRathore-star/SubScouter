@@ -47,23 +47,28 @@ export default function FeedbackPage() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
-                    <div className="card-glass p-8">
-                        <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-4">Feedback Input</label>
+                    <div className="card-glass p-10 border-brand/20 bg-brand/[0.02]">
+                        <div className="flex items-center gap-3 mb-6">
+                            <Sparkles className="w-5 h-5 text-brand" />
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-brand">NEURAL_FEEDBACK_PORT</label>
+                        </div>
                         <textarea
                             required
                             value={feedback}
                             onChange={(e) => setFeedback(e.target.value)}
-                            placeholder="What could be improved? Found a bug? Let us know..."
-                            className="w-full h-40 bg-muted/20 border border-border/50 rounded-2xl p-6 text-foreground font-medium focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all resize-none"
+                            placeholder="TRANSMIT YOUR INTELLIGENCE HERE... FOUND A BUG? NEED A FEATURE? PROTOCOL IS LISTENING."
+                            className="w-full h-40 bg-[#0f172a]/5 border border-white/[0.05] rounded-[2rem] p-8 text-[#0f172a] font-black text-sm placeholder:text-[#94a3b8]/30 uppercase tracking-tight italic focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all resize-none shadow-inner"
                         />
                     </div>
 
                     <button
                         type="submit"
-                        className="btn-primary w-full py-6 rounded-2xl font-black uppercase tracking-widest flex items-center justify-center gap-3 shadow-2xl shadow-brand/20"
+                        className="group relative w-full py-6 rounded-[2.5rem] bg-[#0f172a] text-white font-black uppercase tracking-[0.3em] text-xs flex items-center justify-center gap-4 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] hover:scale-[1.01] active:scale-[0.99] transition-all overflow-hidden italic"
                     >
-                        <Send className="w-5 h-5" />
-                        <span>Deploy Feedback</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-brand/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Send className="w-4 h-4 text-brand" />
+                        <span>Deploy Intelligence Transmission</span>
+                        <Zap className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
                     </button>
                 </form>
             </div>
