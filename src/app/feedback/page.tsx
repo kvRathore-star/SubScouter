@@ -3,7 +3,7 @@ export const runtime = 'edge';
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Star, Zap } from 'lucide-react';
+import { Send, Star, Zap, Sparkles } from 'lucide-react';
 
 export default function FeedbackPage() {
     const [feedback, setFeedback] = useState('');
