@@ -31,20 +31,7 @@ export default function Dashboard() {
   const { subscriptions, isLoading: isDataLoading, refresh } = useDashboardData();
   const { saveSubscriptions, deleteSubscription, syncToCloud, restoreFromCloud } = useScoutStore();
 
-  // Restore from cloud on sign-in
-  useEffect(() => {
-    if (isSignedIn && user && subscriptions.length === 0 && !isDataLoading) {
-      restoreFromCloud(user.id).then((restored) => {
-        if (restored) refresh();
-      });
-    }
-  }, [isSignedIn, user, subscriptions.length, isDataLoading]);
-
-  // Show login page when not signed in
-  if (isLoaded && !isSignedIn) {
-    return <PortalView />;
-  }
-
+  // ALL hooks must be declared before any conditional returns (React Rules of Hooks)
   const [linkedEmails, setLinkedEmails] = useState<LinkedEmail[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [filter, setFilter] = useState<FilterTab>('all');
@@ -55,15 +42,26 @@ export default function Dashboard() {
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
 
+  // Restore from cloud on sign-in
+  useEffect(() => {
+    if (isSignedIn && user && subscriptions.length === 0 && !isDataLoading) {
+      restoreFromCloud(user.id).then((restored) => {
+        if (restored) refresh();
+      });
+    }
+  }, [isSignedIn, user, subscriptions.length, isDataLoading]);
+
   // Check URL params for post-OAuth scan trigger
   useEffect(() => {
+    if (!isSignedIn) return;
     const params = new URLSearchParams(window.location.search);
     if (params.get('view') === 'connections') {
       setCurrentView('connections');
     }
-  }, []);
+  }, [isSignedIn]);
 
   useEffect(() => {
+    if (!isSignedIn) return;
     (window as any).toggleCommandPalette = () => setCommandOpen(prev => !prev);
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -76,12 +74,18 @@ export default function Dashboard() {
       delete (window as any).toggleCommandPalette;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [isSignedIn]);
 
   useEffect(() => {
+    if (!isSignedIn) return;
     const storedNodes = localStorage.getItem('subscouter_nodes');
     if (storedNodes) setLinkedEmails(JSON.parse(storedNodes));
-  }, []);
+  }, [isSignedIn]);
+
+  // Show login page when not signed in
+  if (isLoaded && !isSignedIn) {
+    return <PortalView />;
+  }
 
   const stats: SpendingStats = useMemo(() => {
     if (!Array.isArray(subscriptions)) return {
