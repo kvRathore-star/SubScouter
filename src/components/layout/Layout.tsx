@@ -74,7 +74,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
                 </div>
               </div>
               <div className="flex flex-col">
-                <h1 className="text-[15px] font-black tracking-[-0.03em] text-foreground leading-none">SubScout<span className="text-brand">AI</span></h1>
+                <h1 className="text-[15px] font-black tracking-[-0.03em] text-foreground leading-none">Sub <span className="text-brand">Scouter</span></h1>
                 <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.25em] mt-1.5 opacity-60">Sovereign Node</span>
               </div>
             </div>

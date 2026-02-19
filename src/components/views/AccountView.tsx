@@ -26,7 +26,7 @@ const AccountView: React.FC<AccountViewProps> = ({
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="mb-12">
                 <h2 className="text-[32px] font-black tracking-tight text-foreground mb-2">Intelligence Config</h2>
-                <p className="text-muted-foreground font-medium tracking-tight">Configure how SubScout AI monitors your finances.</p>
+                <p className="text-muted-foreground font-medium tracking-tight">Configure how Sub Scouter monitors your finances.</p>
             </div>
 
             <div className="card-glass p-10 max-w-4xl relative overflow-visible">

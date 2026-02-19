@@ -47,7 +47,7 @@ td{padding:10px 12px;border-bottom:1px solid #f1f5f9}.status{padding:2px 10px;bo
 .total{margin-top:24px;padding:16px;background:#f8fafc;border-radius:12px;font-size:14px}
 .total strong{font-size:20px}
 </style></head><body>`;
-        html += `<h1>SubScout AI — Subscription Report</h1>`;
+        html += `<h1>Sub Scouter — Subscription Report</h1>`;
         html += `<p class="sub">Generated ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>`;
         html += `<table><thead><tr><th>Name</th><th>Amount</th><th>Cycle</th><th>Category</th><th>Status</th></tr></thead><tbody>`;
 

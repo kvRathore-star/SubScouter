@@ -15,7 +15,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onScanInbox, onAddM
     const steps = [
         {
             icon: Sparkles,
-            title: "Welcome to SubScout AI! 🎉",
+            title: "Welcome to Sub Scouter! 🎉",
             desc: "Let's set up your subscription tracker in under a minute.",
             action: () => setStep(1),
             btnText: "Let's go",
