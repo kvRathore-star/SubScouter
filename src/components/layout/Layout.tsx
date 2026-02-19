@@ -209,7 +209,6 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
         </main>
       </div>
 
-      <PrivacySentinel />
     </div>
   );
 };

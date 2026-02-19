@@ -5,12 +5,23 @@ import { stripe as stripeClient } from "./stripe";
 import * as schema from "../db/schema";
 import { drizzle } from "drizzle-orm/d1";
 
+import { createClient } from "@libsql/client";
+import { drizzle as drizzleLibsql } from "drizzle-orm/libsql";
+
 /**
  * THE AUTHENTICATION ARCHITECT
- * Configures Better Auth with Drizzle (D1) and Stripe.
+ * Configures Better Auth with Drizzle (D1 or Local SQLite) and Stripe.
  */
-export const getAuth = (d1: D1Database) => {
-    const db = drizzle(d1, { schema });
+export const getAuth = (d1?: D1Database) => {
+    let db: any;
+
+    if (d1) {
+        db = drizzle(d1, { schema });
+    } else {
+        // Fallback for local next dev environment
+        const client = createClient({ url: "file:local.db" });
+        db = drizzleLibsql(client, { schema });
+    }
 
     return betterAuth({
         secret: process.env.BETTER_AUTH_SECRET as string,
