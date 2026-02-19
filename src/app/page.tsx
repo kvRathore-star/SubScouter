@@ -82,11 +82,6 @@ export default function Dashboard() {
     if (storedNodes) setLinkedEmails(JSON.parse(storedNodes));
   }, [isSignedIn]);
 
-  // Show login page when not signed in
-  if (isLoaded && !isSignedIn) {
-    return <PortalView />;
-  }
-
   const stats: SpendingStats = useMemo(() => {
     if (!Array.isArray(subscriptions)) return {
       totalMonthly: 0, totalYearly: 0, potentialSavings: 0,
@@ -191,6 +186,11 @@ export default function Dashboard() {
     });
     return Object.entries(categories).map(([name, value]) => ({ name: name.toUpperCase(), value }));
   }, [subscriptions]);
+
+  // Show login page when not signed in
+  if (isLoaded && !isSignedIn) {
+    return <PortalView />;
+  }
 
   if (!isLoaded) return <DashboardSkeleton />;
 
