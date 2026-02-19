@@ -23,12 +23,15 @@ import CommandCenter from '@/components/features/CommandCenter';
 import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal';
 
 export default function Dashboard() {
-  // We imported everything, but we don't use it in render.
-  // This tests if module evaluation crashes.
+  // TEST 1: Enable useAppAuth
+  const { isLoaded, isSignedIn, user, signOut } = useAppAuth();
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-950 text-white">
-      <h1 className="text-4xl font-bold">IMPORTS RESTORED - EVALUATION CHECK</h1>
-      <p className="mt-4">If you see this, all imports are valid and the crash is in rendering logic.</p>
+    <div className="flex items-center justify-center min-h-screen bg-slate-950 text-white flex-col gap-4">
+      <h1 className="text-4xl font-bold">HOOKS TEST: useAppAuth</h1>
+      <p>Is Loaded: {isLoaded ? 'YES' : 'NO'}</p>
+      <p>Is Signed In: {isSignedIn ? 'YES' : 'NO'}</p>
+      <p>User: {user ? user.email : 'NONE'}</p>
     </div>
   );
 }
