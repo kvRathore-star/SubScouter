@@ -84,7 +84,8 @@ export default function Dashboard() {
 
   // Show login page when not signed in
   if (isLoaded && !isSignedIn) {
-    return <PortalView />;
+    return <div className="p-10 text-white">DEBUG: Portal View Placeholder</div>;
+    // return <PortalView />;
   }
 
   const stats: SpendingStats = useMemo(() => {
