@@ -8,19 +8,18 @@ import * as schema from "@/db/schema";
 export const runtime = "edge";
 
 /**
- * THE NATIVE SCOUT API
- * Executes direct Cloudflare-native discovery (No IMAP).
+ * Subscription Scout API
+ * Scans connected email accounts for subscription data using Gmail/Microsoft APIs + Gemini AI.
  */
 export async function POST(request: NextRequest) {
     const d1 = (process.env as any).DB;
     const auth = getAuth(d1);
 
-    // Check for session to get access tokens
-    // Note: Better Auth provides access tokens in the account object if configured
+    // Verify user session
     const session = await auth.api.getSession({ headers: request.headers });
 
     if (!session || !session.user) {
-        return NextResponse.json({ error: "Unauthorized Authentication Node" }, { status: 401 });
+        return NextResponse.json({ error: "Please sign in to scan your inbox." }, { status: 401 });
     }
 
     try {
@@ -28,7 +27,7 @@ export async function POST(request: NextRequest) {
 
         const db = drizzle(d1, { schema });
 
-        // Retrieve the account to get the access token
+        // Get the user's stored access token for this provider
         const account = await db.query.accounts.findFirst({
             where: (accounts, { and, eq }) => and(
                 eq(accounts.userId, session.user.id),
@@ -38,11 +37,12 @@ export async function POST(request: NextRequest) {
 
         if (!account || !account.accessToken) {
             return NextResponse.json({
-                error: "Missing Access Credentials",
-                message: `No active ${provider} connection found. Please re-authenticate.`
+                error: "No connection found",
+                message: `No active ${provider} connection found. Please connect your ${provider === 'google' ? 'Gmail' : 'Outlook'} account first.`
             }, { status: 400 });
         }
 
+        // 1. Fetch email snippets from the provider
         let snippets: any[] = [];
 
         if (provider === "google") {
@@ -54,21 +54,22 @@ export async function POST(request: NextRequest) {
         if (snippets.length === 0) {
             return NextResponse.json({
                 subscriptions: [],
-                message: "No subscription evidence found in the extraction window."
+                message: "No subscription emails found. Try scanning again after receiving billing emails."
             });
         }
 
-        // 2. Intelligence Analysis (Gemini 1.5 Flash)
+        // 2. AI Analysis via Gemini
         const gemini = new GeminiScoutService();
-        const subscriptions = await gemini.parseSubscriptions(snippets);
+        const subscriptions = await gemini.parseSnippets(snippets);
 
-        // 3. Sovereign Return
         return NextResponse.json({
-            status: "Success",
+            status: "success",
+            count: subscriptions.length,
             subscriptions
         });
 
     } catch (err: any) {
-        return NextResponse.json({ error: `Discovery Failure: ${err.message}` }, { status: 500 });
+        console.error("[Scout API] Error:", err);
+        return NextResponse.json({ error: `Scan failed: ${err.message}` }, { status: 500 });
     }
 }

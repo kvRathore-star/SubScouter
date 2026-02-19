@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { MailSnippet } from "./imapScoutService";
+import { MailSnippet } from "./mailService";
 
 const geminiKey = process.env.GEMINI_API_KEY;
 
@@ -10,14 +10,13 @@ if (!geminiKey && process.env.NODE_ENV === 'production') {
 const genAI = new GoogleGenerativeAI(geminiKey || "AIza_fallback_for_dev_only");
 
 /**
- * THE INTELLIGENCE CORE
- * Uses Gemini 1.5 Flash to parse email metadata into subscriptions.
+ * Gemini AI Service
+ * Parses email snippets into structured subscription data.
  */
 export class GeminiScoutService {
   async parseSnippets(snippets: MailSnippet[]) {
-    // Return early if key is mock
     if (process.env.GEMINI_API_KEY === undefined && process.env.NODE_ENV === 'production') {
-      console.warn("Gemini API Key missing, skipping AI synthesis.");
+      console.warn("Gemini API Key missing, skipping AI analysis.");
       return [];
     }
 
@@ -27,16 +26,17 @@ export class GeminiScoutService {
       You are an expert subscription auditor. Analyze the following email subject lines and snippets.
       Extract a JSON array of active subscriptions. 
       For each item, identify:
-      1. Merchant Name (e.g., Netflix, AWS, Spotify)
-      2. Estimated Monthly Price
-      3. Currency
-      4. Frequency (Monthly, Yearly)
-      5. Next Estimated Renewal Date
+      1. "name": Merchant/Service Name (e.g., Netflix, AWS, Spotify)
+      2. "amount": Estimated Monthly Price (number)
+      3. "currency": Currency code (e.g., "USD", "INR", "EUR")
+      4. "billingCycle": Frequency ("monthly" or "yearly")
+      5. "nextBillingDate": Next Estimated Renewal Date (ISO date string YYYY-MM-DD)
+      6. "category": Category (one of: "Entertainment", "Productivity", "Cloud", "Finance", "Health", "Education", "Shopping", "Other")
       
       Emails:
-      ${snippets.map(s => `Subject: ${s.subject} | From: ${s.from} | Date: ${s.date} | Snippet: ${s.snippet}`).join('\n')}
+      ${snippets.map(s => `ID: ${s.id} | Subject: ${s.subject || 'N/A'} | Date: ${s.date || 'N/A'} | Snippet: ${s.snippet}`).join('\n')}
       
-      Return ONLY a pure JSON array. No markdown code blocks.
+      Return ONLY a pure JSON array. No markdown code blocks. No explanation.
     `;
 
     const result = await model.generateContent(prompt);
@@ -44,7 +44,6 @@ export class GeminiScoutService {
     const text = response.text();
 
     try {
-      // Clean possible markdown artifacts
       const cleanJson = text.replace(/```json/g, "").replace(/```/g, "").trim();
       return JSON.parse(cleanJson);
     } catch (e) {

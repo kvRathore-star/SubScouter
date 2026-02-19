@@ -12,8 +12,8 @@ const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Sub Scouter — Sovereign Subscription Intelligence',
-  description: 'Proactive subscription auditing and intelligence. Zero-knowledge, local-first, total sovereignty.',
+  title: 'Sub Scouter — Smart Subscription Tracker',
+  description: 'Track, manage, and optimize all your subscriptions in one place. AI-powered inbox scanning. 100% private.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     title: 'Sub Scouter',
   },
   openGraph: {
-    title: 'Sub Scouter — Subscription Sovereignty',
-    description: 'Stop losing money on forgotten subscriptions. AI-powered intelligence for your recurring nodes.',
+    title: 'Sub Scouter — Never Overpay for Subscriptions Again',
+    description: 'AI scans your inbox to find hidden subscriptions. Track spending, get renewal alerts, and cancel what you don\'t use.',
     type: 'website',
   },
 }

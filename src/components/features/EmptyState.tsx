@@ -42,7 +42,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({ icon = 'ghost', title, descript
                         className="btn-ghost font-heading text-[10px] font-black tracking-[0.2em] px-8 py-4 border-brand/20 hover:border-brand/40 flex items-center gap-2 uppercase transition-all"
                     >
                         <Sparkles className="w-4 h-4 text-brand" />
-                        RUN SYSTEM DISCOVERY
+                        Scan My Email
                     </button>
                 )}
             </div>

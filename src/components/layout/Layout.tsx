@@ -75,7 +75,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
               </div>
               <div className="flex flex-col">
                 <h1 className="text-[15px] font-black tracking-[-0.03em] text-foreground leading-none">Sub <span className="text-brand">Scouter</span></h1>
-                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.25em] mt-1.5 opacity-60">Sovereign Node</span>
+                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.25em] mt-1.5 opacity-60">Subscription Tracker</span>
               </div>
             </div>
             {/* Mobile Close Button */}
@@ -123,14 +123,14 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
             <div className="bg-white/[0.03] p-4 rounded-2xl border border-white-[0.05] relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-brand/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-711" />
               <div className="relative z-10">
-                <p className="text-[10px] font-black text-brand uppercase tracking-[0.2em] mb-2.5">System Status</p>
+                <p className="text-[10px] font-black text-brand uppercase tracking-[0.2em] mb-2.5">Status</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <div className="relative">
                       <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
                       <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-500 animate-ping opacity-75" />
                     </div>
-                    <span className="text-[11px] font-bold text-foreground/90">Sovereign Active</span>
+                    <span className="text-[11px] font-bold text-foreground/90">All Systems Online</span>
                   </div>
                   <span className="text-[9px] font-mono text-muted-foreground">v2.4.0</span>
                 </div>
@@ -149,7 +149,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
               <div className="absolute inset-0 bg-brand/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative flex items-center gap-3 px-4 py-2 bg-secondary/40 border border-border rounded-xl group-hover:border-brand/40 transition-all duration-300 cursor-text" onClick={() => (window as any).toggleCommandPalette?.()}>
                 <Monitor className="w-4 h-4 text-muted-foreground" />
-                <span className="text-xs font-medium text-muted-foreground/60 flex-1">Search or scan nodes...</span>
+                <span className="text-xs font-medium text-muted-foreground/60 flex-1">Search subscriptions...</span>
                 <div className="flex items-center gap-1 bg-background/30 border border-border px-1.5 py-0.5 rounded-md">
                   <span className="text-[9px] font-bold text-muted-foreground/50 tracking-tighter">⌘</span>
                   <span className="text-[9px] font-bold text-muted-foreground/50 tracking-tighter">K</span>
@@ -200,10 +200,10 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
                   />
                 </div>
                 <div className="text-left">
-                  <p className="text-sm font-bold text-foreground tracking-tight group-hover:text-brand transition-colors">{user.name || 'Sovereign Operative'}</p>
+                  <p className="text-sm font-bold text-foreground tracking-tight group-hover:text-brand transition-colors">{user.name || user.email || 'User'}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     <div className={`w-1.5 h-1.5 rounded-full ${tier === 'pro' ? 'bg-brand shadow-[0_0_8px_var(--brand)]' : 'bg-muted-foreground'}`} />
-                    <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.1em]">{tier === 'pro' ? 'Elite Operative' : 'Free Agent'}</p>
+                    <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.1em]">{tier === 'pro' ? 'Pro Plan' : 'Free Plan'}</p>
                   </div>
                 </div>
               </div>
@@ -212,7 +212,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
                 onClick={() => (window as any).location.href = '/'}
                 className="bg-brand text-white px-8 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-xl shadow-brand/20 hover:translate-y-[-2px] transition-all duration-300"
               >
-                Connect Node
+                Sign In
               </button>
             )}
           </div>

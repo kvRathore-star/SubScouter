@@ -20,29 +20,29 @@ const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, userFir
     const steps = [
         {
             id: 1,
-            title: "Pact of Privacy",
-            description: "To protect you, we must agree on the rules of engagement. This Data Processing Agreement (DPA) confirms your sovereignty.",
+            title: "Privacy Agreement",
+            description: "Before we scan your inbox, let's confirm how we handle your data. Your privacy comes first.",
             icon: ShieldCheck,
             color: "var(--brand)"
         },
         {
             id: 2,
-            title: "Guardian Activation",
-            description: "Authorize your Financial Bodyguard to scan for sneaky bills in your encrypted archives.",
+            title: "Connect Your Email",
+            description: "Authorize Sub Scouter to scan your inbox for subscription receipts and billing emails.",
             icon: Mail,
             color: "#f59e0b"
         },
         {
             id: 3,
             title: "Discovery Phase",
-            description: "Our agents are traversing your communication nodes to identify recurring subscription patterns.",
+            description: "We're scanning your emails to find recurring subscriptions and billing patterns.",
             icon: Search,
             color: "#10b981"
         },
         {
             id: 4,
-            title: "Safe Zone Confirmed",
-            description: "Extraction successful. Your perimeter is now secure. Ready to engage?",
+            title: "All Set!",
+            description: "Scan complete. Your subscriptions have been identified. Ready to start managing?",
             icon: Heart,
             color: "#ef4444"
         }
@@ -95,8 +95,8 @@ const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, userFir
                     <div className="w-32 h-32 rounded-[2.5rem] bg-brand/10 flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-brand/10 border border-brand/20">
                         <CheckCircle2 className="w-12 h-12 text-brand" />
                     </div>
-                    <h2 className="text-5xl font-black font-heading tracking-tighter mb-4 uppercase italic">Perimeter Secure.</h2>
-                    <p className="text-muted-foreground/60 text-xl font-medium tracking-tight">Deploying your Financial Bodyguard. Entering safe zone...</p>
+                    <h2 className="text-5xl font-black font-heading tracking-tighter mb-4 uppercase italic">Scan Complete.</h2>
+                    <p className="text-muted-foreground/60 text-xl font-medium tracking-tight">Setting up your dashboard. Almost there...</p>
                 </motion.div>
             </div>
         );
@@ -164,10 +164,10 @@ const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, userFir
                             </h2>
 
                             <p className="text-muted-foreground text-xl mb-12 max-w-sm mx-auto font-medium leading-relaxed">
-                                {isScanning ? "Our agents are traversing your communication nodes..." : (
+                                {isScanning ? "Scanning your emails for subscriptions..." : (
                                     step === 1 ? (
                                         <span className="text-sm block leading-relaxed opacity-80">
-                                            By clicking below, you sign the Digital DPA. You acknowledge that <span className="text-foreground font-bold">Google (Sheets)</span> and <span className="text-foreground font-bold">Clerk (Auth)</span> are utilized as subprocessors for your data. We store zero PII in our own systems.
+                                            By clicking below, you agree to our privacy policy. <span className="text-foreground font-bold">Google</span> is used for authentication. We don't store your personal data on our servers.
                                         </span>
                                     ) : step === 3
                                         ? (discoveredSubs.length > 0
@@ -183,13 +183,13 @@ const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, userFir
                                     disabled={isScanning}
                                     className="btn-primary w-full py-5 text-lg font-black tracking-widest uppercase flex items-center justify-center gap-3 group"
                                 >
-                                    {step === 1 ? "Sign DPA & Proceed" : step === 4 ? "Enter Safe Zone" : isScanning ? "Extracting Signals..." : "Initialize Guardian"}
+                                    {step === 1 ? "Agree & Continue" : step === 4 ? "Go to Dashboard" : isScanning ? "Scanning..." : "Start Scanning"}
                                     {!isScanning && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
                                 </button>
 
                                 <p className="text-[9px] text-brand uppercase tracking-[0.4em] font-black opacity-60 flex items-center justify-center gap-2">
                                     <ShieldCheck className="w-3 h-3" />
-                                    <span>Sovereign Intelligence • Zero-DB Protocol</span>
+                                    <span>Your privacy is our priority</span>
                                 </p>
                             </div>
                         </motion.div>

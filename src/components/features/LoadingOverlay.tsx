@@ -2,12 +2,12 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
 
-const LoadingOverlay: React.FC<{ message?: string }> = ({ message = "Synchronizing environment..." }) => {
+const LoadingOverlay: React.FC<{ message?: string }> = ({ message = "Loading your subscriptions..." }) => {
     return (
         <div style={{
             position: 'fixed', inset: 0, zIndex: 9999,
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(255, 255, 255, 0.8)',
+            background: 'rgba(2, 6, 23, 0.85)',
             backdropFilter: 'blur(12px)',
         }}>
             <div style={{
@@ -45,7 +45,7 @@ const LoadingOverlay: React.FC<{ message?: string }> = ({ message = "Synchronizi
                     opacity: 0.5
                 }}
             >
-                Emergency Recalibration
+                Reset & Reload
             </button>
 
             <style jsx global>{`

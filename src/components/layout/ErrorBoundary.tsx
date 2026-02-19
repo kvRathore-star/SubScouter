@@ -36,9 +36,9 @@ export default class ErrorBoundary extends Component<Props, State> {
                     <div className="w-20 h-20 rounded-3xl bg-destructive/10 flex items-center justify-center mb-8 border border-destructive/20 p-2">
                         <AlertTriangle className="w-10 h-10 text-destructive animate-pulse" />
                     </div>
-                    <h3 className="text-xl font-black text-foreground mb-3 uppercase tracking-tight italic">Extraction Interrupted</h3>
+                    <h3 className="text-xl font-black text-foreground mb-3 uppercase tracking-tight italic">Something Went Wrong</h3>
                     <p className="text-sm text-muted-foreground mb-10 max-w-md mx-auto leading-relaxed uppercase tracking-widest opacity-70">
-                        The Sovereign Engine encountered an unexpected anomaly. Security protocols require a manual recalibration.
+                        An unexpected error occurred. Please reload the page to continue.
                     </p>
                     <button
                         onClick={() => {
@@ -47,7 +47,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                         }}
                         className="btn-primary px-12 py-4"
                     >
-                        Initialize Recalibration
+                        Reload Page
                     </button>
                 </div>
             );

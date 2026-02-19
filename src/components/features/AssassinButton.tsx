@@ -20,29 +20,29 @@ const AssassinButton: React.FC<AssassinButtonProps> = ({ subName, onComplete }) 
     const handleDeploy = (e: React.MouseEvent) => {
         e.stopPropagation();
         setState('deploying');
-        setLogs(['[SYSTEM] Initializing Agent...', '[SYSTEM] Targeting: ' + subName]);
+        setLogs(['[INFO] Looking up cancellation info...', '[INFO] Service: ' + subName]);
 
         setTimeout(() => {
             setState('hunting');
-            addLog('[MISSION] Breach and clear initiated');
+            addLog('[INFO] Cancellation page located');
         }, 800);
 
         setTimeout(() => {
-            addLog('[INTEL] Extraction strategy found: ' + (intel.url.includes('google') ? 'Generic Search' : 'Precision Link'));
+            addLog('[INFO] Found: ' + (intel.url.includes('google') ? 'Search results' : 'Direct link'));
             setState('waiting');
         }, 1800);
     };
 
     const handleFinalKill = (e: React.MouseEvent) => {
         e.stopPropagation();
-        addLog('[ACTION] Manual confirmation received');
+        addLog('[INFO] Opening cancellation page...');
 
         // Open the URL in a new tab
         window.open(intel.url, '_blank');
 
         setTimeout(() => {
             setState('completed');
-            addLog('[SUCCESS] Target neutralized');
+            addLog('[DONE] Subscription canceled');
             if (onComplete) onComplete();
         }, 1000);
     };
@@ -55,7 +55,7 @@ const AssassinButton: React.FC<AssassinButtonProps> = ({ subName, onComplete }) 
                 className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 font-black tracking-widest text-[10px] uppercase italic shadow-lg shadow-emerald-500/5"
             >
                 <CheckCircle2 className="w-4 h-4" />
-                Mission Accomplished
+                Canceled Successfully
             </motion.div>
         );
     }
@@ -89,7 +89,7 @@ const AssassinButton: React.FC<AssassinButtonProps> = ({ subName, onComplete }) 
                             className="flex items-center gap-3"
                         >
                             <Loader2 className="w-4 h-4 animate-spin text-brand" />
-                            {state === 'deploying' ? 'Deploying...' : 'Hunting...'}
+                            {state === 'deploying' ? 'Looking up...' : 'Finding cancel page...'}
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -108,14 +108,14 @@ const AssassinButton: React.FC<AssassinButtonProps> = ({ subName, onComplete }) 
                             <div className="flex items-center justify-between mb-6">
                                 <div className="flex items-center gap-3">
                                     <ShieldAlert className="w-6 h-6 text-brand" />
-                                    <h3 className="text-xl font-bold uppercase tracking-tight">Agent Intelligence Report</h3>
+                                    <h3 className="text-xl font-bold uppercase tracking-tight">Cancel Subscription</h3>
                                 </div>
-                                <div className="px-3 py-1 bg-brand text-white text-[9px] font-black uppercase tracking-widest rounded-lg italic">Ready_To_Deploy</div>
+                                <div className="px-3 py-1 bg-brand text-white text-[9px] font-black uppercase tracking-widest rounded-lg italic">Ready</div>
                             </div>
 
                             <p className="text-sm text-muted-foreground font-medium mb-8">
-                                The agent has identified the precise termination protocol for <span className="text-foreground font-bold">{subName}</span>.
-                                Follow these steps to complete the extraction:
+                                We found the cancellation page for <span className="text-foreground font-bold">{subName}</span>.
+                                Follow these steps to cancel your subscription:
                             </p>
 
                             <div className="space-y-4 mb-8">
@@ -132,13 +132,13 @@ const AssassinButton: React.FC<AssassinButtonProps> = ({ subName, onComplete }) 
                                     onClick={() => setState('idle')}
                                     className="flex-1 py-4 rounded-xl border border-border text-[10px] font-bold uppercase tracking-widest hover:bg-muted transition-colors italic"
                                 >
-                                    Abort Mission
+                                    Go Back
                                 </button>
                                 <button
                                     onClick={handleFinalKill}
                                     className="flex-1 py-4 rounded-xl bg-brand text-white text-[10px] font-black uppercase tracking-widest shadow-xl shadow-brand/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 italic"
                                 >
-                                    Execute Landing Page
+                                    Open Cancel Page
                                     <ArrowUpRight className="w-3.5 h-3.5" />
                                 </button>
                             </div>

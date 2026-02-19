@@ -25,8 +25,8 @@ const AccountView: React.FC<AccountViewProps> = ({
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="mb-12">
-                <h2 className="text-[32px] font-black tracking-tight text-foreground mb-2">Intelligence Config</h2>
-                <p className="text-muted-foreground font-medium tracking-tight">Configure how Sub Scouter monitors your finances.</p>
+                <h2 className="text-[32px] font-black tracking-tight text-foreground mb-2">Settings</h2>
+                <p className="text-muted-foreground font-medium tracking-tight">Manage your Sub Scouter account and preferences.</p>
             </div>
 
             <div className="card-glass p-10 max-w-4xl relative overflow-visible">
@@ -43,7 +43,7 @@ const AccountView: React.FC<AccountViewProps> = ({
                         <div className="flex items-center gap-3">
                             <span className="text-muted-foreground text-xs font-medium">Member since Jan 2024</span>
                             <div className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-                            <span className="text-brand text-xs font-bold tracking-tight uppercase tracking-widest">Verified Human</span>
+                            <span className="text-brand text-xs font-bold tracking-tight uppercase tracking-widest">Active</span>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ const AccountView: React.FC<AccountViewProps> = ({
                         />
                     </div>
                     <div>
-                        <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3">Email Terminal</label>
+                        <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3">Email</label>
                         <input
                             type="email"
                             defaultValue={user?.email || "alex@example.com"}
@@ -84,12 +84,12 @@ const AccountView: React.FC<AccountViewProps> = ({
                 {/* Security Protocol */}
                 <div className="flex items-center justify-between py-6 mb-12">
                     <div>
-                        <h4 className="text-sm font-black text-foreground tracking-tight mb-1">Sovereign Encryption</h4>
-                        <p className="text-muted-foreground text-[10px] font-medium tracking-tight">All data is encrypted via your local node.</p>
+                        <h4 className="text-sm font-black text-foreground tracking-tight mb-1">Data Privacy</h4>
+                        <p className="text-muted-foreground text-[10px] font-medium tracking-tight">All data is encrypted and stored locally on your device.</p>
                     </div>
                     <div className="bg-brand/10 px-4 py-2 rounded-xl flex items-center gap-2 border border-brand/20 shadow-inner">
                         <Shield className="w-3 h-3 text-brand" />
-                        <span className="text-[10px] font-black text-brand uppercase tracking-widest">Active Protection</span>
+                        <span className="text-[10px] font-black text-brand uppercase tracking-widest">Encrypted</span>
                     </div>
                 </div>
 
@@ -97,7 +97,7 @@ const AccountView: React.FC<AccountViewProps> = ({
                     onClick={handleSave}
                     className="w-full bg-brand text-white py-5 rounded-2xl text-sm font-black tracking-tight hover:bg-opacity-90 transition-all shadow-xl shadow-brand/20"
                 >
-                    {saved ? 'Changes Commited' : 'Commit Config Changes'}
+                    {saved ? 'Saved!' : 'Save Changes'}
                 </button>
             </div>
         </div>

@@ -30,11 +30,10 @@ const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({ transaction, userName
                         <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
                             <span className="text-white font-black text-xl italic">S</span>
                         </div>
-                        <h1 className="text-2xl font-black tracking-tighter uppercase italic">SubScout Intelligence</h1>
+                        <h1 className="text-2xl font-black tracking-tighter uppercase italic">Sub Scouter</h1>
                     </div>
                     <p className="text-xs text-slate-500 font-bold uppercase tracking-widest leading-loose">
-                        Autonomous Subscription Management<br />
-                        Secure Node: Grid-Alpha-9
+                        Smart Subscription Tracker
                     </p>
                 </div>
                 <div className="text-right">
@@ -70,7 +69,7 @@ const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({ transaction, userName
                     <tr className="border-b border-slate-50">
                         <td className="py-6">
                             <p className="font-black tracking-tight text-lg">{transaction.name} Subscription</p>
-                            <p className="text-xs text-slate-400 font-medium">Monthly Intelligence Node Synchronisation</p>
+                            <p className="text-xs text-slate-400 font-medium">Monthly subscription payment</p>
                         </td>
                         <td className="text-right py-6 font-medium text-slate-600">1</td>
                         <td className="text-right py-6 font-black text-lg">{currency.symbol}{transaction.amount.toFixed(2)}</td>
@@ -99,7 +98,7 @@ const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({ transaction, userName
             {/* Footer */}
             <div className="pt-12 border-t border-slate-100 text-center">
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">
-                    Generated via SubScout AI · Personal Financial Sovereignty Protocol
+                    Generated via Sub Scouter · subscout.ai
                 </p>
             </div>
         </div>

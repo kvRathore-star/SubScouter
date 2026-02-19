@@ -23,15 +23,15 @@ import CommandCenter from '@/components/features/CommandCenter';
 import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal';
 
 /**
- * THE SOVEREIGN DASHBOARD
- * Core entry point for the SubScouter application.
+ * Sub Scouter Dashboard
+ * Core entry point with auth gate and subscription management.
  */
 export default function Dashboard() {
   const { isLoaded, isSignedIn, user, signOut } = useAppAuth();
   const { subscriptions, isLoading: isDataLoading, refresh } = useDashboardData();
   const { saveSubscriptions, deleteSubscription, syncToCloud, restoreFromCloud } = useScoutStore();
 
-  // Automatic Restoration Check
+  // Restore from cloud on sign-in
   useEffect(() => {
     if (isSignedIn && user && subscriptions.length === 0 && !isDataLoading) {
       restoreFromCloud(user.id).then((restored) => {
@@ -40,9 +40,10 @@ export default function Dashboard() {
     }
   }, [isSignedIn, user, subscriptions.length, isDataLoading]);
 
-  // if (isLoaded && !isSignedIn) {
-  //   return <PortalView />;
-  // }
+  // Show login page when not signed in
+  if (isLoaded && !isSignedIn) {
+    return <PortalView />;
+  }
 
   const [linkedEmails, setLinkedEmails] = useState<LinkedEmail[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -53,6 +54,14 @@ export default function Dashboard() {
   const [userTier, setUserTier] = useState<'free' | 'pro'>('free');
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
+
+  // Check URL params for post-OAuth scan trigger
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('view') === 'connections') {
+      setCurrentView('connections');
+    }
+  }, []);
 
   useEffect(() => {
     (window as any).toggleCommandPalette = () => setCommandOpen(prev => !prev);
@@ -70,7 +79,6 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    // Load local integrations from localStorage for now (stateless engine)
     const storedNodes = localStorage.getItem('subscouter_nodes');
     if (storedNodes) setLinkedEmails(JSON.parse(storedNodes));
   }, []);
@@ -168,7 +176,8 @@ export default function Dashboard() {
   }, [subscriptions, saveSubscriptions, refresh, isSignedIn, user, syncToCloud]);
 
   const handleManualScout = useCallback(async () => {
-    // Orchestrate client-side scan logic here
+    // Navigate to connections view for scanning
+    setCurrentView('connections');
   }, []);
 
   const chartData = useMemo(() => {
@@ -190,7 +199,7 @@ export default function Dashboard() {
       tier={userTier}
       onConnect={handleConnect}
     >
-      {isDataLoading && <LoadingOverlay message="NEURAL SYNCHRONIZATION IN PROGRESS..." />}
+      {isDataLoading && <LoadingOverlay message="Loading your subscriptions..." />}
 
       {currentView === 'dashboard' && (
         <div className="max-w-[1400px] mx-auto stagger-in">
@@ -207,7 +216,7 @@ export default function Dashboard() {
               </div>
               <button onClick={() => setShowAddModal(true)} className="bg-brand text-white px-6 py-3 rounded-2xl shadow-xl shadow-brand/20 flex items-center gap-2 hover:bg-brand/90 transition-all">
                 <Plus className="w-5 h-5" />
-                <span className="text-[10px] font-black uppercase tracking-widest">Add Extraction</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">Add Subscription</span>
               </button>
             </div>
 
@@ -222,7 +231,15 @@ export default function Dashboard() {
                 />
               ))}
 
-              {sortedAndFilteredSubs.length === 0 && <EmptyState onDiscovery={() => { }} title="Sensor Silence" description="No nodes identified." />}
+              {sortedAndFilteredSubs.length === 0 && (
+                <div className="col-span-full">
+                  <EmptyState
+                    onDiscovery={() => setCurrentView('connections')}
+                    title="No Subscriptions Yet"
+                    description="Connect your email or add subscriptions manually to get started."
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

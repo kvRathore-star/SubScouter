@@ -31,10 +31,10 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription: sub, 
   const daysUntilRenewal = Math.ceil((new Date(sub.nextBillingDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 
   const getStatus = () => {
-    if (sub.status !== 'active') return { label: 'DEACTIVATED', color: 'text-zinc-500', bg: 'bg-zinc-100', border: 'border-zinc-200', icon: Clock };
-    if (daysUntilRenewal === 0) return { label: 'DUE TODAY', color: 'text-red-500', bg: 'bg-red-50', border: 'border-red-100', icon: AlertTriangle };
-    if (daysUntilRenewal <= 3) return { label: 'UPCOMING', color: 'text-orange-500', bg: 'bg-orange-50', border: 'border-orange-100', icon: Clock };
-    return { label: 'ACTIVE', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100', icon: ShieldCheck };
+    if (sub.status !== 'active') return { label: 'INACTIVE', color: 'text-zinc-400', bg: 'bg-zinc-500/10', border: 'border-zinc-500/20', icon: Clock };
+    if (daysUntilRenewal === 0) return { label: 'DUE TODAY', color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20', icon: AlertTriangle };
+    if (daysUntilRenewal <= 3) return { label: 'DUE SOON', color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/20', icon: Clock };
+    return { label: 'ACTIVE', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', icon: ShieldCheck };
   };
 
   const status = getStatus();
@@ -80,24 +80,24 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription: sub, 
               </div>
             </div>
 
-            <div className={`px-4 py-2 rounded-2xl border ${status.bg} ${status.border} ${status.color} hidden sm:flex items-center gap-2.5 shadow-sm backdrop-blur-xl`}>
+            <div className={`px-4 py-2 rounded-2xl border ${status.bg} ${status.border} ${status.color} hidden sm:flex items-center gap-2.5 backdrop-blur-xl`}>
               <div className={`w-1.5 h-1.5 rounded-full ${status.color.replace('text', 'bg')} animate-pulse`} />
               <span className="text-[10px] font-bold uppercase tracking-widest">{status.label}</span>
             </div>
           </div>
 
-          {/* Bento Details Section */}
+          {/* Details Section */}
           <div className="grid grid-cols-2 gap-4 relative z-10">
             <div className="bg-secondary/40 backdrop-blur-xl rounded-2xl p-4 flex flex-col justify-between border border-border group-hover:border-brand/20 transition-all duration-500 hover:bg-secondary/60 cursor-default">
-              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em] mb-3">Valuation</span>
+              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em] mb-3">Price</span>
               <div className="flex items-baseline gap-1.5">
                 <span className="text-2xl font-bold tabular-nums tracking-tight text-foreground">${sub.amount.toFixed(2)}</span>
-                <span className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-widest">/{sub.billingCycle.charAt(0)}</span>
+                <span className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-widest">/{sub.billingCycle === 'monthly' ? 'mo' : 'yr'}</span>
               </div>
             </div>
 
             <div className="bg-secondary/40 backdrop-blur-xl rounded-2xl p-4 flex flex-col justify-between border border-border group-hover:border-brand/20 transition-all duration-500 hover:bg-secondary/60 cursor-default">
-              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em] mb-3">Renewal Node</span>
+              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em] mb-3">Next Renewal</span>
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-brand/5 border border-brand/10 flex items-center justify-center">
                   <Calendar className="w-3.5 h-3.5 text-brand" />
@@ -158,7 +158,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription: sub, 
               >
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-1 h-1 rounded-full bg-foreground" />
-                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Strategy</span>
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">AI Recommendation</span>
                 </div>
                 <p className="text-sm font-medium text-foreground/70 mb-3 leading-relaxed">{advice.reasoning}</p>
                 <div className="inline-block px-2 py-1 rounded bg-secondary text-[10px] font-bold text-foreground uppercase tracking-widest">

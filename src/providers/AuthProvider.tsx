@@ -8,15 +8,15 @@ interface AuthContextType {
     isLoaded: boolean;
     isSignedIn: boolean;
     signOut: () => Promise<void>;
-    signIn: () => Promise<void>;
+    signIn: (provider?: 'google' | 'microsoft') => Promise<void>;
     isMock: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 /**
- * THE AUTHENTICATION PROXY
- * Wraps Better Auth into the existing AppAuth context for minimal UI disruption.
+ * Authentication Provider
+ * Wraps Better Auth into a React context for the entire app.
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
     const session = useSession();
@@ -28,16 +28,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signOut: async () => {
             await authClient.signOut();
         },
-        signIn: async () => {
+        signIn: async (provider: 'google' | 'microsoft' = 'google') => {
             try {
-                // Default to Google for simplicity
                 await authClient.signIn.social({
-                    provider: "google",
+                    provider,
                     callbackURL: "/"
                 });
             } catch (err) {
-                console.error("Auth Failure:", err);
-                alert("Sovereign Node Connection Failed. Please ensure your environment secrets (Google Client ID) are configured in Cloudflare.");
+                console.error("Auth Error:", err);
+                throw err;
             }
         },
         isMock: false,

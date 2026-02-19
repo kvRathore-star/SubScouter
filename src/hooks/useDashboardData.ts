@@ -1,43 +1,41 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAppAuth } from './useAppAuth';
 import { useScoutStore } from './useScoutStore';
 import { Subscription } from '@/types/index';
 
 /**
- * THE LOCAL-FIRST DATA HOOK
- * Replaces SWR with useScoutStore (IndexedDB).
- * Provides ultra-fast, offline-ready data for the dashboard.
+ * Dashboard Data Hook
+ * Loads subscriptions from IndexedDB (local-first).
+ * Works for both signed-in and guest users.
  */
 export function useDashboardData() {
-    const { isLoaded, isSignedIn } = useAppAuth();
     const { getAllSubscriptions, loading } = useScoutStore();
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const refresh = async () => {
-        if (!isSignedIn) {
-            setIsLoading(false);
-            return;
-        }
         setIsLoading(true);
-        const data = await getAllSubscriptions();
-        setSubscriptions(data);
+        try {
+            const data = await getAllSubscriptions();
+            setSubscriptions(data);
+        } catch (err) {
+            console.error("[Dashboard] Failed to load subscriptions:", err);
+        }
         setIsLoading(false);
     };
 
     useEffect(() => {
-        if (!loading && isLoaded) {
+        if (!loading) {
             refresh();
-        } else if (isLoaded) {
-            // Safety: If scout store is taking too long (>4s), force-release the loading overlay
+        } else {
+            // Safety timeout: release loading state after 4s max
             const timer = setTimeout(() => {
                 if (isLoading) setIsLoading(false);
             }, 4000);
             return () => clearTimeout(timer);
         }
-    }, [loading, isLoaded, isSignedIn]);
+    }, [loading]);
 
     return {
         subscriptions,
