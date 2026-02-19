@@ -19,7 +19,6 @@ import {
   Sparkles
 } from "lucide-react";
 import ErrorBoundary from './ErrorBoundary';
-import PrivacySentinel from '@/components/features/PrivacySentinel';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export type ViewType = 'dashboard' | 'connections' | 'billing' | 'statistics' | 'settings';

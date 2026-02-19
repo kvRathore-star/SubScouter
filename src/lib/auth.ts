@@ -13,6 +13,8 @@ export const getAuth = (d1: D1Database) => {
     const db = drizzle(d1, { schema });
 
     return betterAuth({
+        secret: process.env.BETTER_AUTH_SECRET as string,
+        baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
         database: drizzleAdapter(db, {
             provider: "sqlite",
             schema: {
