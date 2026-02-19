@@ -2,6 +2,7 @@
 import React from "react";
 import { SpendingStats } from "@/types/index";
 import { DollarSign, CreditCard, TrendingDown, Clock, TestTube, XCircle, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
 import BurnRateOdometer from "./BurnRateOdometer";
 
 interface StatsOverviewProps {
@@ -20,19 +21,30 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 stagger-in">
       {cards.map((card, i) => (
-        <div key={i} className="card-glass p-6 border-border hover:border-muted-foreground/30">
-          <div className="flex items-center gap-3 mb-4">
-            <div className={`w-8 h-8 rounded-lg ${card.bg} flex items-center justify-center border border-border`}>
-              <card.icon className={`w-4 h-4 ${card.color}`} />
+        <div key={i} className="card-glass p-6 group cursor-default">
+          <div className="flex items-center justify-between mb-6">
+            <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center border border-border group-hover:scale-110 transition-transform duration-500 shadow-sm`}>
+              <card.icon className={`w-5 h-5 ${card.color}`} />
             </div>
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{card.label}</span>
+            <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="w-1.5 h-1.5 rounded-full bg-brand shadow-[0_0_8px_var(--brand)] animate-pulse" />
+              <span className="text-[10px] font-bold text-brand uppercase tracking-widest">Active</span>
+            </div>
           </div>
           <div className="flex flex-col">
-            <div className="text-2xl font-bold tracking-tight mb-0.5">{card.value}</div>
-            <div className="flex items-center gap-1.5 opacity-40">
-              <span className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground">Stable Data</span>
+            <span className="text-[11px] font-bold text-muted-foreground/50 uppercase tracking-[0.2em] mb-1.5">{card.label}</span>
+            <div className="text-3xl font-bold tracking-tight text-foreground transition-transform group-hover:translate-x-1 duration-500">{card.value}</div>
+            <div className="mt-4 flex items-center gap-2">
+              <div className="h-1 flex-1 bg-secondary rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '70%' }}
+                  className="h-full bg-brand"
+                />
+              </div>
+              <span className="text-[10px] font-bold text-muted-foreground/40 italic">Optimal</span>
             </div>
           </div>
         </div>

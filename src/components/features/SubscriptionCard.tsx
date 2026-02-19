@@ -18,6 +18,15 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription: sub, 
   const [advice, setAdvice] = useState<AIAdvice | null>(null);
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
   const daysUntilRenewal = Math.ceil((new Date(sub.nextBillingDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 
@@ -33,49 +42,67 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription: sub, 
   return (
     <motion.div
       layout
-      className={`relative group overflow-hidden rounded-2xl border transition-all duration-300 ${expanded ? 'bg-card border-foreground/10 shadow-sm z-20' : 'bg-card/50 border-border hover:border-foreground/20 hover:bg-card'
+      onMouseMove={handleMouseMove}
+      className={`relative group overflow-hidden rounded-[2.5rem] border transition-all duration-500 ease-out ${expanded ? 'bg-card border-brand/50 shadow-2xl scale-[1.02] z-20' : 'bg-card/40 backdrop-blur-md border-border hover:border-brand/40 hover:bg-card/60'
         }`}
       onClick={() => setExpanded(!expanded)}
     >
+      {/* Dynamic Glass Shimmer */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, var(--brand-glow), transparent 40%)`
+        }}
+      />
+
+      {/* Light Sweep Effect */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite] skew-x-12" />
+      </div>
       <div className="p-5">
         <div className="flex flex-col gap-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 min-w-0">
-              <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center border border-border overflow-hidden shrink-0">
+          <div className="flex items-center justify-between relative z-10">
+            <div className="flex items-center gap-5 min-w-0">
+              <div className="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center border border-border overflow-hidden shrink-0 group-hover:scale-105 transition-transform duration-500 shadow-inner">
                 {sub.logoUrl ? (
                   <img src={sub.logoUrl} alt={sub.name} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-sm font-bold text-muted-foreground/30">{sub.name.charAt(0)}</span>
+                  <span className="text-xl font-bold text-muted-foreground/30">{sub.name.charAt(0)}</span>
                 )}
               </div>
               <div className="min-w-0">
-                <h3 className="text-base font-semibold tracking-tight truncate text-foreground">
+                <h3 className="text-lg font-bold tracking-tight truncate text-foreground leading-none mb-1.5">
                   {sub.name}
                 </h3>
-                <p className="text-[11px] font-medium text-muted-foreground/60">{sub.category}</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold text-brand uppercase tracking-[0.2em]">{sub.category}</span>
+                </div>
               </div>
             </div>
 
-            <div className={`px-2.5 py-1 rounded-full border ${status.bg} ${status.border} ${status.color} hidden sm:flex items-center gap-1.5`}>
-              <div className={`w-1 h-1 rounded-full ${status.color.replace('text', 'bg')}`} />
-              <span className="text-[10px] font-bold uppercase tracking-wider">{status.label}</span>
+            <div className={`px-4 py-2 rounded-2xl border ${status.bg} ${status.border} ${status.color} hidden sm:flex items-center gap-2.5 shadow-sm backdrop-blur-xl`}>
+              <div className={`w-1.5 h-1.5 rounded-full ${status.color.replace('text', 'bg')} animate-pulse`} />
+              <span className="text-[10px] font-bold uppercase tracking-widest">{status.label}</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-secondary/20 rounded-xl p-3 border border-border/50">
-              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest block mb-1">Pricing</span>
-              <div className="flex items-baseline gap-1">
-                <span className="text-xl font-bold tracking-tight">${sub.amount.toFixed(2)}</span>
-                <span className="text-[10px] font-medium text-muted-foreground">/{sub.billingCycle.charAt(0)}</span>
+          {/* Bento Details Section */}
+          <div className="grid grid-cols-2 gap-4 relative z-10">
+            <div className="bg-secondary/40 backdrop-blur-xl rounded-2xl p-4 flex flex-col justify-between border border-border group-hover:border-brand/20 transition-all duration-500 hover:bg-secondary/60 cursor-default">
+              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em] mb-3">Valuation</span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold tabular-nums tracking-tight text-foreground">${sub.amount.toFixed(2)}</span>
+                <span className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-widest">/{sub.billingCycle.charAt(0)}</span>
               </div>
             </div>
 
-            <div className="bg-secondary/20 rounded-xl p-3 border border-border/50">
-              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest block mb-1">Renewal</span>
-              <div className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-muted-foreground/40" />
-                <span className="text-sm font-semibold text-foreground/80">
+            <div className="bg-secondary/40 backdrop-blur-xl rounded-2xl p-4 flex flex-col justify-between border border-border group-hover:border-brand/20 transition-all duration-500 hover:bg-secondary/60 cursor-default">
+              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em] mb-3">Renewal Node</span>
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-brand/5 border border-brand/10 flex items-center justify-center">
+                  <Calendar className="w-3.5 h-3.5 text-brand" />
+                </div>
+                <span className="text-sm font-bold tabular-nums tracking-tight text-foreground/80">
                   {new Date(sub.nextBillingDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                 </span>
               </div>
