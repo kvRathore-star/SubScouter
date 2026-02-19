@@ -15,12 +15,18 @@ import { drizzle as drizzleLibsql } from "drizzle-orm/libsql";
 export const getAuth = (d1?: D1Database) => {
     let db: any;
 
-    if (d1) {
-        db = drizzle(d1, { schema });
-    } else {
-        // Fallback for local next dev environment
-        const client = createClient({ url: "file:local.db" });
-        db = drizzleLibsql(client, { schema });
+    try {
+        if (d1) {
+            db = drizzle(d1, { schema });
+        } else {
+            // Fallback for local next dev environment
+            const client = createClient({ url: "file:local.db" });
+            db = drizzleLibsql(client, { schema });
+        }
+    } catch (e) {
+        console.error("[Auth] DB Sync Failure:", e);
+        // Minimal fallback to avoid total crash
+        db = { query: { findFirst: () => null } };
     }
 
     return betterAuth({
