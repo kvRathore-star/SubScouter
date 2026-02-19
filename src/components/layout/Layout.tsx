@@ -63,7 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
       </AnimatePresence>
 
       {/* ═══ SIDEBAR ═══ */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-card/40 backdrop-blur-2xl border-r border-border transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-[240px] bg-card/40 backdrop-blur-2xl border-r border-border transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full bg-gradient-to-b from-white/[0.02] to-transparent">
           {/* Logo Section */}
           <div className="p-8 flex items-center justify-between">
@@ -83,14 +83,14 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           </div>
 
           {/* Nav Items */}
-          <nav className="flex-1 px-4 space-y-1.5 mt-2">
+          <nav className="flex-1 px-3 space-y-1.5 mt-2">
             {navItems.map((item) => {
               const active = currentView === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-300 group relative ${active
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative ${active
                     ? 'bg-brand/10 text-brand'
                     : 'text-muted-foreground hover:bg-white/[0.03] hover:text-foreground'
                     }`}
@@ -98,12 +98,12 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
                   {active && (
                     <motion.div
                       layoutId="activeNav"
-                      className="absolute inset-0 bg-brand/5 rounded-2xl border border-brand/20"
+                      className="absolute inset-0 bg-brand/5 rounded-xl border border-brand/20"
                       transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                     />
                   )}
-                  <item.icon className={`w-4.5 h-4.5 relative z-10 transition-transform duration-300 group-hover:scale-110 ${active ? 'text-brand' : 'group-hover:text-foreground'}`} strokeWidth={active ? 2 : 1.5} />
-                  <span className={`text-[13px] tracking-tight relative z-10 ${active ? 'font-bold' : 'font-medium'}`}>
+                  <item.icon className={`w-4 h-4 relative z-10 transition-transform duration-300 group-hover:scale-110 ${active ? 'text-brand' : 'group-hover:text-foreground'}`} strokeWidth={active ? 2 : 1.5} />
+                  <span className={`text-[12.5px] tracking-tight relative z-10 ${active ? 'font-bold' : 'font-medium'}`}>
                     {item.label}
                   </span>
                 </button>
@@ -131,12 +131,12 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           <div className="flex-1 flex items-center gap-4">
             <div className="relative group max-w-md w-full">
               <div className="absolute inset-0 bg-brand/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative flex items-center gap-3 px-4 py-2.5 bg-secondary/50 border border-border rounded-2xl group-hover:border-brand/40 transition-all duration-300 cursor-text" onClick={() => (window as any).toggleCommandPalette?.()}>
+              <div className="relative flex items-center gap-3 px-4 py-2 bg-secondary/40 border border-border rounded-xl group-hover:border-brand/40 transition-all duration-300 cursor-text" onClick={() => (window as any).toggleCommandPalette?.()}>
                 <Monitor className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium text-muted-foreground/60 flex-1">Search or scan nodes...</span>
-                <div className="flex items-center gap-1 bg-background/50 border border-border px-2 py-1 rounded-lg">
-                  <span className="text-[10px] font-bold text-muted-foreground tracking-tighter">⌘</span>
-                  <span className="text-[10px] font-bold text-muted-foreground tracking-tighter">K</span>
+                <span className="text-xs font-medium text-muted-foreground/60 flex-1">Search or scan nodes...</span>
+                <div className="flex items-center gap-1 bg-background/30 border border-border px-1.5 py-0.5 rounded-md">
+                  <span className="text-[9px] font-bold text-muted-foreground/50 tracking-tighter">⌘</span>
+                  <span className="text-[9px] font-bold text-muted-foreground/50 tracking-tighter">K</span>
                 </div>
               </div>
             </div>

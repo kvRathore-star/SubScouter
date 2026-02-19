@@ -196,54 +196,33 @@ export default function Dashboard() {
         <div className="max-w-[1400px] mx-auto stagger-in">
           <StatsOverview stats={stats} />
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 my-12">
-            <div className="lg:col-span-3">
-              <div className="flex flex-wrap items-center justify-between gap-6 mb-8">
-                <div className="flex gap-2 p-1 bg-white rounded-2xl border border-[#e2e8f0]">
-                  {['all', 'active', 'trials', 'past'].map(t => (
-                    <button key={t} onClick={() => setFilter(t as any)} className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${filter === t ? 'bg-[#f1f5f9] text-[#0f172a]' : 'text-[#64748b]'}`}>
-                      {t}
-                    </button>
-                  ))}
-                </div>
-                <button onClick={() => setShowAddModal(true)} className="bg-[#0f172a] text-white px-6 py-3 rounded-2xl shadow-xl shadow-[#0f172a]/20 flex items-center gap-2 hover:bg-[#1e293b] transition-all">
-                  <Plus className="w-5 h-5" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">Add Extraction</span>
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {sortedAndFilteredSubs.map(sub => (
-                  <SubscriptionCard
-                    key={sub.id}
-                    subscription={sub}
-                    onCancel={handleCancel}
-                    onPause={handlePause}
-                    onReApply={handleResume}
-                  />
+          <div className="my-12">
+            <div className="flex flex-wrap items-center justify-between gap-6 mb-8">
+              <div className="flex gap-2 p-1 bg-secondary/40 backdrop-blur-md rounded-2xl border border-border">
+                {['all', 'active', 'trials', 'past'].map(t => (
+                  <button key={t} onClick={() => setFilter(t as any)} className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${filter === t ? 'bg-brand/10 text-brand' : 'text-muted-foreground'}`}>
+                    {t}
+                  </button>
                 ))}
-
-                {sortedAndFilteredSubs.length === 0 && <EmptyState onDiscovery={() => { }} title="Sensor Silence" description="No nodes identified." />}
               </div>
+              <button onClick={() => setShowAddModal(true)} className="bg-brand text-white px-6 py-3 rounded-2xl shadow-xl shadow-brand/20 flex items-center gap-2 hover:bg-brand/90 transition-all">
+                <Plus className="w-5 h-5" />
+                <span className="text-[10px] font-black uppercase tracking-widest">Add Extraction</span>
+              </button>
             </div>
 
-            <div className="lg:col-span-1">
-              <div className="bg-white border border-[#e2e8f0] rounded-[32px] p-8 space-y-6 shadow-sm">
-                <h3 className="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-brand">
-                  <Sparkles className="w-4 h-4" />
-                  Intelligence Feed
-                </h3>
-                <div className="space-y-4">
-                  <div className="p-4 rounded-2xl bg-brand/[0.03] border border-brand/10">
-                    <p className="text-[10px] font-bold text-[#64748b] uppercase mb-1">Status</p>
-                    <p className="text-xs font-black uppercase tracking-tighter text-[#0f172a]">Sovereign Protocol Active</p>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-brand/[0.03] border border-brand/10">
-                    <p className="text-[10px] font-bold text-[#64748b] uppercase mb-1">Data Residency</p>
-                    <p className="text-xs font-black uppercase tracking-tighter text-[#0f172a]">Local IndexedDB (100%)</p>
-                  </div>
-                </div>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+              {sortedAndFilteredSubs.map(sub => (
+                <SubscriptionCard
+                  key={sub.id}
+                  subscription={sub}
+                  onCancel={handleCancel}
+                  onPause={handlePause}
+                  onReApply={handleResume}
+                />
+              ))}
+
+              {sortedAndFilteredSubs.length === 0 && <EmptyState onDiscovery={() => { }} title="Sensor Silence" description="No nodes identified." />}
             </div>
           </div>
         </div>
