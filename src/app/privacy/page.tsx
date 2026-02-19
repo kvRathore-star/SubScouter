@@ -31,7 +31,7 @@ export default function PrivacyPage() {
                 <div className="space-y-12 text-muted-foreground/80 leading-relaxed font-medium">
                     <section>
                         <h2 className="text-xl font-black uppercase italic text-foreground mb-4 tracking-tight">01. Data Sovereignty</h2>
-                        <p>Sub Scouter AI is built on the principle of total data sovereignty. Unlike traditional SaaS tools, we do not operate a centralized database for your financial information. All discovered subscription nodes are stored directly in **your** personal Google Sheet.</p>
+                        <p>SubScout AI is built on the principle of total data sovereignty. Unlike traditional SaaS tools, we do not operate a centralized database for your financial information. All discovered subscription nodes are stored directly in **your** personal Google Sheet.</p>
                     </section>
 
                     <section>
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
                     </section>
 
                     <section className="pt-10 border-t border-border/10 text-[10px] font-black uppercase tracking-widest">
-                        Protocol Version: 2026.01 / Sub Scouter AI
+                        Protocol Version: 2026.01 / SubScout AI
                     </section>
                 </div>
             </motion.div>
