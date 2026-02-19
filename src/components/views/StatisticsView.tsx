@@ -45,8 +45,8 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [], subscri
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
         {/* Volume Allocation Card */}
-        <div className="card-glass p-10 bg-card/50">
-          <h3 className="text-xl font-black text-foreground mb-8 tracking-tight">Volume Allocation</h3>
+        <div className="card-glass p-8 bg-card border-border">
+          <h3 className="text-lg font-bold text-foreground mb-8 tracking-tight">Volume Allocation</h3>
           <div className="h-[300px] w-full relative">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -81,8 +81,8 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [], subscri
         </div>
 
         {/* Historical Burn Rate Card */}
-        <div className="card-glass p-10 bg-card/50">
-          <h3 className="text-xl font-black text-foreground mb-8 tracking-tight">Historical Burn Rate</h3>
+        <div className="card-glass p-8 bg-card border-border">
+          <h3 className="text-lg font-bold text-foreground mb-8 tracking-tight">Historical Burn Rate</h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={burnoutData}>

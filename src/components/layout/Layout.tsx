@@ -56,7 +56,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-slate-950/20 backdrop-blur-sm z-40 lg:hidden"
+            className="fixed inset-0 bg-background/80 backdrop-blur-md z-40 lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
@@ -68,10 +68,10 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           {/* Logo Section */}
           <div className="p-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center shadow-lg shadow-brand/20">
-                <span className="text-white font-black text-xl">S</span>
+              <div className="w-8 h-8 bg-foreground rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">S</span>
               </div>
-              <h1 className="text-[17px] font-black tracking-tight text-foreground">SubScout AI</h1>
+              <h1 className="text-base font-bold tracking-tight text-foreground">SubScout AI</h1>
             </div>
             {/* Mobile Close Button */}
             <button className="lg:hidden p-2 text-[#64748b]" onClick={() => setSidebarOpen(false)}>
@@ -87,13 +87,13 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${active
-                    ? 'bg-brand/10 text-brand border border-brand/20'
-                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 group ${active
+                    ? 'bg-secondary text-foreground'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                     }`}
                 >
-                  <item.icon className={`w-5 h-5 ${active ? 'text-brand' : 'group-hover:text-[#0f172a]'}`} strokeWidth={1.5} />
-                  <span className={`text-sm font-bold tracking-tight ${active ? 'font-black' : 'font-medium'}`}>
+                  <item.icon className={`w-4 h-4 ${active ? 'text-foreground' : 'group-hover:text-foreground'}`} strokeWidth={1.5} />
+                  <span className={`text-sm tracking-tight ${active ? 'font-semibold' : 'font-medium'}`}>
                     {item.label}
                   </span>
                 </button>
@@ -101,16 +101,13 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
             })}
           </nav>
 
-          {/* Elite Scout Card */}
+          {/* Version / Info */}
           <div className="p-4 mt-auto">
-            <div className="bg-gradient-to-br from-[#8b5cf6] to-[#6366f1] p-5 rounded-[20px] relative overflow-hidden group shadow-xl shadow-brand/20 transition-all hover:scale-[1.02]">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 blur-2xl rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="relative z-10">
-                <h3 className="text-white font-black text-sm mb-1 tracking-tight">Elite Scout</h3>
-                <p className="text-white/70 text-[10px] uppercase font-black tracking-widest mb-4">AI Intelligence Active</p>
-                <button className="w-full bg-white text-brand py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-opacity-90 transition-all">
-                  Premium
-                </button>
+            <div className="bg-muted p-4 rounded-xl border border-border">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Status</p>
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] font-bold text-foreground">Sovereign Active</span>
               </div>
             </div>
           </div>
@@ -122,7 +119,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
         {/* Top bar */}
         <header className="h-16 bg-card border-b border-border flex items-center justify-between px-8">
           <div className="flex-1 text-center">
-            <h2 className="text-sm font-bold text-[#64748b] tracking-tight">SubScout AI</h2>
+            {/* Minimal line */}
           </div>
 
           <div className="flex items-center gap-6">
@@ -160,8 +157,8 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
             {user ? (
               <div className="flex items-center gap-3 cursor-pointer group">
                 <div className="text-right">
-                  <p className="text-sm font-black text-foreground tracking-tight group-hover:text-brand transition-colors">{user.name || 'Sovereign Agent'}</p>
-                  <p className="text-[10px] font-bold text-brand uppercase tracking-widest">{tier === 'pro' ? 'Elite Operative' : 'Free Agent'}</p>
+                  <p className="text-sm font-semibold text-foreground tracking-tight group-hover:text-muted-foreground transition-colors">{user.name || 'Sovereign Agent'}</p>
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{tier === 'pro' ? 'Elite Operative' : 'Free Agent'}</p>
                 </div>
                 <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-transparent group-hover:border-brand/20 transition-all">
                   <img

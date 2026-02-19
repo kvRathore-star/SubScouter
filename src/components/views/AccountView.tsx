@@ -29,16 +29,15 @@ const AccountView: React.FC<AccountViewProps> = ({
                 <p className="text-muted-foreground font-medium tracking-tight">Configure how SubScout AI monitors your finances.</p>
             </div>
 
-            <div className="bg-card rounded-[32px] p-8 border border-border max-w-3xl shadow-sm">
+            <div className="bg-card rounded-2xl p-8 border border-border max-w-3xl">
                 {/* Profile Header */}
                 <div className="flex items-center gap-6 mb-12">
-                    <div className="w-20 h-20 rounded-[24px] bg-brand/10 flex items-center justify-center text-brand text-2xl font-black shadow-inner border border-brand/20">
+                    <div className="w-16 h-16 rounded-xl bg-secondary flex items-center justify-center text-foreground text-xl font-bold border border-border">
                         {user?.name?.substring(0, 2).toUpperCase() || 'AT'}
                     </div>
                     <div>
-                        <h3 className="text-xl font-black text-foreground tracking-tight mb-1">{user?.name || 'Alex Thompson'}</h3>
-                        <p className="text-muted-foreground text-sm font-medium mb-2">Elite Member since Jan 2024</p>
-                        <button className="text-brand text-xs font-black tracking-tight hover:underline">Change Identity Mark</button>
+                        <h3 className="text-lg font-bold text-foreground tracking-tight mb-0.5">{user?.name || 'Alex Thompson'}</h3>
+                        <p className="text-muted-foreground text-xs font-medium mb-1">Member since Jan 2024</p>
                     </div>
                 </div>
 

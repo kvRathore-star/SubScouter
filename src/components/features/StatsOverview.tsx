@@ -20,20 +20,19 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 stagger-in">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
       {cards.map((card, i) => (
-        <div key={i} className="card-glass p-5 md:p-6 relative group border-white/[0.03] hover:border-brand/30 transition-all duration-500">
-          <div className="flex items-center gap-3 mb-6 relative z-10">
-            <div className={`w-9 h-9 rounded-xl ${card.bg} flex items-center justify-center border border-white/[0.05] group-hover:scale-110 transition-transform duration-500`}>
+        <div key={i} className="card-glass p-6 border-border hover:border-muted-foreground/30">
+          <div className="flex items-center gap-3 mb-4">
+            <div className={`w-8 h-8 rounded-lg ${card.bg} flex items-center justify-center border border-border`}>
               <card.icon className={`w-4 h-4 ${card.color}`} />
             </div>
-            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 group-hover:text-brand transition-colors whitespace-nowrap">{card.label}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{card.label}</span>
           </div>
-          <div className="flex flex-col relative z-10">
-            <div className="text-2xl md:text-3xl font-black font-heading tracking-tighter mb-1 transition-transform group-hover:translate-x-1 duration-500 whitespace-nowrap">{card.value}</div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[8px] font-black uppercase tracking-[0.1em] text-muted-foreground/30 italic">Live State: Optimal</span>
+          <div className="flex flex-col">
+            <div className="text-2xl font-bold tracking-tight mb-0.5">{card.value}</div>
+            <div className="flex items-center gap-1.5 opacity-40">
+              <span className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground">Stable Data</span>
             </div>
           </div>
         </div>
