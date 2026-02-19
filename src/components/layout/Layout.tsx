@@ -19,7 +19,6 @@ import {
   Sparkles
 } from "lucide-react";
 import ErrorBoundary from './ErrorBoundary';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export type ViewType = 'dashboard' | 'connections' | 'billing' | 'statistics' | 'settings';
 
@@ -49,17 +48,12 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
   return (
     <div className="flex h-screen w-full bg-background text-foreground font-sans selection:bg-brand/10">
       {/* Mobile Backdrop */}
-      <AnimatePresence>
-        {sidebarOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#020617]/40 backdrop-blur-xl z-40 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-      </AnimatePresence>
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-[#020617]/40 backdrop-blur-xl z-40 lg:hidden animate-in fade-in duration-300"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* ═══ SIDEBAR ═══ */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-[240px] bg-[#020617]/40 backdrop-blur-3xl border-r border-white-[0.05] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
@@ -98,10 +92,8 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
                     }`}
                 >
                   {active && (
-                    <motion.div
-                      layoutId="activeNavHighlight"
-                      className="absolute inset-0 bg-brand/10 rounded-xl border border-brand/20 shadow-[0_0_20px_rgba(129,140,248,0.1)]"
-                      transition={{ type: 'spring', bounce: 0.15, duration: 0.6 }}
+                    <div
+                      className="absolute inset-0 bg-brand/10 rounded-xl border border-brand/20 shadow-[0_0_20px_rgba(129,140,248,0.1)] animate-in fade-in zoom-in-95 duration-300"
                     />
                   )}
                   {!active && (

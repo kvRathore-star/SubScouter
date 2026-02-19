@@ -2,7 +2,6 @@
 import React from "react";
 import { SpendingStats } from "@/types/index";
 import { DollarSign, CreditCard, TrendingDown, Clock, TestTube, XCircle, TrendingUp } from "lucide-react";
-import { motion } from "framer-motion";
 import BurnRateOdometer from "./BurnRateOdometer";
 
 interface StatsOverviewProps {
@@ -76,7 +75,7 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
       {cards.map((card, i) => (
         <div key={i} className="card-glass p-6 group cursor-default">
           <div className="flex items-center justify-between mb-6">
-            <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center border border-border group-hover:scale-110 transition-transform duration-500 shadow-sm`}>
+            <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center border border-border group-hover:scale-105 transition-transform duration-500 shadow-sm`}>
               <card.icon className={`w-5 h-5 ${card.color}`} />
             </div>
             {card.percent > 0 && (
@@ -90,11 +89,9 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
             <div className="text-3xl font-bold tracking-tight text-foreground transition-transform group-hover:translate-x-1 duration-500">{card.value}</div>
             <div className="mt-4 flex items-center gap-2">
               <div className="h-1 flex-1 bg-secondary rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${Math.max(card.percent, 2)}%` }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                  className={`h-full rounded-full ${card.color.replace('text-', 'bg-')}`}
+                <div
+                  style={{ width: `${Math.max(card.percent, 2)}%` }}
+                  className={`h-full rounded-full transition-all duration-1000 ease-out ${card.color.replace('text-', 'bg-')}`}
                 />
               </div>
             </div>
