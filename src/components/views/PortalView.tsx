@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useAppAuth } from '@/hooks/useAppAuth';
 import { authClient } from '@/lib/auth-client';
 import { Shield, ArrowRight, Mail, Eye, EyeOff } from 'lucide-react';
-// import { motion } from 'framer-motion';
 
 export default function PortalView() {
     const { signIn } = useAppAuth();
@@ -61,12 +60,7 @@ export default function PortalView() {
             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand/5 blur-[120px] rounded-full" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand/10 blur-[120px] rounded-full" />
 
-            {/* <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-[440px] z-10"
-            > */}
-            <div className="w-full max-w-[440px] z-10">
+            <div className="w-full max-w-[440px] z-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <div className="card-glass bg-white/[0.03] border-white/5 p-10 space-y-7">
                     {/* Logo */}
                     <div className="flex justify-center">
@@ -204,7 +198,6 @@ export default function PortalView() {
                     Sub Scouter v2.0
                 </p>
             </div>
-            {/* </motion.div> */}
         </div>
     );
 }
