@@ -23,15 +23,23 @@ import CommandCenter from '@/components/features/CommandCenter';
 import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal';
 
 export default function Dashboard() {
-  // TEST 1: Enable useAppAuth
+  // TEST 1: Enable useAppAuth (PASSED)
   const { isLoaded, isSignedIn, user, signOut } = useAppAuth();
+
+  // TEST 2: Enable useDashboardData
+  const {
+    subscriptions,
+    stats,
+    loading: dataLoading,
+    refresh
+  } = useDashboardData(isSignedIn);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-950 text-white flex-col gap-4">
-      <h1 className="text-4xl font-bold">HOOKS TEST: useAppAuth</h1>
-      <p>Is Loaded: {isLoaded ? 'YES' : 'NO'}</p>
+      <h1 className="text-4xl font-bold">HOOKS TEST: useDashboardData</h1>
       <p>Is Signed In: {isSignedIn ? 'YES' : 'NO'}</p>
-      <p>User: {user ? user.email : 'NONE'}</p>
+      <p>Data Loading: {dataLoading ? 'YES' : 'NO'}</p>
+      <p>Subscriptions: {subscriptions?.length || 0}</p>
     </div>
   );
 }
