@@ -189,15 +189,15 @@ export default function Dashboard() {
     return Object.entries(categories).map(([name, value]) => ({ name: name.toUpperCase(), value }));
   }, [subscriptions]);
 
-  // Redirect unauthenticated users to /login
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/login');
-    }
-  }, [isLoaded, isSignedIn, router]);
+  // Redirect unauthenticated users to /login removed for public access
+  // useEffect(() => {
+  //   if (isLoaded && !isSignedIn) {
+  //     router.push('/login');
+  //   }
+  // }, [isLoaded, isSignedIn, router]);
 
-  if (!isLoaded || !isSignedIn) {
-    return <DashboardSkeleton />; // Show skeleton while loading or redirecting
+  if (!isLoaded) {
+    return <DashboardSkeleton />; // Only show skeleton while loading auth state, not if signed out
   }
 
   return (

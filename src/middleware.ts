@@ -19,14 +19,14 @@ export function middleware(request: NextRequest) {
     const isDashboard = pathname === "/";
     const isProtectedPage = isDashboard || pathname.startsWith("/account");
 
-    // Redirection logic
-    if (isProtectedPage && !sessionCookie) {
-        return NextResponse.redirect(new URL("/login", request.url));
-    }
+    // Redirection logic removed to allow public access to dashboard
+    // if (isProtectedPage && !sessionCookie) {
+    //     return NextResponse.redirect(new URL("/login", request.url));
+    // }
 
-    if (isPublicPage && sessionCookie && (pathname === "/login" || pathname === "/signup")) {
-        return NextResponse.redirect(new URL("/", request.url));
-    }
+    // if (isPublicPage && sessionCookie && (pathname === "/login" || pathname === "/signup")) {
+    //     return NextResponse.redirect(new URL("/", request.url));
+    // }
 
     return response;
 }
