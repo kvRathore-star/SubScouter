@@ -12,7 +12,9 @@ import { drizzle as drizzleLibsql } from "drizzle-orm/libsql";
  * THE AUTHENTICATION ARCHITECT
  * Configures Better Auth with Drizzle (D1 or Local SQLite) and Stripe.
  */
-export const getAuth = (d1?: D1Database) => {
+export const getAuth = (d1?: any, envVars?: Record<string, any>) => {
+    // Merge process.env with injected Cloudflare env vars
+    const env = { ...process.env, ...(envVars || {}) };
     let db: any;
 
     try {
@@ -30,8 +32,8 @@ export const getAuth = (d1?: D1Database) => {
     }
 
     return betterAuth({
-        secret: process.env.BETTER_AUTH_SECRET as string,
-        baseURL: process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://subscouter.com",
+        secret: env.BETTER_AUTH_SECRET as string,
+        baseURL: env.NEXT_PUBLIC_APP_URL || env.APP_URL || "https://subscouter.com",
         database: drizzleAdapter(db, {
             provider: "sqlite",
             schema: {
@@ -43,26 +45,26 @@ export const getAuth = (d1?: D1Database) => {
         },
         socialProviders: {
             google: {
-                clientId: process.env.GOOGLE_CLIENT_ID as string,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+                clientId: env.GOOGLE_CLIENT_ID as string,
+                clientSecret: env.GOOGLE_CLIENT_SECRET as string,
                 scope: ["https://www.googleapis.com/auth/gmail.readonly"],
             },
             microsoft: {
-                clientId: process.env.MICROSOFT_CLIENT_ID as string,
-                clientSecret: process.env.MICROSOFT_CLIENT_SECRET as string,
+                clientId: env.MICROSOFT_CLIENT_ID as string,
+                clientSecret: env.MICROSOFT_CLIENT_SECRET as string,
                 scope: ["https://graph.microsoft.com/Mail.Read"],
             },
         },
         plugins: [
             stripe({
                 stripeClient,
-                stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET as string,
+                stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET as string,
                 subscription: {
                     enabled: true,
                     plans: [
                         {
                             name: "Pro",
-                            priceId: process.env.STRIPE_PRO_PRICE_ID as string,
+                            priceId: env.STRIPE_PRO_PRICE_ID as string,
                             limits: {
                                 // Define any limits here
                             },
