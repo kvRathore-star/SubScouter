@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useAppAuth } from '@/hooks/useAppAuth';
 import { useTheme } from '@/providers/ThemeProvider';
+import Link from 'next/link';
 import {
   LayoutDashboard as DashboardIcon,
   Link as LinkIcon,
@@ -197,11 +198,14 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
                     <div className={`w-1.5 h-1.5 rounded-full ${tier === 'pro' ? 'bg-brand shadow-[0_0_8px_var(--brand)]' : 'bg-muted-foreground'}`} />
                     <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.1em]">{tier === 'pro' ? 'Pro Plan' : 'Free Plan'}</p>
                   </div>
+                  <Link href="/account">
+                    <button className="mt-2 text-sm text-brand hover:underline">My Account</button>
+                  </Link>
                 </div>
               </div>
             ) : (
               <button
-                onClick={() => (window as any).location.href = '/'}
+                onClick={() => (window as any).location.href = '/login'}
                 className="bg-brand text-white px-8 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-xl shadow-brand/20 hover:translate-y-[-2px] transition-all duration-300"
               >
                 Sign In

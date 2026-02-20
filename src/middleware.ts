@@ -10,9 +10,23 @@ export function middleware(request: NextRequest) {
     const response = NextResponse.next();
     response.headers.set('X-Stability-Sentinel', 'Active');
 
-    // Better Auth integration: We can check for the session cookie here
-    // for server-side protection if needed.
-    // const sessionCookie = request.cookies.get("better-auth.session-token");
+    const sessionCookie = request.cookies.get("better-auth.session-token");
+    const { pathname } = request.nextUrl;
+
+    // Defined route patterns
+    const isPublicPage = pathname === "/login" || pathname === "/signup" || pathname === "/privacy" || pathname === "/terms" || pathname === "/feedback";
+    const isAuthApi = pathname.startsWith("/api/auth");
+    const isDashboard = pathname === "/";
+    const isProtectedPage = isDashboard || pathname.startsWith("/account");
+
+    // Redirection logic
+    if (isProtectedPage && !sessionCookie) {
+        return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    if (isPublicPage && sessionCookie && (pathname === "/login" || pathname === "/signup")) {
+        return NextResponse.redirect(new URL("/", request.url));
+    }
 
     return response;
 }

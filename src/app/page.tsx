@@ -4,6 +4,7 @@ export const runtime = 'edge';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAppAuth } from '@/hooks/useAppAuth';
 import Layout, { ViewType } from '@/components/layout/Layout';
+import { useRouter } from 'next/navigation';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useScoutStore } from '@/hooks/useScoutStore';
 import StatsOverview from '@/components/features/StatsOverview';
@@ -28,6 +29,7 @@ import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal
  */
 export default function Dashboard() {
   const { isLoaded, isSignedIn, user, signOut } = useAppAuth();
+  const router = useRouter();
   const { subscriptions, isLoading: isDataLoading, refresh } = useDashboardData();
   const { saveSubscriptions, deleteSubscription, syncToCloud, restoreFromCloud } = useScoutStore();
 
@@ -187,12 +189,16 @@ export default function Dashboard() {
     return Object.entries(categories).map(([name, value]) => ({ name: name.toUpperCase(), value }));
   }, [subscriptions]);
 
-  // Show login page when not signed in
-  if (isLoaded && !isSignedIn) {
-    return <PortalView />;
-  }
+  // Redirect unauthenticated users to /login
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push('/login');
+    }
+  }, [isLoaded, isSignedIn, router]);
 
-  if (!isLoaded) return <DashboardSkeleton />;
+  if (!isLoaded || !isSignedIn) {
+    return <DashboardSkeleton />; // Show skeleton while loading or redirecting
+  }
 
   return (
     <Layout

@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             try {
                 await authClient.signIn.social({
                     provider,
-                    callbackURL: "/"
+                    // Removed forced callbackURL to allow caller to decide navigation
                 });
             } catch (err) {
                 console.error("Auth Error:", err);

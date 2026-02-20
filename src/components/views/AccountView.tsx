@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useAppAuth } from '@/hooks/useAppAuth';
 import { useTheme } from '@/providers/ThemeProvider';
-import { User, Bell, Shield, ChevronRight, Check, Moon, Sun } from 'lucide-react';
+import { User, Bell, Shield, ChevronRight, Check, Moon, Sun, LogOut } from 'lucide-react';
 
 interface AccountViewProps {
     tier: 'free' | 'pro';
@@ -95,9 +95,21 @@ const AccountView: React.FC<AccountViewProps> = ({
 
                 <button
                     onClick={handleSave}
-                    className="w-full bg-brand text-white py-5 rounded-2xl text-sm font-black tracking-tight hover:bg-opacity-90 transition-all shadow-xl shadow-brand/20"
+                    className="w-full bg-brand text-white py-5 rounded-2xl text-sm font-black tracking-tight hover:bg-opacity-90 transition-all shadow-xl shadow-brand/20 mb-4"
                 >
                     {saved ? 'Saved!' : 'Save Changes'}
+                </button>
+
+                <button
+                    onClick={async () => {
+                        const { authClient } = await import('@/lib/auth-client');
+                        await authClient.signOut();
+                        window.location.href = '/login';
+                    }}
+                    className="w-full bg-muted/20 text-muted-foreground py-5 rounded-2xl text-sm font-black tracking-tight hover:bg-muted/30 transition-all border border-border flex items-center justify-center gap-2"
+                >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
                 </button>
             </div>
         </div>

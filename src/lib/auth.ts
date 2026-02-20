@@ -31,7 +31,7 @@ export const getAuth = (d1?: D1Database) => {
 
     return betterAuth({
         secret: process.env.BETTER_AUTH_SECRET as string,
-        baseURL: process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://subscouter.pages.dev",
+        baseURL: process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://subscouter.com",
         database: drizzleAdapter(db, {
             provider: "sqlite",
             schema: {
@@ -52,9 +52,6 @@ export const getAuth = (d1?: D1Database) => {
                 clientSecret: process.env.MICROSOFT_CLIENT_SECRET as string,
                 scope: ["https://graph.microsoft.com/Mail.Read"],
             },
-        },
-        secondaryStorage: {
-            // Optional: for caching or session storage optimization
         },
         plugins: [
             stripe({

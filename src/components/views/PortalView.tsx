@@ -5,9 +5,13 @@ import { useAppAuth } from '@/hooks/useAppAuth';
 import { authClient } from '@/lib/auth-client';
 import { Shield, ArrowRight, Mail, Eye, EyeOff } from 'lucide-react';
 
-export default function PortalView() {
+interface PortalProps {
+    initialMode?: 'login' | 'signup';
+}
+
+export default function PortalView({ initialMode = 'login' }: PortalProps) {
     const { signIn } = useAppAuth();
-    const [mode, setMode] = useState<'login' | 'signup'>('login');
+    const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -46,7 +50,6 @@ export default function PortalView() {
         try {
             await authClient.signIn.social({
                 provider: "google",
-                callbackURL: "/"
             });
         } catch (err: any) {
             setError("Google sign-in failed. Please ensure OAuth is configured.");
