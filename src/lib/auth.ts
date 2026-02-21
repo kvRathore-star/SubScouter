@@ -5,9 +5,6 @@ import { stripe as stripeClient } from "./stripe";
 import * as schema from "../db/schema";
 import { drizzle } from "drizzle-orm/d1";
 
-import { createClient } from "@libsql/client";
-import { drizzle as drizzleLibsql } from "drizzle-orm/libsql";
-
 /**
  * THE AUTHENTICATION ARCHITECT
  * Configures Better Auth with Drizzle (D1 or Local SQLite) and Stripe.
@@ -20,13 +17,19 @@ export const getAuth = (d1?: any, envVars?: Record<string, any>) => {
     try {
         if (d1) {
             db = drizzle(d1, { schema });
+        } else if (env.CF_PAGES) {
+            // We are on Cloudflare Pages but D1 is not bound!
+            throw new Error("CRITICAL: D1 Database is not bound to the 'DB' variable in Cloudflare Pages settings. Please go to Settings > Functions > D1 database bindings and bind 'subscouter-db' to 'DB'.");
         } else {
-            // Fallback for local next dev environment
+            // Fallback for local next dev environment using require instead of top-level import
+            // to prevent breaking the Cloudflare Edge bundle
+            const { createClient } = require("@libsql/client");
+            const { drizzle: drizzleLibsql } = require("drizzle-orm/libsql");
             const client = createClient({ url: "file:local.db" });
             db = drizzleLibsql(client, { schema });
         }
-    } catch (e) {
-        console.error("[Auth] DB Sync Failure:", e);
+    } catch (e: any) {
+        console.error("[Auth] DB Initialization Failure:", e?.message);
         // Minimal fallback to avoid total crash
         db = { query: { findFirst: () => null } };
     }

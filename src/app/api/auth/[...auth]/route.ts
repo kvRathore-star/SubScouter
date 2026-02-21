@@ -10,20 +10,29 @@ import { getRequestContext } from "@cloudflare/next-on-pages";
 export const runtime = "edge";
 
 export async function POST(request: NextRequest) {
-    const ctx = getRequestContext();
-    const env = ctx.env as Record<string, any>;
-    const dbBinding = env.DB || (process.env as any).DB;
-    // Pass the merged environment variables so getAuth can access them
-    const auth = getAuth(dbBinding, env);
-    const handler = toNextJsHandler(auth);
-    return handler.POST(request);
+    try {
+        const ctx = getRequestContext();
+        const env = ctx.env as Record<string, any>;
+        const dbBinding = env.DB || (process.env as any).DB;
+        const auth = getAuth(dbBinding, env);
+        const handler = toNextJsHandler(auth);
+        return handler.POST(request);
+    } catch (e: any) {
+        console.error("[Auth POST Error]:", e?.message || e);
+        return new Response(JSON.stringify({ error: e?.message || 'Internal Server Error' }), { status: 500 });
+    }
 }
 
 export async function GET(request: NextRequest) {
-    const ctx = getRequestContext();
-    const env = ctx.env as Record<string, any>;
-    const dbBinding = env.DB || (process.env as any).DB;
-    const auth = getAuth(dbBinding, env);
-    const handler = toNextJsHandler(auth);
-    return handler.GET(request);
+    try {
+        const ctx = getRequestContext();
+        const env = ctx.env as Record<string, any>;
+        const dbBinding = env.DB || (process.env as any).DB;
+        const auth = getAuth(dbBinding, env);
+        const handler = toNextJsHandler(auth);
+        return handler.GET(request);
+    } catch (e: any) {
+        console.error("[Auth GET Error]:", e?.message || e);
+        return new Response(JSON.stringify({ error: e?.message || 'Internal Server Error' }), { status: 500 });
+    }
 }
