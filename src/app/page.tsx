@@ -16,6 +16,7 @@ import ConnectionsView from '@/components/views/ConnectionsView';
 import PricingView from '@/components/views/PricingView';
 import AccountView from '@/components/views/AccountView';
 import PortalView from '@/components/views/PortalView';
+import LandingView from '@/components/views/LandingView';
 import { DashboardSkeleton } from '@/components/layout/Skeleton';
 import LoadingOverlay from '@/components/features/LoadingOverlay';
 import EmptyState from '@/components/features/EmptyState';
@@ -202,6 +203,10 @@ export default function Dashboard() {
 
   if (!isLoaded) {
     return <DashboardSkeleton />; // Only show skeleton while loading auth state, not if signed out
+  }
+
+  if (!isSignedIn) {
+    return <LandingView />;
   }
 
   return (
