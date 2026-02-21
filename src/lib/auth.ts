@@ -9,16 +9,17 @@ import { drizzle } from "drizzle-orm/d1";
  * THE AUTHENTICATION ARCHITECT
  * Configures Better Auth with Drizzle (D1 or Local SQLite) and Stripe.
  */
-export const getAuth = (env: Record<string, any>) => {
-    if (!env) {
-        throw new Error("CRITICAL: Cloudflare env context was not provided to getAuth().");
-    }
+export const getAuth = (envVars?: Record<string, any>) => {
+    // Merge process.env with injected Cloudflare env vars so local dev still works
+    const env = { ...process.env, ...(envVars || {}) };
 
-    if (!env.DB) {
-        throw new Error("CRITICAL: D1 Database is not bound to the 'DB' variable in Cloudflare Pages settings. Please go to Settings > Functions > D1 database bindings and bind 'subscouter-db' to 'DB'.");
+    let db: any;
+    if (env.DB) {
+        db = drizzle(env.DB, { schema });
+    } else {
+        console.warn("CRITICAL WARNING: D1 Database is not bound to the 'DB' variable. Authentication will fail to save users. If on Cloudflare, check your bindings.");
+        db = { query: { findFirst: () => null } };
     }
-
-    const db = drizzle(env.DB, { schema });
 
     return betterAuth({
         secret: env.BETTER_AUTH_SECRET as string,

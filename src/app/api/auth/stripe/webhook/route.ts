@@ -12,8 +12,11 @@ import { getRequestContext } from "@cloudflare/next-on-pages";
  */
 
 export async function POST(request: NextRequest) {
-    const ctx = getRequestContext();
-    const env = ctx.env as Record<string, any>;
+    let env: Record<string, any> = {};
+    try {
+        const ctx = getRequestContext();
+        if (ctx && ctx.env) env = ctx.env as Record<string, any>;
+    } catch (err) { }
     const auth = getAuth(env);
     const signature = request.headers.get("stripe-signature");
 

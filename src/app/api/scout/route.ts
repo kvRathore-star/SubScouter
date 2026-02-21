@@ -15,8 +15,11 @@ export const runtime = "edge";
  * Scans connected email accounts for subscription data using Gmail/Microsoft APIs + Gemini AI.
  */
 export async function POST(request: NextRequest) {
-    const ctx = getRequestContext();
-    const env = ctx.env as Record<string, any>;
+    let env: Record<string, any> = {};
+    try {
+        const ctx = getRequestContext();
+        if (ctx && ctx.env) env = ctx.env as Record<string, any>;
+    } catch (err) { }
     const auth = getAuth(env);
 
     // Verify user session

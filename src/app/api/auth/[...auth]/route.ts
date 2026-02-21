@@ -12,8 +12,13 @@ export const runtime = "edge";
 
 export async function POST(request: NextRequest) {
     try {
-        const ctx = getRequestContext();
-        const env = ctx.env as Record<string, any>;
+        let env: Record<string, any> = {};
+        try {
+            const ctx = getRequestContext();
+            if (ctx && ctx.env) env = ctx.env as Record<string, any>;
+        } catch (err) {
+            // locally getRequestContext might throw if not configured
+        }
 
         // Dynamically establish the exact base URL to permanently bypass Better-Auth trusting origin 500 errors
         const liveOrigin = request.headers.get("origin") || request.nextUrl?.origin || "https://subscouter.com";
@@ -30,8 +35,13 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
     try {
-        const ctx = getRequestContext();
-        const env = ctx.env as Record<string, any>;
+        let env: Record<string, any> = {};
+        try {
+            const ctx = getRequestContext();
+            if (ctx && ctx.env) env = ctx.env as Record<string, any>;
+        } catch (err) {
+            // locally getRequestContext might throw if not configured
+        }
 
         // Dynamically establish the exact base URL to permanently bypass Better-Auth trusting origin 500 errors
         const liveOrigin = request.headers.get("origin") || request.nextUrl?.origin || "https://subscouter.com";
