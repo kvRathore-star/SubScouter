@@ -21,15 +21,10 @@ export const getAuth = (d1?: any, envVars?: Record<string, any>) => {
             // We are on Cloudflare Pages but D1 is not bound!
             throw new Error("CRITICAL: D1 Database is not bound to the 'DB' variable in Cloudflare Pages settings. Please go to Settings > Functions > D1 database bindings and bind 'subscouter-db' to 'DB'.");
         } else {
-            // Fallback for local next dev environment using require instead of top-level import
-            // to prevent breaking the Cloudflare Edge bundle
-            // We use eval('require') here so Next.js Webpack doesn't attempt to statically 
-            // bundle the SQLite native Node.js binaries into the Edge runtime sandbox.
-            const dynamicRequire = eval('require');
-            const { createClient } = dynamicRequire("@libsql/client");
-            const { drizzle: drizzleLibsql } = dynamicRequire("drizzle-orm/libsql");
-            const client = createClient({ url: "file:local.db" });
-            db = drizzleLibsql(client, { schema });
+            // Fallback for local development if DB is not provided.
+            // Removed eval('require') due to strict Edge Content Security Policy.
+            console.warn("Running without a bound D1 database or local SQLite. Authentication will fail to save users.");
+            db = { query: { findFirst: () => null } };
         }
     } catch (e: any) {
         console.error("[Auth] DB Initialization Failure:", e?.message);
