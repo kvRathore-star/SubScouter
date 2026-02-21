@@ -10,6 +10,7 @@ import { useScoutStore } from '@/hooks/useScoutStore';
 import StatsOverview from '@/components/features/StatsOverview';
 import SubscriptionCard from '@/components/features/SubscriptionCard';
 import AddSubscriptionModal from '@/components/modals/AddSubscriptionModal';
+import VolumeAllocationWidget from '@/components/features/VolumeAllocationWidget';
 import StatisticsView from '@/components/views/StatisticsView';
 import ConnectionsView from '@/components/views/ConnectionsView';
 import PricingView from '@/components/views/PricingView';
@@ -231,38 +232,102 @@ export default function Dashboard() {
 
           <StatsOverview stats={stats} />
 
-          {/* Bottom Span: Recent Infiltration */}
-          <div className="my-8">
-            <div className="flex flex-wrap items-center justify-between gap-6 mb-6">
-              <h2 className="text-lg font-black text-white uppercase tracking-widest">Recent Infiltration</h2>
-              <button onClick={() => setShowAddModal(true)} className="bg-[#22d3ee] text-black px-5 py-2.5 rounded-xl shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] flex items-center gap-2 hover:bg-[#22d3ee]/90 transition-all font-black uppercase tracking-widest text-[10px]">
-                <Plus className="w-4 h-4 text-black" />
-                Add Entry
-              </button>
-            </div>
+          {/* 65/35 Asymmetrical Command Center Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sortedAndFilteredSubs.map(sub => (
-                <SubscriptionCard
-                  key={sub.id}
-                  subscription={sub}
-                  onClick={(s) => setSelectedSub(s)}
-                  onCancel={handleCancel}
-                  onPause={handlePause}
-                  onReApply={handleResume}
-                />
-              ))}
-
-              {sortedAndFilteredSubs.length === 0 && (
-                <div className="col-span-full">
-                  <EmptyState
-                    onDiscovery={() => setCurrentView('connections')}
-                    title="Grid Empty"
-                    description="Deploy Scout to secure your digital footprint."
-                  />
+            {/* Left 65%: The Assassin Queue (Upcoming Renewals) */}
+            <div className="lg:col-span-8 flex flex-col">
+              <div className="flex flex-wrap items-center justify-between gap-6 mb-6">
+                <div>
+                  <h2 className="text-[14px] font-black text-white uppercase tracking-widest flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#22d3ee]" /> Assassin Queue
+                  </h2>
+                  <p className="text-[#94a3b8] text-[11px] font-bold uppercase tracking-widest mt-1">Upcoming 30-Day Renewals</p>
                 </div>
-              )}
+                <button onClick={() => setShowAddModal(true)} className="bg-[#22d3ee] text-black px-4 py-2.5 rounded-lg shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_25px_rgba(34,211,238,0.4)] flex items-center gap-2 hover:bg-[#22d3ee]/90 transition-all font-black uppercase tracking-widest text-[9px]">
+                  <Plus className="w-3.5 h-3.5" strokeWidth={3} /> Manual Entry
+                </button>
+              </div>
+
+              <div className="card-glass border border-white/5 rounded-[24px] overflow-hidden flex-1 flex flex-col">
+                {sortedAndFilteredSubs.length === 0 ? (
+                  <div className="flex-1 flex flex-col items-center justify-center p-12 text-center min-h-[300px]">
+                    <div className="w-16 h-16 rounded-2xl bg-[#0f172a] border border-[#1e293b] flex items-center justify-center mb-6 shadow-inner">
+                      <Sparkles className="w-6 h-6 text-[#334155]" />
+                    </div>
+                    <h3 className="text-white font-black text-lg tracking-tight mb-2">Grid Empty</h3>
+                    <p className="text-[#64748b] text-sm font-medium tracking-wide max-w-sm">Deploy the AI Scout to connect your inbox and secure your digital footprint.</p>
+                    <button onClick={() => setCurrentView('connections')} className="mt-8 px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl text-xs font-black uppercase tracking-widest border border-white/10 transition-colors">Launch Connect</button>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse min-w-[600px]">
+                      <thead>
+                        <tr>
+                          <th className="pb-4 pt-6 text-[9px] font-black text-[#64748b] uppercase tracking-[0.2em] pl-6">Service</th>
+                          <th className="pb-4 pt-6 text-right text-[9px] font-black text-[#64748b] uppercase tracking-[0.2em] w-28">Burn</th>
+                          <th className="pb-4 pt-6 text-right text-[9px] font-black text-[#64748b] uppercase tracking-[0.2em] w-32">Cycle</th>
+                          <th className="pb-4 pt-6 text-right text-[9px] font-black text-[#64748b] uppercase tracking-[0.2em] w-36 pr-6">Next Charge</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {sortedAndFilteredSubs.slice(0, 10).map((sub) => {
+                          // Calculate Days Left
+                          const daysLeft = sub.nextBillingDate ? Math.ceil((new Date(sub.nextBillingDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : -1;
+                          const isCritical = daysLeft >= 0 && daysLeft <= 7;
+
+                          return (
+                            <tr key={sub.id} onClick={() => setSelectedSub(sub)} className="group hover:bg-[#1e293b]/30 transition-colors cursor-pointer">
+                              <td className="py-4 pl-6 border-l-2 border-transparent group-hover:border-[#22d3ee]/50 transition-colors">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 rounded-lg bg-[#0f172a] border border-[#1e293b] flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
+                                    {sub.logoUrl ? (
+                                      <img src={sub.logoUrl} alt={sub.name} className="w-full h-full object-cover" />
+                                    ) : (
+                                      <span className="text-white text-[10px] font-black">{sub.name.substring(0, 2).toUpperCase()}</span>
+                                    )}
+                                  </div>
+                                  <div>
+                                    <h4 className="text-[13px] font-bold text-white tracking-tight">{sub.name}</h4>
+                                    <span className="text-[10px] font-bold text-[#64748b] uppercase tracking-widest">{sub.category}</span>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="py-4 text-right">
+                                <span className="text-[13px] font-black text-white tabular-nums">${sub.amount.toFixed(2)}</span>
+                              </td>
+                              <td className="py-4 text-right">
+                                <span className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded border border-white/5">{sub.billingCycle}</span>
+                              </td>
+                              <td className="py-4 text-right pr-6">
+                                <div className="flex flex-col items-end">
+                                  <span className={`text-[12px] font-black tabular-nums transition-colors ${isCritical ? 'text-amber-400' : 'text-white'}`}>
+                                    {sub.nextBillingDate ? new Date(sub.nextBillingDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown'}
+                                  </span>
+                                  {daysLeft >= 0 && (
+                                    <span className={`text-[9px] font-black uppercase tracking-[0.2em] mt-0.5 ${isCritical ? 'text-amber-500/80 bg-amber-500/10 px-1.5 rounded' : 'text-[#64748b]'}`}>
+                                      {daysLeft === 0 ? 'Today' : `In ${daysLeft}d`}
+                                    </span>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </div>
+
+            {/* Right 35%: Volume Distribution Donut */}
+            <div className="lg:col-span-4 flex flex-col pt-1">
+              <div className="flex-1">
+                <VolumeAllocationWidget data={chartData} />
+              </div>
+            </div>
+
           </div>
         </div>
       )}

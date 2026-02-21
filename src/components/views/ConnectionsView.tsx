@@ -94,10 +94,10 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Gmail Card */}
-        <div className="card-glass p-8 flex flex-col justify-between min-h-[340px] group relative overflow-visible">
+        <div className="card-glass p-8 flex flex-col min-h-[340px] group relative overflow-visible">
           <div className="absolute -top-10 -right-10 w-32 h-32 bg-red-500/5 blur-[60px] rounded-full pointer-events-none" />
 
-          <div>
+          <div className="flex-1">
             <div className="w-14 h-14 bg-red-500/10 rounded-2xl flex items-center justify-center mb-6 border border-red-500/20 group-hover:scale-110 transition-transform duration-500 shadow-lg">
               <Mail className="w-6 h-6 text-red-500" />
             </div>
@@ -107,7 +107,7 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
             </p>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-auto pt-8">
             {isSignedIn ? (
               <button
                 onClick={() => handleScan('google')}
@@ -129,13 +129,13 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
         </div>
 
         {/* Outlook Card */}
-        <div className="card-glass p-8 flex flex-col justify-between min-h-[340px] group relative overflow-visible opacity-60">
+        <div className="card-glass p-8 flex flex-col min-h-[340px] group relative overflow-visible opacity-60">
           <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/5 blur-[60px] rounded-full pointer-events-none" />
           <div className="absolute top-4 right-4 px-3 py-1 bg-blue-500/10 rounded-full border border-blue-500/20">
             <span className="text-[9px] font-black text-blue-400 uppercase tracking-widest">WIP</span>
           </div>
 
-          <div>
+          <div className="flex-1">
             <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20 group-hover:scale-110 transition-transform duration-500">
               <Globe className="w-6 h-6 text-blue-500" />
             </div>
@@ -145,7 +145,7 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
             </p>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-auto pt-8">
             <button
               disabled
               className="w-full bg-[#0f172a] text-[#64748b] border border-[#1e293b] py-3.5 rounded-xl text-[11px] font-bold uppercase tracking-[0.2em] cursor-not-allowed"
@@ -156,10 +156,10 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
         </div>
 
         {/* Manual Entry Card */}
-        <div className="card-glass p-8 flex flex-col justify-between min-h-[340px] group relative overflow-visible border-b-4 border-b-transparent hover:border-b-[#22d3ee]">
+        <div className="card-glass p-8 flex flex-col min-h-[340px] group relative overflow-visible border-b-4 border-b-transparent hover:border-b-[#22d3ee]">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#22d3ee]/5 blur-[60px] rounded-full pointer-events-none" />
 
-          <div>
+          <div className="flex-1">
             <div className="w-14 h-14 bg-[#1e293b] rounded-2xl flex items-center justify-center mb-6 border border-[#334155] group-hover:scale-110 transition-transform duration-500 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
               <Plus className="w-6 h-6 text-[#22d3ee]" />
             </div>
@@ -169,7 +169,7 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
             </p>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-auto pt-8">
             <button
               onClick={onConnect}
               className="w-full bg-[#1e293b] text-white border border-[#334155] py-3.5 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-[#334155] hover:border-[#475569] transition-all duration-300"
