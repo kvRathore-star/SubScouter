@@ -63,77 +63,60 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           {/* Subtle Right Glow Line */}
           <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-[#22d3ee]/10 to-transparent opacity-50 pointer-events-none" />
           {/* Logo Section */}
-          <div className="px-8 pt-10 pb-6 flex items-center justify-between">
-            <div className="flex items-center gap-3.5 group cursor-pointer" onClick={() => setView('dashboard')}>
-              <div className="relative">
-                <div className="absolute inset-0 bg-brand/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="w-10 h-10 bg-[#0f172a] rounded-xl flex items-center justify-center border border-white/10 shadow-2xl relative overflow-hidden group-hover:scale-105 group-hover:border-brand/30 transition-all duration-500">
-                  <img src="/logo.png" alt="SubScout AI" className="w-full h-full object-cover" />
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <h1 className="text-[15px] font-black tracking-[-0.03em] text-foreground leading-none">Sub <span className="text-brand">Scouter</span></h1>
-                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.25em] mt-1.5 opacity-60">Subscription Tracker</span>
-              </div>
+          <div className="px-8 pt-10 pb-8 border-b border-[#1e293b]/50">
+            <div className="flex flex-col cursor-pointer" onClick={() => setView('dashboard')}>
+              <h1 className="text-[28px] font-black tracking-tight text-white leading-none relative group">
+                <span className="text-[#22d3ee] drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]">Sub</span>Scouter
+              </h1>
             </div>
             {/* Mobile Close Button */}
-            <button className="lg:hidden p-2 text-muted-foreground hover:bg-white/5 rounded-lg transition-colors" onClick={() => setSidebarOpen(false)}>
+            <button className="absolute top-8 right-6 lg:hidden p-2 text-muted-foreground hover:bg-white/5 rounded-lg transition-colors" onClick={() => setSidebarOpen(false)}>
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Nav Items */}
-          <nav className="flex-1 px-5 space-y-2 mt-2 relative z-10">
+          <nav className="flex-1 px-4 space-y-2 py-8 relative z-10 font-medium">
             {navItems.map((item) => {
               const active = currentView === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-[16px] transition-all duration-300 group relative ${active
-                    ? 'bg-[#1e293b]/70 text-white font-semibold shadow-sm'
-                    : 'text-[#94a3b8] hover:text-white hover:bg-[#1e293b]/40'
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-300 group relative ${active
+                    ? 'bg-[#1e293b]/40 text-[#cbd5e1] border border-[#334155]/50'
+                    : 'text-[#64748b] hover:text-[#94a3b8] hover:bg-[#1e293b]/20 border border-transparent'
                     }`}
                 >
-                  {active && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-[#22d3ee] rounded-r-full shadow-[0_0_12px_rgba(34,211,238,0.6)]" />
-                  )}
-                  <div className={`w-5 h-5 flex items-center justify-center transition-colors duration-300 ${active ? 'text-[#22d3ee]' : 'text-[#64748b] group-hover:text-white'}`}>
-                    <item.icon strokeWidth={active ? 2.5 : 2} className="w-full h-full" />
+                  <div className="flex items-center gap-4">
+                    <div className={`w-4 h-4 flex items-center justify-center transition-colors duration-300 ${active ? 'text-[#cbd5e1]' : 'text-[#64748b] group-hover:text-[#94a3b8]'}`}>
+                      <item.icon strokeWidth={2.5} className="w-full h-full" />
+                    </div>
+                    <span className={`text-[14px] tracking-wide transition-all duration-300`}>
+                      {item.label}
+                    </span>
                   </div>
-                  <span className={`text-[14px] tracking-wide transition-all duration-300 ${active ? 'font-bold' : 'font-medium'}`}>
-                    {item.label}
-                  </span>
+
+                  {active && item.id === 'dashboard' && (
+                    <div className="w-4 h-4 rounded-full border border-[#cbd5e1]/50 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-[#cbd5e1]/50 rounded-full" />
+                    </div>
+                  )}
                 </button>
               );
             })}
           </nav>
 
-          {/* AI Scout Widget to fill the empty area */}
-          <div className="px-5 mb-6 relative z-10 w-full">
-            <div className="p-5 rounded-[20px] bg-gradient-to-b from-[#1e293b]/50 to-transparent border border-[#334155]/50 relative overflow-hidden group hover:border-[#334155] transition-colors">
-              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#22d3ee]/30 to-transparent" />
-              <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#22d3ee]/5 blur-[30px] rounded-full pointer-events-none" />
-
-              <div className="flex items-center gap-3 mb-4 relative z-10">
-                <div className="w-8 h-8 rounded-full bg-[#0f172a] border border-[#22d3ee]/30 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.15)] group-hover:shadow-[0_0_20px_rgba(34,211,238,0.25)] transition-shadow">
-                  <Sparkles className="w-3.5 h-3.5 text-[#22d3ee]" />
-                </div>
-                <div>
-                  <h4 className="text-white text-[13px] font-bold tracking-tighter">AI Scout</h4>
-                  <span className="text-[#22d3ee] text-[9px] font-black uppercase tracking-widest">Active Scan</span>
-                </div>
+          {/* AI Scout Widget */}
+          <div className="px-6 mb-8 relative z-10 w-full">
+            <div className="p-5 rounded-3xl bg-[#0f172a]/40 border border-[#1e293b] hover:border-[#334155]/60 transition-colors flex items-center gap-4 relative overflow-hidden group">
+              <div className="relative w-12 h-12 flex items-center justify-center shrink-0">
+                <div className="absolute inset-0 bg-[#a855f7] rounded-full blur-[20px] opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-700 ease-in-out animate-pulse" />
+                <div className="relative w-8 h-8 bg-gradient-to-br from-[#c084fc] to-[#7e22ce] rounded-full border-2 border-[#d8b4fe]/30 shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
               </div>
-              <div className="space-y-2 mt-4 relative z-10">
-                <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
-                  <span className="text-[#64748b]">Inbox Scans</span>
-                  <span className="text-white">14 / 50</span>
-                </div>
-                <div className="w-full h-2 bg-[#0f172a] rounded-full overflow-hidden border border-[#1e293b]">
-                  <div className="h-full bg-[#22d3ee] w-[28%] rounded-full shadow-[0_0_8px_rgba(34,211,238,0.8)] relative">
-                    <div className="absolute top-0 right-0 bottom-0 w-4 bg-white/40 blur-[2px]" />
-                  </div>
-                </div>
+              <div className="flex flex-col relative z-10">
+                <h4 className="text-white text-[15px] font-semibold tracking-tight mb-1">AI Scout</h4>
+                <span className="text-[#64748b] text-[10px] font-semibold uppercase tracking-widest">Active Scan: 14/50</span>
               </div>
             </div>
           </div>
