@@ -7,6 +7,7 @@ import * as schema from "@/db/schema";
 
 export const runtime = "edge";
 
+
 /**
  * Subscription Scout API
  * Scans connected email accounts for subscription data using Gmail/Microsoft APIs + Gemini AI.

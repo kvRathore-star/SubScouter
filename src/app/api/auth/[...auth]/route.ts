@@ -9,6 +9,7 @@ import { getRequestContext } from "@cloudflare/next-on-pages";
  */
 export const runtime = "edge";
 
+
 export async function POST(request: NextRequest) {
     try {
         const ctx = getRequestContext();

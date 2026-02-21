@@ -23,8 +23,11 @@ export const getAuth = (d1?: any, envVars?: Record<string, any>) => {
         } else {
             // Fallback for local next dev environment using require instead of top-level import
             // to prevent breaking the Cloudflare Edge bundle
-            const { createClient } = require("@libsql/client");
-            const { drizzle: drizzleLibsql } = require("drizzle-orm/libsql");
+            // We use eval('require') here so Next.js Webpack doesn't attempt to statically 
+            // bundle the SQLite native Node.js binaries into the Edge runtime sandbox.
+            const dynamicRequire = eval('require');
+            const { createClient } = dynamicRequire("@libsql/client");
+            const { drizzle: drizzleLibsql } = dynamicRequire("drizzle-orm/libsql");
             const client = createClient({ url: "file:local.db" });
             db = drizzleLibsql(client, { schema });
         }
