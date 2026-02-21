@@ -181,7 +181,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
       </aside>
 
       {/* ═══ MAIN CONTENT AREA ═══ */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 pl-0 lg:pl-6">
         {/* Top bar */}
         <header className="h-20 bg-card/20 backdrop-blur-xl border-b border-border flex items-center justify-between px-10 sticky top-0 z-40">
           <div className="flex-1 flex items-center gap-4">
@@ -262,7 +262,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
         </div>
 
         {/* View Port */}
-        <main className="flex-1 overflow-y-auto px-8 pb-12">
+        <main className="flex-1 overflow-y-auto pl-6 lg:pl-10 pr-6 lg:pr-10 pb-12">
           <ErrorBoundary>
             {children}
           </ErrorBoundary>

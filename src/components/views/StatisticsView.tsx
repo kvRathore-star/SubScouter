@@ -33,13 +33,13 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [], subscri
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-        <div className="flex items-center gap-4">
-          <div>
-            <h2 className="text-[32px] font-black tracking-tight text-foreground mb-2">Intelligence Charts</h2>
-            <p className="text-muted-foreground font-medium tracking-tight">Macro-level analysis of your subscription ecosystem.</p>
-          </div>
-          <span className="bg-brand/10 text-brand border border-brand/20 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md">Live Preview</span>
+      <div className="mb-12 flex flex-wrap items-start justify-between gap-6">
+        <div>
+          <h2 className="text-[36px] font-black tracking-tighter text-white mb-2 flex items-center gap-4">
+            Intelligence Charts
+            <span className="bg-[#020617] text-white border border-white/20 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-[100px] shadow-sm transform -translate-y-1">Live Preview</span>
+          </h2>
+          <p className="text-[#94a3b8] font-medium tracking-wide">Macro-level analysis of your subscription ecosystem.</p>
         </div>
         <SubscriptionReportButton subscriptions={subscriptions} />
       </div>
@@ -51,10 +51,10 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [], subscri
 
           <div className="mb-8 flex items-center justify-between relative z-10">
             <div>
-              <h3 className="text-sm font-black text-white tracking-widest uppercase flex items-center gap-2">
+              <h3 className="text-[13px] font-black text-white tracking-[0.2em] uppercase flex items-center gap-2">
                 <Activity className="w-4 h-4 text-[#22d3ee]" /> Historical Burn Rate
               </h3>
-              <p className="text-[#64748b] text-[11px] font-bold uppercase tracking-widest mt-1">Trailing 6 Months Capital Drain</p>
+              <p className="text-[#64748b] text-[10px] font-bold uppercase tracking-[0.15em] mt-1.5">Trailing 6 Months Capital Drain</p>
             </div>
           </div>
 
@@ -109,12 +109,11 @@ const StatisticsView: React.FC<StatisticsViewProps> = ({ chartData = [], subscri
           {/* Top Offenders List */}
           <div className="card-glass p-8 flex flex-col relative overflow-hidden group">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-rose-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-50 group-hover:opacity-100" />
-            <div className="mb-8 flex items-center justify-between relative z-10">
+            <div className="mb-8 flex items-center justify-between relative z-10 border-b border-rose-500/10 pb-4">
               <div>
-                <h3 className="text-sm font-black text-rose-400 tracking-widest uppercase flex items-center gap-2">
+                <h3 className="text-[13px] font-black text-rose-400 tracking-[0.2em] uppercase flex items-center gap-2">
                   <TrendingUp className="w-4 h-4" /> Top Exfil Vectors
                 </h3>
-                <p className="text-[#64748b] text-[11px] font-bold uppercase tracking-widest mt-1">Highest Cost Subscriptions</p>
               </div>
             </div>
 
