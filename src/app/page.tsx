@@ -22,8 +22,6 @@ import { Subscription, SpendingStats, LinkedEmail, FilterTab } from '@/types/ind
 import { Plus, Sparkles } from "lucide-react"
 import CommandCenter from '@/components/features/CommandCenter';
 import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal';
-import BurnMap from '@/components/features/BurnMap';
-import ScoutStatusWidget from '@/components/features/ScoutStatusWidget';
 import SubscriptionSlideOver from '@/components/modals/SubscriptionSlideOver';
 import BurnRateOdometer from '@/components/features/BurnRateOdometer';
 
@@ -220,35 +218,18 @@ export default function Dashboard() {
         <div className="max-w-[1400px] mx-auto stagger-in flex flex-col gap-8">
 
           {/* Minimalist Header */}
-          <div className="flex flex-col md:flex-row items-baseline justify-between gap-4 py-4 pb-8 border-b border-white/5">
+          <div className="flex flex-col md:flex-row items-baseline justify-between gap-4 py-4 pb-8">
             <div>
               <h1 className="text-4xl font-black text-white tracking-tighter">SubScouter</h1>
               <p className="text-xs font-bold text-[#22d3ee] uppercase tracking-[0.3em] mt-2">Sovereign Control</p>
             </div>
             <div className="flex flex-col items-end">
               <p className="text-[10px] font-black text-[#94a3b8] uppercase tracking-[0.2em] mb-1">Total Burn Rate</p>
-              <div className="text-5xl font-black text-white tracking-tighter shadow-sm"><BurnRateOdometer value={stats.totalMonthly} /></div>
+              <div className="text-5xl font-black text-[#22d3ee] tracking-tighter shadow-sm"><BurnRateOdometer value={stats.totalMonthly} /></div>
             </div>
           </div>
 
-          {/* Spatial Bento Grid: Top Row */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {/* Top Left (3x2): Burn Map */}
-            <BurnMap subscriptions={subscriptions} />
-
-            {/* Top Right (1x1): Scout Status */}
-            <ScoutStatusWidget />
-
-            {/* Active Overview Card */}
-            <div className="card-glass p-6 col-span-1 border-white/5 bg-[#020617]/50 flex flex-col justify-between min-h-[200px] overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#a855f7]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <h3 className="text-[10px] font-black text-white/50 uppercase tracking-[0.3em]">Active Subs</h3>
-              <div className="mt-auto">
-                <span className="text-6xl font-black text-white tracking-tighter">{stats.activeCount}</span>
-                <p className="text-xs font-bold text-[#a855f7] uppercase tracking-widest mt-2">{stats.canceledCount} Canceled</p>
-              </div>
-            </div>
-          </div>
+          <StatsOverview stats={stats} />
 
           {/* Bottom Span: Recent Infiltration */}
           <div className="my-8">

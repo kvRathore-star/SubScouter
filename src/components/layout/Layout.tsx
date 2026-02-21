@@ -81,30 +81,22 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           </div>
 
           {/* Nav Items */}
-          <nav className="flex-1 px-3 space-y-1 mt-6">
+          <nav className="flex-1 px-4 space-y-1 mt-8">
             {navItems.map((item) => {
               const active = currentView === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className={`w-full flex items-center gap-3.5 px-3 py-2.5 rounded-xl transition-all duration-300 group relative ${active
-                    ? 'text-white font-bold'
-                    : 'text-muted-foreground hover:text-white/90'
+                  className={`w-full flex items-center gap-3.5 px-3 py-2.5 rounded-xl transition-colors duration-200 group relative ${active
+                    ? 'bg-white/10 text-white font-medium shadow-sm'
+                    : 'text-muted-foreground hover:text-white hover:bg-white/5'
                     }`}
                 >
-                  {active && (
-                    <div
-                      className="absolute inset-0 bg-white/[0.04] rounded-xl border border-white/80 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
-                    />
-                  )}
-                  {!active && (
-                    <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300" />
-                  )}
-                  <div className={`w-[18px] h-[18px] relative z-10 transition-all duration-300 flex items-center justify-center ${active ? 'text-white' : 'group-hover:text-white opacity-70 group-hover:opacity-100'}`}>
-                    <item.icon strokeWidth={active ? 2 : 1.5} className="w-full h-full" />
+                  <div className={`w-5 h-5 flex items-center justify-center transition-colors ${active ? 'text-[#22d3ee]' : 'text-muted-foreground group-hover:text-white'}`}>
+                    <item.icon strokeWidth={2} className="w-full h-full" />
                   </div>
-                  <span className={`text-[14px] tracking-tight relative z-10 transition-all duration-300 ${active ? 'font-bold' : 'font-semibold opacity-70 group-hover:opacity-100'}`}>
+                  <span className={`text-sm tracking-tight transition-colors ${active ? 'font-semibold' : 'font-medium'}`}>
                     {item.label}
                   </span>
                 </button>
@@ -112,31 +104,20 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
             })}
           </nav>
 
-          {/* Version / Info - Bento Tile */}
-          <div className="p-3 mt-auto">
-            <div className="bg-[#0a0f1c]/50 p-3.5 rounded-[18px] border border-white/20 relative overflow-hidden group shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10">
-                <p className="text-[10px] font-black text-white uppercase tracking-[0.3em] mb-2.5 ml-0.5">S T A T U S</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="relative w-3.5 h-3.5 flex items-center justify-center">
-                      <motion.div
-                        animate={{
-                          backgroundColor: ['#3b82f6', '#22d3ee', '#10b981'],
-                          scale: [1, 1.3, 1],
-                          opacity: [0.6, 0.9, 0.6]
-                        }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute inset-0 rounded-full blur-md"
-                      />
-                      <div className="relative w-2 h-2 bg-white rounded-full shadow-[0_0_5px_rgba(255,255,255,0.8)]" />
-                    </div>
-                    <span className="text-[12px] font-bold text-white tracking-tight">All Systems Online</span>
-                  </div>
-                  <span className="text-[10px] font-medium text-muted-foreground/70">v2.4.0</span>
+          {/* Version / Info - Leaner Design */}
+          <div className="p-4 mt-auto">
+            <div className="bg-white/[0.02] p-4 rounded-2xl border border-white/5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="relative w-2.5 h-2.5 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-emerald-500 rounded-full blur-[2px] opacity-50" />
+                  <div className="relative w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs font-semibold text-white/90">System Online</span>
+                  <span className="text-[10px] text-muted-foreground">All metrics stable</span>
                 </div>
               </div>
+              <span className="text-[10px] font-medium px-2 py-1 bg-white/5 rounded-md text-white/50 border border-white/10">v2.4</span>
             </div>
           </div>
         </div>
