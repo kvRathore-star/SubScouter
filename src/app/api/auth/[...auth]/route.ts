@@ -14,13 +14,12 @@ export async function POST(request: NextRequest) {
     try {
         const ctx = getRequestContext();
         const env = ctx.env as Record<string, any>;
-        const dbBinding = env.DB || (process.env as any).DB;
 
         // Dynamically establish the exact base URL to permanently bypass Better-Auth trusting origin 500 errors
         const liveOrigin = request.headers.get("origin") || request.nextUrl?.origin || "https://subscouter.com";
         const dynamicEnv = { ...env, NEXT_PUBLIC_APP_URL: liveOrigin };
 
-        const auth = getAuth(dbBinding, dynamicEnv);
+        const auth = getAuth(dynamicEnv);
         const handler = toNextJsHandler(auth);
         return handler.POST(request);
     } catch (e: any) {
@@ -33,13 +32,12 @@ export async function GET(request: NextRequest) {
     try {
         const ctx = getRequestContext();
         const env = ctx.env as Record<string, any>;
-        const dbBinding = env.DB || (process.env as any).DB;
 
         // Dynamically establish the exact base URL to permanently bypass Better-Auth trusting origin 500 errors
         const liveOrigin = request.headers.get("origin") || request.nextUrl?.origin || "https://subscouter.com";
         const dynamicEnv = { ...env, NEXT_PUBLIC_APP_URL: liveOrigin };
 
-        const auth = getAuth(dbBinding, dynamicEnv);
+        const auth = getAuth(dynamicEnv);
         const handler = toNextJsHandler(auth);
         return handler.GET(request);
     } catch (e: any) {

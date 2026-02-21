@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = "edge";
 import { stripe } from "@/lib/stripe";
 
+import { getRequestContext } from "@cloudflare/next-on-pages";
+
 /**
  * THE REVENUE SENTINEL
  * Explicit webhook handler for Stripe events.
@@ -10,8 +12,9 @@ import { stripe } from "@/lib/stripe";
  */
 
 export async function POST(request: NextRequest) {
-    const d1 = (process.env as any).DB as D1Database;
-    const auth = getAuth(d1);
+    const ctx = getRequestContext();
+    const env = ctx.env as Record<string, any>;
+    const auth = getAuth(env);
     const signature = request.headers.get("stripe-signature");
 
     if (!signature) {

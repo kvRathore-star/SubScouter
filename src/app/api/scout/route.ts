@@ -5,6 +5,8 @@ import { getAuth } from "@/lib/auth";
 import { drizzle } from "drizzle-orm/d1";
 import * as schema from "@/db/schema";
 
+import { getRequestContext } from "@cloudflare/next-on-pages";
+
 export const runtime = "edge";
 
 
@@ -13,8 +15,9 @@ export const runtime = "edge";
  * Scans connected email accounts for subscription data using Gmail/Microsoft APIs + Gemini AI.
  */
 export async function POST(request: NextRequest) {
-    const d1 = (process.env as any).DB;
-    const auth = getAuth(d1);
+    const ctx = getRequestContext();
+    const env = ctx.env as Record<string, any>;
+    const auth = getAuth(env);
 
     // Verify user session
     const session = await auth.api.getSession({ headers: request.headers });
@@ -26,7 +29,7 @@ export async function POST(request: NextRequest) {
     try {
         const { provider } = await request.json(); // "google" or "microsoft"
 
-        const db = drizzle(d1, { schema });
+        const db = drizzle(env.DB, { schema });
 
         // Get the user's stored access token for this provider
         const account = await db.query.accounts.findFirst({

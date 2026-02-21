@@ -9,32 +9,20 @@ import { drizzle } from "drizzle-orm/d1";
  * THE AUTHENTICATION ARCHITECT
  * Configures Better Auth with Drizzle (D1 or Local SQLite) and Stripe.
  */
-export const getAuth = (d1?: any, envVars?: Record<string, any>) => {
-    // Merge process.env with injected Cloudflare env vars
-    const env = { ...process.env, ...(envVars || {}) };
-    let db: any;
-
-    try {
-        if (d1) {
-            db = drizzle(d1, { schema });
-        } else if (env.CF_PAGES) {
-            // We are on Cloudflare Pages but D1 is not bound!
-            throw new Error("CRITICAL: D1 Database is not bound to the 'DB' variable in Cloudflare Pages settings. Please go to Settings > Functions > D1 database bindings and bind 'subscouter-db' to 'DB'.");
-        } else {
-            // Fallback for local development if DB is not provided.
-            // Removed eval('require') due to strict Edge Content Security Policy.
-            console.warn("Running without a bound D1 database or local SQLite. Authentication will fail to save users.");
-            db = { query: { findFirst: () => null } };
-        }
-    } catch (e: any) {
-        console.error("[Auth] DB Initialization Failure:", e?.message);
-        // Minimal fallback to avoid total crash
-        db = { query: { findFirst: () => null } };
+export const getAuth = (env: Record<string, any>) => {
+    if (!env) {
+        throw new Error("CRITICAL: Cloudflare env context was not provided to getAuth().");
     }
+
+    if (!env.DB) {
+        throw new Error("CRITICAL: D1 Database is not bound to the 'DB' variable in Cloudflare Pages settings. Please go to Settings > Functions > D1 database bindings and bind 'subscouter-db' to 'DB'.");
+    }
+
+    const db = drizzle(env.DB, { schema });
 
     return betterAuth({
         secret: env.BETTER_AUTH_SECRET as string,
-        baseURL: env.NEXT_PUBLIC_APP_URL || env.APP_URL || "https://subscouter.com",
+        baseURL: env.BETTER_AUTH_URL as string || env.NEXT_PUBLIC_APP_URL || "https://subscouter.com",
         database: drizzleAdapter(db, {
             provider: "sqlite",
             schema: {
