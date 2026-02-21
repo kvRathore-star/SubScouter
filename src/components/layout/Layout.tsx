@@ -63,7 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           {/* Subtle Right Glow Line */}
           <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-[#22d3ee]/10 to-transparent opacity-50 pointer-events-none" />
           {/* Logo Section */}
-          <div className="p-8 flex items-center justify-between">
+          <div className="px-8 pt-10 pb-6 flex items-center justify-between">
             <div className="flex items-center gap-3.5 group cursor-pointer" onClick={() => setView('dashboard')}>
               <div className="relative">
                 <div className="absolute inset-0 bg-brand/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -83,31 +83,60 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           </div>
 
           {/* Nav Items */}
-          <nav className="flex-1 px-4 space-y-1.5 mt-8 relative z-10">
+          <nav className="flex-1 px-5 space-y-2 mt-2 relative z-10">
             {navItems.map((item) => {
               const active = currentView === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className={`w-full flex items-center gap-3.5 px-3 py-3 rounded-[14px] transition-all duration-300 group relative ${active
-                    ? 'bg-[#1e293b]/50 text-white font-semibold'
-                    : 'text-[#94a3b8] hover:text-white hover:bg-[#1e293b]/30'
+                  className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-[16px] transition-all duration-300 group relative ${active
+                    ? 'bg-[#1e293b]/70 text-white font-semibold shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#1e293b]/40'
                     }`}
                 >
                   {active && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#22d3ee] rounded-r-full shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-[#22d3ee] rounded-r-full shadow-[0_0_12px_rgba(34,211,238,0.6)]" />
                   )}
                   <div className={`w-5 h-5 flex items-center justify-center transition-colors duration-300 ${active ? 'text-[#22d3ee]' : 'text-[#64748b] group-hover:text-white'}`}>
                     <item.icon strokeWidth={active ? 2.5 : 2} className="w-full h-full" />
                   </div>
-                  <span className={`text-[13px] tracking-wide transition-all duration-300 ${active ? 'font-bold' : 'font-medium'}`}>
+                  <span className={`text-[14px] tracking-wide transition-all duration-300 ${active ? 'font-bold' : 'font-medium'}`}>
                     {item.label}
                   </span>
                 </button>
               );
             })}
           </nav>
+
+          {/* AI Scout Widget to fill the empty area */}
+          <div className="px-5 mb-6 relative z-10 w-full">
+            <div className="p-5 rounded-[20px] bg-gradient-to-b from-[#1e293b]/50 to-transparent border border-[#334155]/50 relative overflow-hidden group hover:border-[#334155] transition-colors">
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#22d3ee]/30 to-transparent" />
+              <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#22d3ee]/5 blur-[30px] rounded-full pointer-events-none" />
+
+              <div className="flex items-center gap-3 mb-4 relative z-10">
+                <div className="w-8 h-8 rounded-full bg-[#0f172a] border border-[#22d3ee]/30 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.15)] group-hover:shadow-[0_0_20px_rgba(34,211,238,0.25)] transition-shadow">
+                  <Sparkles className="w-3.5 h-3.5 text-[#22d3ee]" />
+                </div>
+                <div>
+                  <h4 className="text-white text-[13px] font-bold tracking-tighter">AI Scout</h4>
+                  <span className="text-[#22d3ee] text-[9px] font-black uppercase tracking-widest">Active Scan</span>
+                </div>
+              </div>
+              <div className="space-y-2 mt-4 relative z-10">
+                <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
+                  <span className="text-[#64748b]">Inbox Scans</span>
+                  <span className="text-white">14 / 50</span>
+                </div>
+                <div className="w-full h-2 bg-[#0f172a] rounded-full overflow-hidden border border-[#1e293b]">
+                  <div className="h-full bg-[#22d3ee] w-[28%] rounded-full shadow-[0_0_8px_rgba(34,211,238,0.8)] relative">
+                    <div className="absolute top-0 right-0 bottom-0 w-4 bg-white/40 blur-[2px]" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Anchored Bottom User/Status Panel */}
           <div className="p-4 mt-auto border-t border-[#1e293b]/50 bg-[#020617]/80 backdrop-blur-xl relative z-10 w-full">
