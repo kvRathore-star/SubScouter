@@ -92,70 +92,91 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
         <p className="text-muted-foreground font-medium tracking-tight max-w-2xl">Connect your email accounts to automatically discover subscriptions. Our AI analyzes your inbox to find recurring charges and billing patterns.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Gmail Card */}
-        <div className="card-glass p-8 group relative overflow-visible">
+        <div className="card-glass p-8 flex flex-col justify-between min-h-[340px] group relative overflow-visible">
           <div className="absolute -top-10 -right-10 w-32 h-32 bg-red-500/5 blur-[60px] rounded-full pointer-events-none" />
-          <div className="w-16 h-16 bg-red-500/10 rounded-2xl flex items-center justify-center mb-8 border border-red-500/20 group-hover:scale-110 transition-transform duration-500 shadow-lg">
-            <Mail className="w-7 h-7 text-red-500" />
+
+          <div>
+            <div className="w-14 h-14 bg-red-500/10 rounded-2xl flex items-center justify-center mb-6 border border-red-500/20 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+              <Mail className="w-6 h-6 text-red-500" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">Gmail</h3>
+            <p className="text-muted-foreground text-[13px] font-medium leading-relaxed">
+              Connect your Google account to automatically scan for subscription receipts and invoices.
+            </p>
           </div>
-          <h3 className="text-2xl font-bold text-foreground mb-3 tracking-tight">Gmail</h3>
-          <p className="text-muted-foreground text-sm font-medium leading-relaxed mb-10">
-            Connect your Google account to scan for subscription receipts, invoices, and billing emails.
-          </p>
-          {isSignedIn ? (
-            <button
-              onClick={() => handleScan('google')}
-              disabled={scanning}
-              className="w-full bg-brand text-white py-4 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] shadow-xl shadow-brand/20 hover:translate-y-[-2px] transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
-            >
-              {scanning ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Scan className="w-4 h-4" />}
-              {scanning ? 'Scanning...' : 'Scan Gmail'}
-            </button>
-          ) : (
-            <button
-              onClick={handleGmailConnect}
-              className="w-full bg-brand text-white py-4 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] shadow-xl shadow-brand/20 hover:translate-y-[-2px] transition-all duration-300"
-            >
-              Connect Gmail
-            </button>
-          )}
+
+          <div className="mt-8">
+            {isSignedIn ? (
+              <button
+                onClick={() => handleScan('google')}
+                disabled={scanning}
+                className="w-full bg-[#22d3ee] text-black py-3.5 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] shadow-[0_4px_20px_rgba(34,211,238,0.2)] hover:bg-[#22d3ee]/90 hover:translate-y-[-2px] transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {scanning ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Scan className="w-4 h-4" />}
+                {scanning ? 'Scanning...' : 'Scan Inbox'}
+              </button>
+            ) : (
+              <button
+                onClick={handleGmailConnect}
+                className="w-full bg-white text-black py-3.5 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 hover:translate-y-[-2px] transition-all duration-300"
+              >
+                Connect
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Outlook Card */}
-        <div className="card-glass p-8 group relative overflow-visible opacity-70">
+        <div className="card-glass p-8 flex flex-col justify-between min-h-[340px] group relative overflow-visible opacity-60">
           <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/5 blur-[60px] rounded-full pointer-events-none" />
           <div className="absolute top-4 right-4 px-3 py-1 bg-blue-500/10 rounded-full border border-blue-500/20">
-            <span className="text-[9px] font-black text-blue-400 uppercase tracking-widest">Coming Soon</span>
+            <span className="text-[9px] font-black text-blue-400 uppercase tracking-widest">WIP</span>
           </div>
-          <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-8 border border-blue-500/20 group-hover:scale-110 transition-transform duration-500">
-            <Globe className="w-7 h-7 text-blue-500" />
+
+          <div>
+            <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20 group-hover:scale-110 transition-transform duration-500">
+              <Globe className="w-6 h-6 text-blue-500" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">Outlook</h3>
+            <p className="text-muted-foreground text-[13px] font-medium leading-relaxed">
+              Connect Microsoft 365 / Outlook for enterprise-level subscription tracking.
+            </p>
           </div>
-          <h3 className="text-2xl font-bold text-foreground mb-3 tracking-tight">Outlook</h3>
-          <p className="text-muted-foreground text-sm font-medium leading-relaxed mb-10">
-            Connect Microsoft 365 / Outlook for enterprise-level subscription tracking.
-          </p>
-          <button
-            disabled
-            className="w-full bg-secondary text-foreground/50 border border-border py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] cursor-not-allowed"
-          >
-            Coming Soon
-          </button>
+
+          <div className="mt-8">
+            <button
+              disabled
+              className="w-full bg-[#0f172a] text-[#64748b] border border-[#1e293b] py-3.5 rounded-xl text-[11px] font-bold uppercase tracking-[0.2em] cursor-not-allowed"
+            >
+              Coming Soon
+            </button>
+          </div>
         </div>
 
         {/* Manual Entry Card */}
-        <div className="bg-[#0f172a] rounded-[32px] p-8 shadow-2xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-brand/10 blur-3xl" />
-          <h3 className="text-xl font-black text-white mb-3 tracking-tight relative z-10">Manual Add</h3>
-          <p className="text-[#94a3b8] text-sm font-medium leading-relaxed mb-10 relative z-10">
-            Know your subscriptions already? Add them manually for instant tracking.
-          </p>
-          <button
-            onClick={onConnect}
-            className="w-full bg-white/5 text-white border border-white/10 py-4 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all relative z-10"
-          >
-            Add Manually
-          </button>
+        <div className="card-glass p-8 flex flex-col justify-between min-h-[340px] group relative overflow-visible border-b-4 border-b-transparent hover:border-b-[#22d3ee]">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#22d3ee]/5 blur-[60px] rounded-full pointer-events-none" />
+
+          <div>
+            <div className="w-14 h-14 bg-[#1e293b] rounded-2xl flex items-center justify-center mb-6 border border-[#334155] group-hover:scale-110 transition-transform duration-500 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+              <Plus className="w-6 h-6 text-[#22d3ee]" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">Manual Add</h3>
+            <p className="text-muted-foreground text-[13px] font-medium leading-relaxed">
+              Know your subscriptions already? Add them manually for instant dashboard access.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <button
+              onClick={onConnect}
+              className="w-full bg-[#1e293b] text-white border border-[#334155] py-3.5 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-[#334155] hover:border-[#475569] transition-all duration-300"
+            >
+              Enter Details
+            </button>
+          </div>
         </div>
       </div>
 

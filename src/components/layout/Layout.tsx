@@ -58,8 +58,10 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
       )}
 
       {/* ═══ SIDEBAR ═══ */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-[240px] bg-[#030712] border-r border-white/5 shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex flex-col h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-white/[0.03] via-transparent to-transparent">
+      <aside className={`fixed inset-y-0 left-0 z-50 w-[260px] bg-[#020617] border-r border-[#1e293b] shadow-[4px_0_24px_-10px_rgba(0,0,0,0.5)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex flex-col h-full bg-[radial-gradient(ellipse_at_top_left,_rgba(255,255,255,0.02)_0%,_transparent_60%)] relative">
+          {/* Subtle Right Glow Line */}
+          <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-[#22d3ee]/10 to-transparent opacity-50 pointer-events-none" />
           {/* Logo Section */}
           <div className="p-8 flex items-center justify-between">
             <div className="flex items-center gap-3.5 group cursor-pointer" onClick={() => setView('dashboard')}>
@@ -81,22 +83,25 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           </div>
 
           {/* Nav Items */}
-          <nav className="flex-1 px-4 space-y-1 mt-8">
+          <nav className="flex-1 px-4 space-y-1.5 mt-8 relative z-10">
             {navItems.map((item) => {
               const active = currentView === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className={`w-full flex items-center gap-3.5 px-3 py-2.5 rounded-xl transition-colors duration-200 group relative ${active
-                    ? 'bg-white/10 text-white font-medium shadow-sm'
-                    : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                  className={`w-full flex items-center gap-3.5 px-3 py-3 rounded-[14px] transition-all duration-300 group relative ${active
+                    ? 'bg-[#1e293b]/50 text-white font-semibold'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#1e293b]/30'
                     }`}
                 >
-                  <div className={`w-5 h-5 flex items-center justify-center transition-colors ${active ? 'text-[#22d3ee]' : 'text-muted-foreground group-hover:text-white'}`}>
-                    <item.icon strokeWidth={2} className="w-full h-full" />
+                  {active && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#22d3ee] rounded-r-full shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
+                  )}
+                  <div className={`w-5 h-5 flex items-center justify-center transition-colors duration-300 ${active ? 'text-[#22d3ee]' : 'text-[#64748b] group-hover:text-white'}`}>
+                    <item.icon strokeWidth={active ? 2.5 : 2} className="w-full h-full" />
                   </div>
-                  <span className={`text-sm tracking-tight transition-colors ${active ? 'font-semibold' : 'font-medium'}`}>
+                  <span className={`text-[13px] tracking-wide transition-all duration-300 ${active ? 'font-bold' : 'font-medium'}`}>
                     {item.label}
                   </span>
                 </button>
@@ -104,21 +109,44 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
             })}
           </nav>
 
-          {/* Version / Info - Leaner Design */}
-          <div className="p-4 mt-auto">
-            <div className="bg-white/[0.02] p-4 rounded-2xl border border-white/5 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="relative w-2.5 h-2.5 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-emerald-500 rounded-full blur-[2px] opacity-50" />
-                  <div className="relative w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+          {/* Anchored Bottom User/Status Panel */}
+          <div className="p-4 mt-auto border-t border-[#1e293b]/50 bg-[#020617]/80 backdrop-blur-xl relative z-10 w-full">
+            <div className="flex items-center justify-between mb-4 px-2">
+              <div className="flex items-center gap-2">
+                <div className="relative w-2 h-2 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-[#22d3ee] rounded-full blur-[3px] opacity-70 animate-pulse" />
+                  <div className="relative w-1.5 h-1.5 bg-[#22d3ee] rounded-full" />
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-xs font-semibold text-white/90">System Online</span>
-                  <span className="text-[10px] text-muted-foreground">All metrics stable</span>
+                <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Scout Active</span>
+              </div>
+              <span className="text-[9px] font-bold px-1.5 py-0.5 bg-[#1e293b] rounded text-[#94a3b8] uppercase tracking-widest border border-[#334155]">v2.4</span>
+            </div>
+
+            {user ? (
+              <div
+                onClick={() => setView('settings')}
+                className="flex items-center gap-3 p-2.5 rounded-[14px] hover:bg-[#1e293b]/50 border border-transparent hover:border-[#1e293b] transition-all cursor-pointer group"
+              >
+                <div className="w-9 h-9 rounded-xl overflow-hidden bg-[#1e293b] border border-[#334155] shrink-0">
+                  {user.image ? (
+                    <img src={user.image} alt="User" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-[#94a3b8] font-bold">{user.name?.[0] || 'U'}</div>
+                  )}
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-bold text-white truncate group-hover:text-[#22d3ee] transition-colors">{user.name || 'User'}</span>
+                  <span className="text-[10px] text-[#64748b] truncate font-medium">{tier === 'pro' ? 'Pro Plan' : 'Free Plan'}</span>
                 </div>
               </div>
-              <span className="text-[10px] font-medium px-2 py-1 bg-white/5 rounded-md text-white/50 border border-white/10">v2.4</span>
-            </div>
+            ) : (
+              <button
+                onClick={() => (window as any).location.href = '/login'}
+                className="w-full flex items-center justify-center gap-2 p-2.5 rounded-[14px] bg-[#1e293b] hover:bg-[#334155] text-white text-xs font-bold transition-all border border-[#334155]"
+              >
+                Sign In
+              </button>
+            )}
           </div>
         </div>
       </aside>
