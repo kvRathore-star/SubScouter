@@ -12,6 +12,7 @@ export interface Subscription {
   status: SubscriptionStatus;
   logoUrl?: string;
   description?: string;
+  workspaceId?: string;
   isTrial?: boolean;
   confidence?: number;
   lastUsedDate?: string;
@@ -107,3 +108,5 @@ export const CATEGORIES = [
 ] as const;
 
 export type FilterTab = 'all' | 'active' | 'trials' | 'paused' | 'past';
+
+export type WorkspaceType = 'Personal' | 'Business' | 'Family';

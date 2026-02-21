@@ -21,7 +21,7 @@ import { DashboardSkeleton } from '@/components/layout/Skeleton';
 import LoadingOverlay from '@/components/features/LoadingOverlay';
 import EmptyState from '@/components/features/EmptyState';
 import { Subscription, SpendingStats, LinkedEmail, FilterTab } from '@/types/index';
-import { Plus, Sparkles } from "lucide-react"
+import { Plus, Sparkles, Download, Folder } from "lucide-react"
 import CommandCenter from '@/components/features/CommandCenter';
 import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal';
 import SubscriptionSlideOver from '@/components/modals/SubscriptionSlideOver';
@@ -41,6 +41,7 @@ export default function Dashboard() {
   const [linkedEmails, setLinkedEmails] = useState<LinkedEmail[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [filter, setFilter] = useState<FilterTab>('all');
+  const [activeWorkspace, setActiveWorkspace] = useState<'All' | 'Personal' | 'Business' | 'Family'>('All');
   const [sortBy, setSortBy] = useState<'date' | 'price' | 'name'>('date');
   const [searchText, setSearchText] = useState('');
   const [currentView, setCurrentView] = useState<ViewType>('dashboard');
@@ -123,9 +124,13 @@ export default function Dashboard() {
           (filter === 'trials' && s.isTrial) ||
           (filter === 'paused' && s.status === 'paused') ||
           (filter === 'past' && s.status === 'canceled');
+
+        const matchesWorkspace = activeWorkspace === 'All' || s.workspaceId === activeWorkspace;
+
         const matchesSearch = s.name.toLowerCase().includes(searchText.toLowerCase()) ||
           s.category.toLowerCase().includes(searchText.toLowerCase());
-        return matchesFilter && matchesSearch;
+
+        return matchesFilter && matchesWorkspace && matchesSearch;
       })
       .sort((a, b) => {
         if (sortBy === 'price') return b.amount - a.amount;
@@ -135,6 +140,32 @@ export default function Dashboard() {
   }, [subscriptions, filter, searchText, sortBy]);
 
   const handleConnect = useCallback(() => setShowConnectModal(true), []);
+
+  const handleExportCSV = useCallback(() => {
+    const headers = ['Name', 'Amount', 'Currency', 'Billing Cycle', 'Category', 'Workspace', 'Next Billing Date', 'Status'];
+    const rows = sortedAndFilteredSubs.map(s => [
+      s.name,
+      s.amount.toString(),
+      s.currency,
+      s.billingCycle,
+      s.category,
+      s.workspaceId || 'None',
+      s.nextBillingDate || 'Unknown',
+      s.status
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8,"
+      + headers.join(",") + "\n"
+      + rows.map(e => e.map(item => `"${item}"`).join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `subscouter_export_${activeWorkspace.toLowerCase()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, [sortedAndFilteredSubs, activeWorkspace]);
 
   const handleAdd = useCallback(async (sub: Partial<Subscription>) => {
     const newSub: Subscription = {

@@ -63,7 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           {/* Subtle Right Glow Line */}
           <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-[#22d3ee]/10 to-transparent opacity-50 pointer-events-none" />
           {/* Logo Section */}
-          <div className="px-8 pt-10 pb-8 border-b border-[#1e293b]/50">
+          <div className="px-8 pt-10 pb-4 border-b border-[#1e293b]/50 mb-8">
             <div className="flex flex-col cursor-pointer" onClick={() => setView('dashboard')}>
               <h1 className="text-[28px] font-black tracking-tight text-white leading-none relative group">
                 <span className="text-[#22d3ee] drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]">Sub</span>Scouter
@@ -76,14 +76,14 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           </div>
 
           {/* Nav Items */}
-          <nav className="flex-1 px-4 space-y-2 py-8 relative z-10 font-medium">
+          <nav className="flex-1 px-4 py-8 relative z-10 font-medium">
             {navItems.map((item) => {
               const active = currentView === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-300 group relative ${active
+                  className={`w-full flex items-center justify-between p-3 mb-2 rounded-2xl transition-all duration-300 group relative ${active
                     ? 'bg-[#1e293b]/40 text-[#cbd5e1] border border-[#334155]/50'
                     : 'text-[#64748b] hover:text-[#94a3b8] hover:bg-[#1e293b]/20 border border-transparent'
                     }`}
@@ -116,7 +116,21 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
               </div>
               <div className="flex flex-col relative z-10">
                 <h4 className="text-white text-[15px] font-semibold tracking-tight mb-1">AI Scout</h4>
-                <span className="text-[#64748b] text-[10px] font-semibold uppercase tracking-widest">Active Scan: 14/50</span>
+                <span className="text-[#64748b] text-[10px] font-semibold uppercase tracking-widest mb-3">Active Scan: 14/50</span>
+
+                {/* Safe Mode / Assassin Mode Toggle */}
+                <div
+                  className="flex items-center gap-2 cursor-pointer group/toggle mt-1"
+                  onClick={() => {
+                    const el = document.getElementById('assassin-mode-toggle');
+                    if (el) el.classList.toggle('translate-x-full');
+                  }}
+                >
+                  <div className="w-8 h-4 rounded-full bg-[#1e293b] border border-[#334155] p-0.5 relative transition-colors">
+                    <div id="assassin-mode-toggle" className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)] transition-transform duration-300" />
+                  </div>
+                  <span className="text-[9px] font-bold text-[#94a3b8] uppercase tracking-widest group-hover/toggle:text-white transition-colors">Safe Mode</span>
+                </div>
               </div>
             </div>
           </div>
