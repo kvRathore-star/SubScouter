@@ -192,7 +192,33 @@ const ConnectionsView: React.FC<ConnectionsViewProps> = ({
         </div>
       )}
 
-      {scanning && <AILoader />}
+      {scanning && (
+        <div className="mt-12 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <h4 className="flex items-center gap-3 text-[10px] font-black text-[#22d3ee] uppercase tracking-[0.2em] mb-6">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22d3ee] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#22d3ee]"></span>
+            </span>
+            Zero-Friction Discovery in Progress
+          </h4>
+          <div className="grid grid-cols-1 gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="card-glass p-8 flex items-center justify-between opacity-60 animate-pulse border-white/5 bg-[#020617]/50" style={{ animationDelay: `${i * 150}ms` }}>
+                <div className="flex items-center gap-6">
+                  <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent to-white/10" />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="h-4 w-32 bg-white/10 rounded-lg" />
+                    <div className="h-3 w-20 bg-white/5 rounded-lg" />
+                  </div>
+                </div>
+                <div className="h-10 w-24 bg-[#22d3ee]/10 border border-[#22d3ee]/20 rounded-xl" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Connected Accounts List */}
       <div className="mt-16">

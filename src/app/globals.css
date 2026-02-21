@@ -86,12 +86,14 @@
   --input: rgba(255, 255, 255, 0.06);
   --ring: #334155;
 
-  --brand: #818cf8;
-  /* Vibrant Neural Indigo */
-  --brand-glow: rgba(129, 140, 248, 0.25);
+  --brand: #22d3ee;
+  /* Neon Cyan */
+  --brand-glow: rgba(34, 211, 238, 0.25);
+  --brand-alt: #a855f7;
+  /* Violet Accent */
   --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-bg: rgba(15, 23, 42, 0.65);
-  --surface-depth: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(2, 6, 23, 0.4); /* Deeper glass for Liquid Glass */
+  --surface-depth: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
 }
 
 * {
@@ -132,9 +134,9 @@ body::before {
 
 .dark body::before {
   background:
-    radial-gradient(circle at 100% 0%, rgba(129, 140, 248, 0.07) 0%, transparent 50%),
-    radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.07) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.3) 0%, transparent 100%);
+    radial-gradient(circle at 100% 0%, rgba(168, 85, 247, 0.08) 0%, transparent 50%), /* Violet */
+    radial-gradient(circle at 0% 100%, rgba(34, 211, 238, 0.06) 0%, transparent 50%), /* Cyan */
+    radial-gradient(circle at 50% 50%, rgba(2, 6, 23, 0.8) 0%, transparent 100%);
 }
 
 @supports (padding: env(safe-area-inset-bottom)) {

@@ -8,15 +8,15 @@ import AssassinButton from "./AssassinButton";
 
 interface SubscriptionCardProps {
   subscription: Subscription;
+  onClick: (sub: Subscription) => void;
   onCancel: (id: string) => void;
   onPause: (id: string) => void;
   onReApply: (id: string) => void;
 }
 
-const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription: sub, onCancel, onPause, onReApply }) => {
+const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription: sub, onClick, onCancel, onPause, onReApply }) => {
   const [advice, setAdvice] = useState<AIAdvice | null>(null);
   const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -41,9 +41,8 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription: sub, 
   return (
     <div
       onMouseMove={handleMouseMove}
-      className={`relative group overflow-hidden rounded-[2.5rem] border transition-all duration-500 ease-out cursor-pointer ${expanded ? 'bg-card border-brand/50 shadow-2xl scale-[1.02] z-20' : 'bg-card/40 backdrop-blur-md border-border hover:border-brand/40 hover:bg-card/60'
-        }`}
-      onClick={() => setExpanded(!expanded)}
+      className={`relative group overflow-hidden rounded-[2.5rem] border transition-all duration-500 ease-out cursor-pointer bg-[#020617]/40 backdrop-blur-md border-white/5 hover:border-[#22d3ee]/40 hover:bg-[#020617]/60 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(34,211,238,0.1)]`}
+      onClick={() => onClick(sub)}
     >
       {/* Dynamic Glass Shimmer */}
       <div
@@ -112,54 +111,12 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription: sub, 
               <div className="w-4 h-4 rounded-full bg-secondary border border-border" />
               <div className="w-4 h-4 rounded-full bg-secondary border border-border" />
             </div>
-            <div className={`transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}>
-              <ChevronDown className="w-4 h-4 text-muted-foreground" />
+            <div className={`transition-transform duration-300 group-hover:translate-x-1`}>
+              <ChevronDown className="w-4 h-4 text-muted-foreground -rotate-90" />
             </div>
           </div>
         </div>
       </div>
-
-      {expanded && (
-        <div
-          className="border-t border-border bg-secondary/5 p-5 animate-in fade-in slide-in-from-top-1 duration-300"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex gap-2">
-              <button
-                onClick={(e) => { e.stopPropagation(); onPause(sub.id); }}
-                className="px-4 py-2 text-[11px] font-semibold rounded-lg border border-border bg-background hover:bg-secondary transition-all"
-              >
-                {sub.status === 'paused' ? 'Resume' : 'Pause'}
-              </button>
-
-              <button
-                onClick={(e) => { e.stopPropagation(); handleGetAdvice(e); }}
-                className="flex items-center gap-2 px-4 py-2 text-[11px] font-semibold rounded-lg bg-foreground text-background hover:opacity-90 transition-all shadow-sm"
-              >
-                {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
-                AI Insight
-              </button>
-            </div>
-
-            <AssassinButton subName={sub.name} onComplete={() => onCancel(sub.id)} />
-          </div>
-
-          {advice && (
-            <div
-              className="p-4 rounded-xl border border-border bg-card shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-1 h-1 rounded-full bg-foreground" />
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">AI Recommendation</span>
-              </div>
-              <p className="text-sm font-medium text-foreground/70 mb-3 leading-relaxed">{advice.reasoning}</p>
-              <div className="inline-block px-2 py-1 rounded bg-secondary text-[10px] font-bold text-foreground uppercase tracking-widest">
-                {advice.savingsOpportunity}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 

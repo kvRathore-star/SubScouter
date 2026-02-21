@@ -1,13 +1,13 @@
 import { AuthProvider } from '@/providers/AuthProvider'
 import { ThemeProvider } from '@/providers/ThemeProvider'
 import type { Metadata, Viewport } from 'next'
-import { Inter, Geist_Mono, Outfit } from 'next/font/google'
+import { Inter, Geist, Geist_Mono } from 'next/font/google'
 import { TooltipProvider } from "@/components/ui/tooltip"
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
-const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
 
 export const dynamic = 'force-dynamic'
 
@@ -50,7 +50,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </head>
-      <body className={`${inter.variable} ${geistMono.variable} ${outfit.variable} font-sans`}>
+      <body className={`${inter.variable} ${geistMono.variable} ${geist.variable} font-sans`}>
         <ThemeProvider>
           <AuthProvider>
             <TooltipProvider>

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
-import { Target, Loader2, CheckCircle2, ShieldAlert, ArrowUpRight, Copy } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Target, Loader2, CheckCircle2 } from 'lucide-react';
+import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
 import { getAssassinLink } from '@/services/assassinRegistry';
 
 interface AssassinButtonProps {
@@ -10,41 +10,31 @@ interface AssassinButtonProps {
 }
 
 const AssassinButton: React.FC<AssassinButtonProps> = ({ subName, onComplete }) => {
-    const [state, setState] = useState<'idle' | 'deploying' | 'hunting' | 'waiting' | 'completed' | 'failed'>('idle');
-    const [logs, setLogs] = useState<string[]>([]);
-
+    const [state, setState] = useState<'idle' | 'deploying' | 'completed'>('idle');
+    const controls = useAnimation();
+    const x = useMotionValue(0);
     const intel = getAssassinLink(subName);
 
-    const addLog = (msg: string) => setLogs(p => [...p, msg].slice(-3));
+    // Fade text out as we drag
+    const textOpacity = useTransform(x, [0, 150], [1, 0]);
+    // Change background to red progressively
+    const bgOpacity = useTransform(x, [0, 150], [0, 1]);
 
-    const handleDeploy = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setState('deploying');
-        setLogs(['[INFO] Looking up cancellation info...', '[INFO] Service: ' + subName]);
-
-        setTimeout(() => {
-            setState('hunting');
-            addLog('[INFO] Cancellation page located');
-        }, 800);
-
-        setTimeout(() => {
-            addLog('[INFO] Found: ' + (intel.url.includes('google') ? 'Search results' : 'Direct link'));
-            setState('waiting');
-        }, 1800);
-    };
-
-    const handleFinalKill = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        addLog('[INFO] Opening cancellation page...');
-
-        // Open the URL in a new tab
-        window.open(intel.url, '_blank');
-
-        setTimeout(() => {
-            setState('completed');
-            addLog('[DONE] Subscription canceled');
-            if (onComplete) onComplete();
-        }, 1000);
+    const handleDragEnd = async (e: any, info: any) => {
+        if (info.offset.x > 150) {
+            setState('deploying');
+            // Mock the deployment flow
+            setTimeout(() => {
+                window.open(intel.url, '_blank');
+                setTimeout(() => {
+                    setState('completed');
+                    if (onComplete) onComplete();
+                }, 1000);
+            }, 1000);
+        } else {
+            // snap back
+            controls.start({ x: 0, transition: { type: "spring", stiffness: 300, damping: 20 } });
+        }
     };
 
     if (state === 'completed') {
@@ -52,126 +42,47 @@ const AssassinButton: React.FC<AssassinButtonProps> = ({ subName, onComplete }) 
             <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 font-black tracking-widest text-[10px] uppercase italic shadow-lg shadow-emerald-500/5"
+                className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 font-black tracking-widest text-[10px] uppercase italic shadow-lg shadow-emerald-500/5"
             >
                 <CheckCircle2 className="w-4 h-4" />
-                Canceled Successfully
+                Target Neutralized
             </motion.div>
         );
     }
 
+    if (state === 'deploying') {
+        return (
+            <div className="w-full relative px-8 py-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-500 bg-red-500/20 border border-red-500/30 text-red-500">
+                <Loader2 className="w-4 h-4 animate-spin text-red-500" />
+                <span className="font-black tracking-[0.2em] text-[10px] uppercase">Executing Kill Order...</span>
+            </div>
+        );
+    }
+
     return (
-        <div className="relative group/assassin">
-            <button
-                onClick={handleDeploy}
-                disabled={state !== 'idle'}
-                className={`
-                    relative px-8 py-4 rounded-xl font-black tracking-[0.2em] text-[10px] uppercase 
-                    flex items-center gap-3 transition-all duration-500 shadow-2xl
-                    ${state === 'idle' ? 'bg-brand text-white shadow-brand/20 hover:scale-105 active:scale-95' : 'bg-muted text-muted-foreground border border-border/50'}
-                `}
+        <div className="relative w-full h-14 bg-[#0a0f1c] rounded-xl border border-red-500/30 overflow-hidden group">
+            <motion.div style={{ opacity: bgOpacity }} className="absolute inset-0 bg-red-500/20" />
+            <motion.div style={{ opacity: textOpacity }} className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <span className="text-[10px] font-black text-red-500/70 uppercase tracking-[0.3em] flex items-center gap-2">
+                    Slide to Assassinate
+                </span>
+            </motion.div>
+
+            <motion.div
+                drag="x"
+                dragConstraints={{ left: 0, right: 260 }}
+                dragElastic={0.05}
+                dragSnapToOrigin={false}
+                onDragEnd={handleDragEnd}
+                animate={controls}
+                style={{ x }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="absolute left-1 top-1 bottom-1 w-12 bg-red-500 rounded-lg flex items-center justify-center cursor-grab active:cursor-grabbing shadow-[0_0_15px_rgba(239,68,68,0.5)] border border-red-400 z-10"
             >
-                <AnimatePresence mode="wait">
-                    {state === 'idle' && (
-                        <motion.div
-                            key="idle"
-                            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                            className="flex items-center gap-3"
-                        >
-                            <Target className="w-4 h-4" />
-                            Help Me Cancel This
-                        </motion.div>
-                    )}
-                    {(state === 'deploying' || state === 'hunting') && (
-                        <motion.div
-                            key="active"
-                            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                            className="flex items-center gap-3"
-                        >
-                            <Loader2 className="w-4 h-4 animate-spin text-brand" />
-                            {state === 'deploying' ? 'Looking up...' : 'Finding cancel page...'}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </button>
-
-            {/* GUIDED ASSASSIN OVERLAY */}
-            <AnimatePresence>
-                {state === 'waiting' && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-background/80 backdrop-blur-xl"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="card-glass max-w-lg w-full p-8 border-brand/30 shadow-2xl shadow-brand/20">
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="flex items-center gap-3">
-                                    <ShieldAlert className="w-6 h-6 text-brand" />
-                                    <h3 className="text-xl font-bold uppercase tracking-tight">Cancel Subscription</h3>
-                                </div>
-                                <div className="px-3 py-1 bg-brand text-white text-[9px] font-black uppercase tracking-widest rounded-lg italic">Ready</div>
-                            </div>
-
-                            <p className="text-sm text-muted-foreground font-medium mb-8">
-                                We found the cancellation page for <span className="text-foreground font-bold">{subName}</span>.
-                                Follow these steps to cancel your subscription:
-                            </p>
-
-                            <div className="space-y-4 mb-8">
-                                {intel.steps.map((step, i) => (
-                                    <div key={i} className="flex gap-4 items-start p-4 rounded-2xl bg-muted/50 border border-border/50">
-                                        <div className="w-6 h-6 rounded-lg bg-brand/10 flex items-center justify-center text-[10px] font-black text-brand shrink-0">{i + 1}</div>
-                                        <p className="text-xs font-bold text-foreground leading-relaxed italic">{step.toUpperCase()}</p>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="flex gap-4">
-                                <button
-                                    onClick={() => setState('idle')}
-                                    className="flex-1 py-4 rounded-xl border border-border text-[10px] font-bold uppercase tracking-widest hover:bg-muted transition-colors italic"
-                                >
-                                    Go Back
-                                </button>
-                                <button
-                                    onClick={handleFinalKill}
-                                    className="flex-1 py-4 rounded-xl bg-brand text-white text-[10px] font-black uppercase tracking-widest shadow-xl shadow-brand/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 italic"
-                                >
-                                    Open Cancel Page
-                                    <ArrowUpRight className="w-3.5 h-3.5" />
-                                </button>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            {/* Terminal Mission Logs */}
-            <AnimatePresence>
-                {(state !== 'idle' && state !== 'waiting') && logs.length > 0 && (
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        className="absolute left-full ml-6 top-1/2 -translate-y-1/2 whitespace-nowrap hidden md:block"
-                    >
-                        <div className="flex flex-col gap-1.5 border-l-2 border-brand/30 pl-4">
-                            {logs.map((log, i) => (
-                                <motion.p
-                                    key={i}
-                                    initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }}
-                                    className={`text-[9px] font-bold font-mono tracking-tight ${log.includes('[SYSTEM]') ? 'text-muted-foreground' : log.includes('[SUCCESS]') ? 'text-emerald-500' : 'text-brand'}`}
-                                >
-                                    {log}
-                                </motion.p>
-                            ))}
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                <Target className="w-5 h-5 text-white" />
+            </motion.div>
         </div>
     );
 };
-
 export default AssassinButton;

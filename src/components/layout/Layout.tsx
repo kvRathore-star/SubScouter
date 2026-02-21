@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useAppAuth } from '@/hooks/useAppAuth';
 import { useTheme } from '@/providers/ThemeProvider';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import {
   LayoutDashboard as DashboardIcon,
   Link as LinkIcon,
@@ -57,8 +58,8 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
       )}
 
       {/* ═══ SIDEBAR ═══ */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-[240px] bg-[#020617]/40 backdrop-blur-3xl border-r border-white-[0.05] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex flex-col h-full bg-gradient-to-b from-brand/5 to-transparent">
+      <aside className={`fixed inset-y-0 left-0 z-50 w-[240px] bg-[#030712] border-r border-white/5 shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex flex-col h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-white/[0.03] via-transparent to-transparent">
           {/* Logo Section */}
           <div className="p-8 flex items-center justify-between">
             <div className="flex items-center gap-3.5 group cursor-pointer" onClick={() => setView('dashboard')}>
@@ -80,30 +81,30 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           </div>
 
           {/* Nav Items */}
-          <nav className="flex-1 px-4 space-y-1 mt-2">
+          <nav className="flex-1 px-3 space-y-1 mt-6">
             {navItems.map((item) => {
               const active = currentView === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl transition-all duration-500 group relative ${active
-                    ? 'text-brand'
-                    : 'text-muted-foreground hover:text-foreground'
+                  className={`w-full flex items-center gap-3.5 px-3 py-2.5 rounded-xl transition-all duration-300 group relative ${active
+                    ? 'text-white font-bold'
+                    : 'text-muted-foreground hover:text-white/90'
                     }`}
                 >
                   {active && (
                     <div
-                      className="absolute inset-0 bg-brand/10 rounded-xl border border-brand/20 shadow-[0_0_20px_rgba(129,140,248,0.1)] animate-in fade-in zoom-in-95 duration-300"
+                      className="absolute inset-0 bg-white/[0.04] rounded-xl border border-white/80 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
                     />
                   )}
                   {!active && (
                     <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300" />
                   )}
-                  <div className={`w-[18px] h-[18px] relative z-10 transition-all duration-500 flex items-center justify-center ${active ? 'text-brand' : 'group-hover:scale-110 group-hover:text-foreground opacity-60 group-hover:opacity-100'}`}>
-                    <item.icon strokeWidth={active ? 2.5 : 1.5} className="w-full h-full" />
+                  <div className={`w-[18px] h-[18px] relative z-10 transition-all duration-300 flex items-center justify-center ${active ? 'text-white' : 'group-hover:text-white opacity-70 group-hover:opacity-100'}`}>
+                    <item.icon strokeWidth={active ? 2 : 1.5} className="w-full h-full" />
                   </div>
-                  <span className={`text-[13px] tracking-tight relative z-10 transition-all duration-300 ${active ? 'font-bold' : 'font-medium group-hover:translate-x-1 opacity-70 group-hover:opacity-100'}`}>
+                  <span className={`text-[14px] tracking-tight relative z-10 transition-all duration-300 ${active ? 'font-bold' : 'font-semibold opacity-70 group-hover:opacity-100'}`}>
                     {item.label}
                   </span>
                 </button>
@@ -112,20 +113,28 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
           </nav>
 
           {/* Version / Info - Bento Tile */}
-          <div className="p-4 mt-auto">
-            <div className="bg-white/[0.03] p-4 rounded-2xl border border-white-[0.05] relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-711" />
+          <div className="p-3 mt-auto">
+            <div className="bg-[#0a0f1c]/50 p-3.5 rounded-[18px] border border-white/20 relative overflow-hidden group shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10">
-                <p className="text-[10px] font-black text-brand uppercase tracking-[0.2em] mb-2.5">Status</p>
+                <p className="text-[10px] font-black text-white uppercase tracking-[0.3em] mb-2.5 ml-0.5">S T A T U S</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <div className="relative">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
-                      <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-500 animate-ping opacity-75" />
+                    <div className="relative w-3.5 h-3.5 flex items-center justify-center">
+                      <motion.div
+                        animate={{
+                          backgroundColor: ['#3b82f6', '#22d3ee', '#10b981'],
+                          scale: [1, 1.3, 1],
+                          opacity: [0.6, 0.9, 0.6]
+                        }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute inset-0 rounded-full blur-md"
+                      />
+                      <div className="relative w-2 h-2 bg-white rounded-full shadow-[0_0_5px_rgba(255,255,255,0.8)]" />
                     </div>
-                    <span className="text-[11px] font-bold text-foreground/90">All Systems Online</span>
+                    <span className="text-[12px] font-bold text-white tracking-tight">All Systems Online</span>
                   </div>
-                  <span className="text-[9px] font-mono text-muted-foreground">v2.4.0</span>
+                  <span className="text-[10px] font-medium text-muted-foreground/70">v2.4.0</span>
                 </div>
               </div>
             </div>
