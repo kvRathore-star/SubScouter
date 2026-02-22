@@ -71,23 +71,23 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 stagger-in">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12 stagger-in">
       {cards.map((card, i) => (
-        <div key={i} className="card-glass p-6 group cursor-default">
-          <div className="flex items-center justify-between mb-6">
-            <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center border border-border group-hover:scale-105 transition-transform duration-500 shadow-sm`}>
-              <card.icon className={`w-5 h-5 ${card.color}`} />
+        <div key={i} className="card-glass p-5 sm:p-6 group cursor-default transition-all duration-300 hover:shadow-lg hover:shadow-background/50 hover:-translate-y-1">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl ${card.bg} flex items-center justify-center border border-border group-hover:scale-105 transition-transform duration-500 shadow-sm`}>
+              <card.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${card.color}`} />
             </div>
             {card.percent > 0 && (
-              <span className={`text-[10px] font-bold ${card.color} uppercase tracking-widest`}>
+              <span className={`text-[9px] sm:text-[10px] font-bold ${card.color} uppercase tracking-widest bg-background/30 px-2 py-1 rounded-full border border-border/50`}>
                 {Math.round(card.percent)}%
               </span>
             )}
           </div>
           <div className="flex flex-col">
-            <span className="text-[11px] font-bold text-muted-foreground/50 uppercase tracking-[0.2em] mb-1.5">{card.label}</span>
-            <div className="text-3xl font-bold tracking-tight text-foreground transition-transform group-hover:translate-x-1 duration-500">{card.value}</div>
-            <div className="mt-4 flex items-center gap-2">
+            <span className="text-[10px] sm:text-[11px] font-bold text-muted-foreground/60 uppercase tracking-[0.2em] mb-1 sm:mb-1.5">{card.label}</span>
+            <div className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground transition-transform group-hover:translate-x-1 duration-500">{card.value}</div>
+            <div className="mt-3 sm:mt-4 flex items-center gap-2">
               <div className="h-1 flex-1 bg-secondary rounded-full overflow-hidden">
                 <div
                   style={{ width: `${Math.max(card.percent, 2)}%` }}

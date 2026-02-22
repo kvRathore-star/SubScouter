@@ -21,7 +21,7 @@ import { DashboardSkeleton } from '@/components/layout/Skeleton';
 import LoadingOverlay from '@/components/features/LoadingOverlay';
 import EmptyState from '@/components/features/EmptyState';
 import { Subscription, SpendingStats, LinkedEmail, FilterTab } from '@/types/index';
-import { Plus, Sparkles, Download, Folder } from "lucide-react"
+import { Plus, Sparkles, Download, Folder, Shield } from "lucide-react"
 import CommandCenter from '@/components/features/CommandCenter';
 import AddEmailConnectionModal from '@/components/modals/AddEmailConnectionModal';
 import SubscriptionSlideOver from '@/components/modals/SubscriptionSlideOver';
@@ -257,47 +257,53 @@ export default function Dashboard() {
           <StatsOverview stats={stats} />
 
           {/* Recent Infiltration Stacked Bento Cards */}
-          <div className="flex flex-col gap-6 mb-12">
-            {/* Create chunks of 2 subscriptions per block */}
-            {Array.from({ length: Math.ceil(Math.min(sortedAndFilteredSubs.length, 6) / 2) }).map((_, index) => {
-              const subsInBlock = sortedAndFilteredSubs.slice(index * 2, index * 2 + 2);
+          <div className="space-y-6 sm:space-y-8 mb-12">
+            <h3 className="text-sm font-black text-foreground uppercase tracking-widest flex items-center gap-2 mb-4">
+              <Sparkles className="w-4 h-4 text-brand" />
+              Recent Infiltrations
+            </h3>
 
-              return (
-                <div key={index} className="bento-card flex flex-col p-6">
-                  <h3 className="text-[11px] font-bold text-white uppercase tracking-widest mb-6">Recent Infiltration</h3>
-                  <div className="flex flex-col md:flex-row gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                    {subsInBlock.map(sub => (
-                      <div key={sub.id} onClick={() => setSelectedSub(sub)} className="flex-1 flex gap-4 pt-4 md:pt-0 md:pl-4 first:pt-0 first:pl-0 cursor-pointer group">
-                        <div className="w-10 h-10 rounded-full bg-[#0f172a] border border-[#1e293b] flex items-center justify-center shrink-0 overflow-hidden shadow-inner group-hover:border-[#22d3ee]/30 transition-colors">
-                          {sub.logoUrl ? (
-                            <img src={sub.logoUrl} alt={sub.name} className="w-full h-full object-cover" />
-                          ) : (
-                            <span className="text-white text-[12px] font-black tracking-tighter text-red-500 drop-shadow-[0_0_5px_rgba(239,68,68,0.5)]">
-                              {sub.name.substring(0, 1).toUpperCase()}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex flex-col gap-1 md:gap-4 mt-1 w-full relative">
-                          <div className="flex items-center gap-2">
-                            <h4 className="text-[13px] font-medium text-[#cbd5e1]">{sub.name} - Premium Plan</h4>
-                          </div>
-                          <div className="flex items-center justify-between w-full pr-12">
-                            <span className="text-[12px] font-medium text-[#64748b]">Renewal: ${sub.amount.toFixed(2)}/month</span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {sortedAndFilteredSubs.slice(0, 6).map(sub => (
+                <div
+                  key={sub.id}
+                  onClick={() => setSelectedSub(sub)}
+                  className="bento-card flex gap-4 p-4 sm:p-5 cursor-pointer group hover:border-brand/30 transition-all hover:shadow-lg hover:-translate-y-1"
+                >
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-secondary/50 border border-border flex items-center justify-center shrink-0 overflow-hidden shadow-inner group-hover:border-brand/40 transition-colors">
+                    {sub.logoUrl ? (
+                      <img src={sub.logoUrl} alt={sub.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-muted-foreground text-sm font-black tracking-tighter group-hover:text-brand transition-colors drop-shadow-sm">
+                        {sub.name.substring(0, 1).toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-col flex-1 justify-center min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <h4 className="text-[13px] sm:text-sm font-bold text-foreground truncate max-w-[140px] sm:max-w-full">{sub.name}</h4>
+                      <span className="text-xs sm:text-[13px] font-bold text-white whitespace-nowrap">${sub.amount.toFixed(2)}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground capitalize">{sub.billingCycle}</span>
+                      <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-md ${sub.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}`}>
+                        {sub.status}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              )
-            })}
+              ))}
 
-            {sortedAndFilteredSubs.length === 0 && (
-              <div className="bento-card flex flex-col items-center justify-center p-12 text-center min-h-[200px]">
-                <h3 className="text-white font-black text-lg tracking-tight mb-2">Perimeter Secure</h3>
-                <p className="text-[#64748b] text-sm font-medium tracking-wide">No recent infiltrations detected in your ecosystem.</p>
-              </div>
-            )}
+              {sortedAndFilteredSubs.length === 0 && (
+                <div className="col-span-1 md:col-span-2 lg:col-span-3 bento-card flex flex-col items-center justify-center p-12 text-center min-h-[200px] border-dashed border-border/50">
+                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center mb-4">
+                    <Shield className="w-5 h-5 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-foreground font-black text-lg tracking-tight mb-2">Perimeter Secure</h3>
+                  <p className="text-muted-foreground text-sm font-medium tracking-wide">No recent infiltrations detected in your ecosystem.</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -178,9 +178,9 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
       </aside>
 
       {/* ═══ MAIN CONTENT AREA ═══ */}
-      <div className="flex-1 flex flex-col min-w-0 pl-0 lg:pl-6">
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-0 overflow-hidden relative">
         {/* Top bar */}
-        <header className="h-20 bg-card/20 backdrop-blur-xl border-b border-border flex items-center justify-between px-10 sticky top-0 z-40">
+        <header className="h-20 bg-background/80 backdrop-blur-2xl border-b border-border flex items-center justify-between px-6 sm:px-8 lg:px-12 sticky top-0 z-40 w-full transition-all">
           <div className="flex-1 flex items-center gap-4">
             <div className="relative group max-w-md w-full">
               <div className="absolute inset-0 bg-brand/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -206,15 +206,15 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
         </header>
 
         {/* Dynamic Top Right Header (Breadcrumbs/User info) */}
-        <div className="flex items-center justify-between px-8 py-6">
+        <div className="flex items-center justify-between px-6 sm:px-8 lg:px-12 py-6 w-full max-w-[1600px] mx-auto">
           <div className="flex items-center gap-4">
             {/* Desktop Menu Toggle */}
-            <button className="lg:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
-              {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <button className="lg:hidden p-2 -ml-2 rounded-xl border border-transparent hover:border-border hover:bg-secondary/50 transition-all" onClick={() => setSidebarOpen(!sidebarOpen)}>
+              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 sm:gap-6">
             <div className="relative cursor-pointer">
               <div className="w-10 h-10 bg-muted/50 border border-border rounded-full flex items-center justify-center text-muted-foreground hover:text-brand hover:border-brand/30 transition-all">
                 <Bell className="w-5 h-5" />
@@ -259,7 +259,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
         </div>
 
         {/* View Port */}
-        <main className="flex-1 overflow-y-auto pl-6 lg:pl-10 pr-6 lg:pr-10 pb-12">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden px-6 sm:px-8 lg:px-12 pb-12 w-full max-w-[1600px] mx-auto scroll-smooth">
           <ErrorBoundary>
             {children}
           </ErrorBoundary>
