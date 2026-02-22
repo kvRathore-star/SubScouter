@@ -25,19 +25,23 @@ export default function PortalView({ initialMode = 'login' }: PortalProps) {
         setError('');
 
         try {
+            let res;
             if (mode === 'signup') {
-                await authClient.signUp.email({
+                res = await authClient.signUp.email({
                     email,
                     password,
                     name: name || email.split('@')[0],
                 });
             } else {
-                await authClient.signIn.email({
+                res = await authClient.signIn.email({
                     email,
                     password,
                 });
             }
-            // Auth state will update via useSession, triggering a re-render
+
+            if (res.error) {
+                setError(res.error.message || 'Authentication failed.');
+            }
         } catch (err: any) {
             setError(err?.message || 'Authentication failed. Please try again.');
         }
@@ -48,11 +52,16 @@ export default function PortalView({ initialMode = 'login' }: PortalProps) {
         setLoading(true);
         setError('');
         try {
-            await authClient.signIn.social({
+            const { error, data } = await authClient.signIn.social({
                 provider: "google",
             });
+            if (error) {
+                setError(error.message || "Google sign-in failed.");
+                setLoading(false);
+            }
+            // If data exists, it usually redirects automatically
         } catch (err: any) {
-            setError("Google sign-in failed. Please ensure OAuth is configured.");
+            setError(err?.message || "Google sign-in failed. Please ensure OAuth is configured.");
             setLoading(false);
         }
     };

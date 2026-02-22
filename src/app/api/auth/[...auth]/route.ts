@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
         // Dynamically establish the exact base URL to permanently bypass Better-Auth trusting origin 500 errors
         const liveOrigin = request.headers.get("origin") || request.nextUrl?.origin || "https://subscouter.com";
-        const dynamicEnv = { ...env, NEXT_PUBLIC_APP_URL: liveOrigin };
+        const dynamicEnv = { ...env, NEXT_PUBLIC_APP_URL: liveOrigin, BETTER_AUTH_URL: liveOrigin };
 
         const auth = getAuth(dynamicEnv);
         const handler = toNextJsHandler(auth);
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
 
         // Dynamically establish the exact base URL to permanently bypass Better-Auth trusting origin 500 errors
         const liveOrigin = request.headers.get("origin") || request.nextUrl?.origin || "https://subscouter.com";
-        const dynamicEnv = { ...env, NEXT_PUBLIC_APP_URL: liveOrigin };
+        const dynamicEnv = { ...env, NEXT_PUBLIC_APP_URL: liveOrigin, BETTER_AUTH_URL: liveOrigin };
 
         const auth = getAuth(dynamicEnv);
         const handler = toNextJsHandler(auth);
