@@ -125,15 +125,16 @@ export default function SubscriptionSlideOver({ subscription, isOpen, onClose, o
                         </div>
 
                         {/* Footer Actions */}
-                        <div className="p-6 border-t border-white/5 bg-[#020617]/80 flex flex-col gap-3">
-                            {subscription.status === 'active' ? (
+                        <div className="p-6 border-t border-white/5 bg-[#020617]/80 flex flex-col gap-4 min-h-fit">
+                            {subscription.status === 'active' && (
                                 <button
                                     onClick={() => onPause(subscription.id)}
                                     className="w-full py-4 rounded-xl border border-white/10 text-xs font-bold text-white uppercase tracking-widest hover:bg-white/5 transition-all"
                                 >
                                     Pause Subscription
                                 </button>
-                            ) : (
+                            )}
+                            {subscription.status !== 'active' && (
                                 <button
                                     onClick={() => onResume(subscription.id)}
                                     className="w-full py-4 rounded-xl border border-[#22d3ee]/30 bg-[#22d3ee]/10 text-[#22d3ee] text-xs font-bold uppercase tracking-widest hover:bg-[#22d3ee]/20 transition-all"
