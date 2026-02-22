@@ -23,16 +23,35 @@ const AssassinButton: React.FC<AssassinButtonProps> = ({ subName, onComplete }) 
     const handleDragEnd = async (e: any, info: any) => {
         if (info.offset.x > 150) {
             setState('deploying');
-            // Mock the deployment flow
-            setTimeout(() => {
+
+            try {
+                const res = await fetch('/api/assassin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ vendorName: subName })
+                });
+
+                if (!res.ok) throw new Error("Assassination Protocol Failed");
+
+                const { draft } = await res.json();
+
+                // Construct the intent protocol
+                const mailtoLink = `mailto:${draft.to}?subject=${encodeURIComponent(draft.subject)}&body=${encodeURIComponent(draft.body)}`;
+
+                // Fire the deadly intent
+                window.open(mailtoLink, '_blank');
+
+                setState('completed');
+                if (onComplete) onComplete();
+            } catch (err) {
+                console.error("Agentic failure:", err);
+                // Fallback to the dumb registry if API dies
                 window.open(intel.url, '_blank');
-                setTimeout(() => {
-                    setState('completed');
-                    if (onComplete) onComplete();
-                }, 1000);
-            }, 1000);
+                setState('idle');
+                controls.start({ x: 0, transition: { type: "spring", stiffness: 300, damping: 20 } });
+            }
         } else {
-            // snap back
+            // snap back safely
             controls.start({ x: 0, transition: { type: "spring", stiffness: 300, damping: 20 } });
         }
     };

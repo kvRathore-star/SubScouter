@@ -37,12 +37,12 @@ export const getAuth = (envVars?: Record<string, any>) => {
             google: {
                 clientId: env.GOOGLE_CLIENT_ID as string,
                 clientSecret: env.GOOGLE_CLIENT_SECRET as string,
-                scope: ["https://www.googleapis.com/auth/gmail.readonly"],
+                scope: ["profile", "email", "https://www.googleapis.com/auth/gmail.readonly"],
             },
             microsoft: {
                 clientId: env.MICROSOFT_CLIENT_ID as string,
                 clientSecret: env.MICROSOFT_CLIENT_SECRET as string,
-                scope: ["https://graph.microsoft.com/Mail.Read"],
+                scope: ["User.Read", "Mail.Read"],
             },
         },
         plugins: [

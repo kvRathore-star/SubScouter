@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getRequestContext } from "@cloudflare/next-on-pages";
 export const runtime = 'edge';
 
 /**
@@ -14,7 +15,15 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: "Missing userId" }, { status: 400 });
         }
 
-        const bucket = (process.env as any).STORAGE as any;
+        let env: Record<string, any> = {};
+        try {
+            const ctx = getRequestContext();
+            if (ctx && ctx.env) env = ctx.env as Record<string, any>;
+        } catch (err) { }
+
+        env = { ...process.env, ...env };
+
+        const bucket = env.STORAGE as any;
         if (!bucket) {
             return NextResponse.json({ error: "Cloud storage not configured" }, { status: 503 });
         }

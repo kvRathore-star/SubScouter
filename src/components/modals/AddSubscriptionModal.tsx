@@ -45,34 +45,54 @@ const AddSubscriptionModal: React.FC<AddSubscriptionModalProps> = ({ onClose, on
     onClose();
   };
 
-  const simulateOCR = () => {
+  const processOCR = async (file: File) => {
     setIsUploading(true);
-    // Simulate Gemini 1.5 Flash processing delay
-    setTimeout(() => {
+    setUploadSuccess(false);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/ocr', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!res.ok) throw new Error('OCR Failed');
+
+      const { data } = await res.json();
+
       setIsUploading(false);
       setUploadSuccess(true);
-      // Pre-fill parsed data from the "receipt"
+
       setTimeout(() => {
         onAdd({
-          name: 'Adobe Creative Cloud',
-          amount: 54.99,
-          currency: 'USD',
-          category: 'Software',
-          billingCycle: 'monthly',
-          workspaceId: 'Business',
+          name: data.name || 'Unknown Receipt',
+          amount: parseFloat(data.amount) || 0,
+          currency: data.currency || 'USD',
+          category: data.category || 'Other',
+          billingCycle: (data.billingCycle || 'monthly').toLowerCase(),
+          workspaceId: 'Business', // Defaulting receipts to Business
           nextBillingDate: new Date().toISOString().split('T')[0],
-          logoUrl: 'https://logo.clearbit.com/adobe.com'
+          logoUrl: `https://logo.clearbit.com/${data.name ? data.name.toLowerCase().replace(/\\s+/g, '') : 'unknown'}.com`
         });
         onClose();
       }, 1500);
-    }, 2500);
+
+    } catch (err) {
+      console.error("Receipt parsing error:", err);
+      setIsUploading(false);
+      // Let the user fallback to manual entry if the API fails
+      alert("AI failed to read this receipt. Please enter it manually.");
+      setTab('manual');
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      simulateOCR();
+      processOCR(e.dataTransfer.files[0]);
     }
   };
 
@@ -230,7 +250,7 @@ const AddSubscriptionModal: React.FC<AddSubscriptionModalProps> = ({ onClose, on
                 ref={fileInputRef}
                 className="hidden"
                 accept="image/jpeg,image/png,application/pdf"
-                onChange={(e) => { if (e.target.files?.length) simulateOCR(); }}
+                onChange={(e) => { if (e.target.files?.length) processOCR(e.target.files[0]); }}
               />
 
               <div
@@ -238,8 +258,8 @@ const AddSubscriptionModal: React.FC<AddSubscriptionModalProps> = ({ onClose, on
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
                 className={`w-full aspect-video rounded-[24px] border-2 border-dashed flex flex-col items-center justify-center p-8 text-center transition-all ${isDragging ? 'border-[#22d3ee] bg-[#22d3ee]/5' :
-                    uploadSuccess ? 'border-emerald-500 bg-emerald-500/5' :
-                      'border-[#334155] bg-[#020617] hover:border-[#64748b]'
+                  uploadSuccess ? 'border-emerald-500 bg-emerald-500/5' :
+                    'border-[#334155] bg-[#020617] hover:border-[#64748b]'
                   }`}
               >
                 {isUploading ? (
@@ -256,7 +276,7 @@ const AddSubscriptionModal: React.FC<AddSubscriptionModalProps> = ({ onClose, on
                       <CheckCircle2 className="w-8 h-8 text-emerald-500" />
                     </div>
                     <h4 className="text-white font-bold tracking-tight mb-1">Receipt Processed!</h4>
-                    <p className="text-[#64748b] text-[11px] font-bold uppercase tracking-widest">Adding Adobe CC to Business Vault...</p>
+                    <p className="text-[#64748b] text-[11px] font-bold uppercase tracking-widest">Adding to Vault...</p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center">
