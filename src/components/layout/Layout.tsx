@@ -179,12 +179,17 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
 
       {/* ═══ MAIN CONTENT AREA ═══ */}
       <div className="flex-1 flex flex-col min-w-0 lg:ml-0 overflow-hidden relative">
-        {/* Top bar */}
-        <header className="h-20 bg-background/80 backdrop-blur-2xl border-b border-border flex items-center justify-between px-6 sm:px-8 lg:px-12 sticky top-0 z-40 w-full transition-all">
-          <div className="flex-1 flex items-center gap-4">
-            <div className="relative group max-w-md w-full">
+        {/* Unified Top Header */}
+        <header className="h-[88px] bg-background/80 backdrop-blur-2xl border-b border-border flex items-center justify-between px-6 sm:px-8 lg:px-12 sticky top-0 z-40 w-full transition-all">
+          <div className="flex items-center gap-4 flex-1">
+            {/* Mobile Menu Toggle */}
+            <button className="lg:hidden p-2 -ml-2 rounded-xl border border-transparent hover:border-border hover:bg-secondary/50 transition-all text-muted-foreground hover:text-foreground" onClick={() => setSidebarOpen(!sidebarOpen)}>
+              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+
+            <div className="relative group max-w-sm w-full hidden sm:block">
               <div className="absolute inset-0 bg-brand/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative flex items-center gap-3 px-4 py-2 bg-secondary/40 border border-border rounded-xl group-hover:border-brand/40 transition-all duration-300 cursor-text" onClick={() => (window as any).toggleCommandPalette?.()}>
+              <div className="relative flex items-center gap-3 px-4 py-2.5 bg-secondary/40 border border-border rounded-xl group-hover:border-brand/40 transition-all duration-300 cursor-text" onClick={() => (window as any).toggleCommandPalette?.()}>
                 <Monitor className="w-4 h-4 text-muted-foreground" />
                 <span className="text-xs font-medium text-muted-foreground/60 flex-1">Search subscriptions...</span>
                 <div className="flex items-center gap-1 bg-background/30 border border-border px-1.5 py-0.5 rounded-md">
@@ -195,75 +200,54 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="flex items-center p-2 rounded-xl bg-secondary/50 border border-border hover:bg-white/5 transition-all cursor-pointer group">
-              <RefreshCcw className="w-4 h-4 text-muted-foreground group-hover:rotate-180 transition-transform duration-700" />
-            </div>
-            <div className="flex items-center p-2 rounded-xl bg-secondary/50 border border-border hover:bg-white/5 transition-all cursor-pointer group">
-              <Maximize2 className="w-4 h-4 text-muted-foreground group-hover:scale-110 transition-transform" />
-            </div>
-          </div>
-        </header>
-
-        {/* Dynamic Top Right Header (Breadcrumbs/User info) */}
-        <div className="flex items-center justify-between px-6 sm:px-8 lg:px-12 py-6 w-full max-w-[1600px] mx-auto">
-          <div className="flex items-center gap-4">
-            {/* Desktop Menu Toggle */}
-            <button className="lg:hidden p-2 -ml-2 rounded-xl border border-transparent hover:border-border hover:bg-secondary/50 transition-all" onClick={() => setSidebarOpen(!sidebarOpen)}>
-              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
-
           <div className="flex items-center gap-4 sm:gap-6">
-            <div className="relative cursor-pointer">
-              <div className="w-10 h-10 bg-muted/50 border border-border rounded-full flex items-center justify-center text-muted-foreground hover:text-brand hover:border-brand/30 transition-all">
-                <Bell className="w-5 h-5" />
+            <div className="relative cursor-pointer group">
+              <div className="w-10 h-10 bg-secondary/50 border border-border rounded-xl flex items-center justify-center text-muted-foreground group-hover:text-brand group-hover:border-brand/30 transition-all shadow-sm">
+                <Bell className="w-4 h-4 group-hover:animate-bounce" />
               </div>
               {notificationCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#ef4444] border-2 border-white text-white text-[9px] font-black flex items-center justify-center rounded-full">
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-[#ef4444] border-[2px] border-[#020617] text-white text-[9px] font-black flex items-center justify-center rounded-full shadow-[0_0_10px_rgba(239,68,68,0.5)]">
                   {notificationCount}
                 </span>
               )}
             </div>
 
+            <div className="h-6 w-px bg-border hidden sm:block" />
+
             {user ? (
-              <div className="flex items-center gap-4 cursor-pointer group bg-secondary/30 p-2 pr-5 rounded-2xl border border-border hover:border-brand/40 transition-all duration-500">
-                <div className="w-12 h-12 rounded-xl overflow-hidden border border-border group-hover:border-brand/20 transition-all shadow-lg relative">
-                  <div className="absolute inset-0 bg-brand/10 group-hover:opacity-0 transition-opacity" />
+              <div className="flex items-center gap-3 cursor-pointer group hover:bg-secondary/30 p-1.5 pr-4 rounded-2xl border border-transparent hover:border-border transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl overflow-hidden border border-border group-hover:border-brand/40 transition-all shadow-md relative">
+                  <div className="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <img
                     src={user.image || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=100&auto=format&fit=crop"}
                     alt="User"
-                    className="w-full h-full object-cover relative z-10"
+                    className="w-full h-full object-cover relative z-10 grayscale group-hover:grayscale-0 transition-all duration-500"
                   />
                 </div>
-                <div className="text-left">
-                  <p className="text-sm font-bold text-foreground tracking-tight group-hover:text-brand transition-colors">{user.name || user.email || 'User'}</p>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <div className={`w-1.5 h-1.5 rounded-full ${tier === 'pro' ? 'bg-brand shadow-[0_0_8px_var(--brand)]' : 'bg-muted-foreground'}`} />
-                    <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.1em]">{tier === 'pro' ? 'Pro Plan' : 'Free Plan'}</p>
-                  </div>
-                  <Link href="/account">
-                    <button className="mt-2 text-sm text-brand hover:underline">My Account</button>
-                  </Link>
+                <div className="hidden sm:flex flex-col text-left">
+                  <p className="text-[13px] font-bold text-foreground tracking-tight group-hover:text-brand transition-colors">{user.name || user.email || 'User'}</p>
+                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.1em] mt-0.5">{tier === 'pro' ? 'Pro Plan' : 'Free Plan'}</p>
                 </div>
               </div>
             ) : (
               <button
                 onClick={() => (window as any).location.href = '/login'}
-                className="bg-brand text-white px-8 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-xl shadow-brand/20 hover:translate-y-[-2px] transition-all duration-300"
+                className="bg-brand text-white px-6 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-widest shadow-lg shadow-brand/20 hover:scale-105 transition-all duration-300"
               >
                 Sign In
               </button>
             )}
           </div>
-        </div>
+        </header>
 
         {/* View Port */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden px-6 sm:px-8 lg:px-12 pb-12 w-full max-w-[1600px] mx-auto scroll-smooth">
-          <ErrorBoundary>
-            {children}
-          </ErrorBoundary>
-        </main>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth">
+          <main className="px-6 sm:px-8 lg:px-12 py-8 lg:py-12 w-full max-w-[1200px] mx-auto min-h-full">
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
+          </main>
+        </div>
       </div>
 
     </div>

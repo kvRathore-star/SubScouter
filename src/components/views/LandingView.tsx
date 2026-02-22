@@ -40,21 +40,21 @@ export default function LandingView() {
 
             {/* Main Hero Section */}
             <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-6 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-24 sm:pb-36 max-w-[1400px] mx-auto w-full">
-                <div className="animate-in slide-in-from-bottom-5 fade-in duration-1000 ease-out fill-mode-both w-full max-w-4xl mx-auto flex flex-col items-center">
+                <div className="animate-in slide-in-from-bottom-5 fade-in duration-1000 ease-out fill-mode-both w-full max-w-5xl mx-auto flex flex-col items-center">
                     <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-brand/10 border border-brand/20 backdrop-blur-md shadow-[0_0_30px_-5px_var(--brand)] mb-6 sm:mb-8 transition-all hover:bg-brand/10 group cursor-default">
                         <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand animate-pulse" />
                         <span className="text-brand text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] group-hover:text-white transition-colors">Next-Gen Financial Intelligence</span>
                     </div>
 
-                    <h1 className="text-4xl sm:text-6xl md:text-[5.5rem] font-black tracking-tighter mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05] w-full">
+                    <h1 className="text-5xl sm:text-6xl md:text-[5rem] lg:text-[5.5rem] font-black tracking-tighter mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05] w-full">
                         <span className="block text-white glow-text">Stop Bleeding Cash to</span>
-                        <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#22d3ee] via-brand to-[#a855f7] pb-1 sm:pb-2 break-words">
+                        <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#22d3ee] via-brand to-[#a855f7] pb-1 sm:pb-2 whitespace-nowrap">
                             Forgotten Subscriptions
                             <div className="absolute -bottom-1 sm:-bottom-2 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-brand to-transparent opacity-50 blur-[2px]" />
                         </span>
                     </h1>
 
-                    <p className="text-lg sm:text-xl md:text-2xl text-[#8c9fbb] max-w-2xl sm:max-w-3xl mx-auto mb-10 sm:mb-14 leading-relaxed font-medium px-4 sm:px-0">
+                    <p className="text-lg sm:text-xl md:text-2xl text-[#8c9fbb] max-w-3xl mx-auto mb-10 sm:mb-14 leading-relaxed font-medium px-4 sm:px-0">
                         SubScouter is your <strong className="text-white font-semibold">autonomous AI agent</strong>. It scans your inbox, extracts hidden bills, and tracks your exact cash burn. Regain total sovereign control over your digital ecosystem.
                     </p>
 
