@@ -3,6 +3,7 @@ import { MailService } from "@/services/mailService";
 import { GeminiScoutService } from "@/services/geminiService";
 import { getAuth } from "@/lib/auth";
 import { drizzle } from "drizzle-orm/d1";
+import { eq } from "drizzle-orm";
 import * as schema from "@/db/schema";
 
 import { getRequestContext } from "@cloudflare/next-on-pages";
@@ -49,13 +50,66 @@ export async function POST(request: NextRequest) {
             }, { status: 400 });
         }
 
+        // Check for token expiration and refresh if needed
+        let currentAccessToken = account.accessToken;
+        const now = new Date();
+
+        if (account.accessTokenExpiresAt && account.accessTokenExpiresAt < now && account.refreshToken) {
+            console.log(`[Scout API] Access token expired for ${provider}. Refreshing...`);
+
+            try {
+                let refreshResp;
+                if (provider === "google") {
+                    refreshResp = await fetch("https://oauth2.googleapis.com/token", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams({
+                            client_id: env.GOOGLE_CLIENT_ID,
+                            client_secret: env.GOOGLE_CLIENT_SECRET,
+                            refresh_token: account.refreshToken,
+                            grant_type: "refresh_token",
+                        }),
+                    });
+                } else if (provider === "microsoft") {
+                    refreshResp = await fetch("https://login.microsoftonline.com/common/oauth2/v2.0/token", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams({
+                            client_id: env.MICROSOFT_CLIENT_ID,
+                            client_secret: env.MICROSOFT_CLIENT_SECRET,
+                            refresh_token: account.refreshToken,
+                            grant_type: "refresh_token",
+                        }),
+                    });
+                }
+
+                if (refreshResp && refreshResp.ok) {
+                    const refreshData = await refreshResp.json();
+                    currentAccessToken = refreshData.access_token;
+
+                    // Update DB with new token
+                    await db.update(schema.accounts)
+                        .set({
+                            accessToken: currentAccessToken,
+                            accessTokenExpiresAt: new Date(Date.now() + refreshData.expires_in * 1000),
+                            updatedAt: new Date(),
+                        })
+                        .where(eq(schema.accounts.id, account.id));
+
+                    console.log(`[Scout API] Successfully refreshed ${provider} token.`);
+                }
+            } catch (refreshErr) {
+                console.error(`[Scout API] Failed to refresh ${provider} token:`, refreshErr);
+            }
+        }
+
         // 1. Fetch email snippets from the provider
         let snippets: any[] = [];
 
         if (provider === "google") {
-            snippets = await MailService.fetchGmailSnippets(account.accessToken);
+            snippets = await MailService.fetchGmailSnippets(currentAccessToken);
         } else if (provider === "microsoft") {
-            snippets = await MailService.fetchMicrosoftSnippets(account.accessToken);
+            snippets = await MailService.fetchMicrosoftSnippets(currentAccessToken);
         }
 
         if (snippets.length === 0) {

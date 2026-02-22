@@ -38,6 +38,8 @@ export const getAuth = (envVars?: Record<string, any>) => {
                 clientId: env.GOOGLE_CLIENT_ID as string,
                 clientSecret: env.GOOGLE_CLIENT_SECRET as string,
                 scope: ["profile", "email", "https://www.googleapis.com/auth/gmail.readonly"],
+                accessType: 'offline',
+                prompt: 'consent',
             },
             microsoft: {
                 clientId: env.MICROSOFT_CLIENT_ID as string,

@@ -148,8 +148,17 @@ export default function LandingView() {
                                 SubScouter requests secure, <strong className="text-white">read-only</strong> access via Google OAuth. We never store your passwords, and we cannot send or delete emails.
                             </p>
                             <p className="text-[#8c9fbb] leading-relaxed text-base sm:text-lg">
-                                The AI strictly scans for metadata from known vendors (amount, currency, cycle). We <strong>never</strong> index personal conversations.
+                                The AI strictly scans for metadata from known vendors (amount, currency, cycle). We <strong>never</strong> index personal conversations. Data is processed in Cloudflare's secure Edge network and never sold to third parties.
                             </p>
+
+                            <div className="pt-4 flex items-center gap-4">
+                                <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl">
+                                    <div className="w-5 h-5 flex items-center justify-center">
+                                        <img src="https://www.google.com/favicon.ico" className="w-3 h-3 grayscale opacity-50" alt="Google" />
+                                    </div>
+                                    <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Verified by Google Cloud</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="relative z-10 flex flex-col justify-center space-y-4 sm:space-y-5">

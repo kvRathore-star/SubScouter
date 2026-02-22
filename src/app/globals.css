@@ -64,8 +64,8 @@
 }
 
 .dark {
-  --background: #151828;
-  /* Deep Space */
+  --background: #0a0c14;
+  /* Deep Fintech Charcoal/Navy */
   --foreground: #f8fafc;
   --card: #1c2033;
   --card-foreground: #f8fafc;
@@ -115,9 +115,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior: none;
   letter-spacing: -0.015em;
-  line-height: 1.5;
+  line-height: 1.6;
   transition: background 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
 }
 
 /* Premium Mesh Background */
