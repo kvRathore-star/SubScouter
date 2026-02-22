@@ -10,7 +10,7 @@ interface PortalProps {
 }
 
 export default function PortalView({ initialMode = 'login' }: PortalProps) {
-    const { signIn } = useAppAuth();
+    const { signIn, continueAsGuest } = useAppAuth();
     const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -202,6 +202,17 @@ export default function PortalView({ initialMode = 'login' }: PortalProps) {
                                 {mode === 'login' ? 'Sign Up' : 'Sign In'}
                             </button>
                         </p>
+                    </div>
+
+                    {/* Guest Mode */}
+                    <div className="mt-4 pt-4 border-t border-white/5 text-center">
+                        <button
+                            type="button"
+                            onClick={() => continueAsGuest()}
+                            className="text-[12px] font-medium text-[#8c9fbb] hover:text-white transition-colors underline underline-offset-4"
+                        >
+                            Or continue as Guest (No data saved)
+                        </button>
                     </div>
                 </div>
 

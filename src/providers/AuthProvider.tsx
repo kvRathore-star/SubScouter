@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useSession, authClient } from '@/lib/auth-client';
 
 interface AuthContextType {
@@ -9,6 +9,7 @@ interface AuthContextType {
     isSignedIn: boolean;
     signOut: () => Promise<void>;
     signIn: (provider?: 'google' | 'microsoft') => Promise<void>;
+    continueAsGuest: () => void;
     isMock: boolean;
 }
 
@@ -20,12 +21,25 @@ const AuthContext = createContext<AuthContextType | null>(null);
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
     const session = useSession();
+    const [isGuest, setIsGuest] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setIsGuest(localStorage.getItem('subscouter_guest') === 'true');
+        }
+    }, []);
 
     const value = {
-        user: session.data?.user || null,
+        user: isGuest ? { id: 'guest', name: 'Guest User', email: 'guest@example.com', image: '' } : (session.data?.user || null),
         isLoaded: !session.isPending,
-        isSignedIn: !!session.data?.user,
+        isSignedIn: isGuest || !!session.data?.user,
         signOut: async () => {
+            if (isGuest) {
+                localStorage.removeItem('subscouter_guest');
+                setIsGuest(false);
+                window.location.href = '/login';
+                return;
+            }
             await authClient.signOut();
         },
         signIn: async (provider: 'google' | 'microsoft' = 'google') => {
@@ -38,7 +52,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 throw err;
             }
         },
-        isMock: false,
+        continueAsGuest: () => {
+            localStorage.setItem('subscouter_guest', 'true');
+            setIsGuest(true);
+        },
+        isMock: isGuest,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
