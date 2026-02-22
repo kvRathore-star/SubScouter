@@ -4,12 +4,12 @@ import { Shield, Mail, ArrowRight, Lock, Eye, CheckCircle2, ChevronRight, Zap, T
 
 export default function LandingView() {
     return (
-        <div className="min-h-screen bg-[#02040c] text-white flex flex-col font-sans overflow-x-hidden selection:bg-brand/30 w-full max-w-[100vw]">
+        <div className="min-h-screen bg-[#02040c] text-white flex flex-col font-sans overflow-x-hidden selection:bg-brand/30">
             {/* Ambient Animated Background (2026+ Era) */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[60vw] max-w-[800px] h-[60vw] max-h-[800px] bg-brand/10 blur-[150px] rounded-full mix-blend-screen animate-pulse duration-[10000ms]" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] max-w-[600px] h-[50vw] max-h-[600px] bg-violet-600/10 blur-[150px] rounded-full mix-blend-screen animate-pulse duration-[15000ms]" />
-                <div className="absolute top-[40%] left-[60%] w-[30vw] max-w-[400px] h-[30vw] max-h-[400px] bg-blue-500/5 blur-[120px] rounded-full mix-blend-screen" />
+            <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+                <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] bg-brand/10 blur-[150px] rounded-full mix-blend-screen animate-pulse duration-[10000ms]" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-violet-600/10 blur-[150px] rounded-full mix-blend-screen animate-pulse duration-[15000ms]" />
+                <div className="absolute top-[40%] left-[60%] w-[30vw] h-[30vw] bg-blue-500/5 blur-[120px] rounded-full mix-blend-screen" />
 
                 {/* Subtle Grid Overlay */}
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
@@ -128,7 +128,7 @@ export default function LandingView() {
 
             {/* Privacy Promise Section */}
             <section className="relative z-10 py-24 sm:py-32 bg-[#02040c]">
-                <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 text-center w-full">
+                <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 mb-8 sm:mb-10 shadow-2xl relative">
                         <div className="absolute inset-0 bg-brand/20 blur-[20px] rounded-2xl sm:rounded-3xl" />
                         <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-white relative z-10" />
@@ -139,7 +139,7 @@ export default function LandingView() {
 
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-8 sm:mb-12">Zero-Knowledge Architecture</h2>
 
-                    <div className="grid md:grid-cols-2 gap-8 sm:gap-12 text-left bg-white/[0.02] border border-white/[0.05] p-6 sm:p-12 lg:p-16 rounded-[2rem] sm:rounded-[3rem] backdrop-blur-md relative overflow-hidden w-full max-w-full">
+                    <div className="grid md:grid-cols-2 gap-8 sm:gap-12 text-left bg-white/[0.02] border border-white/[0.05] p-8 sm:p-12 lg:p-16 rounded-[2rem] sm:rounded-[3rem] backdrop-blur-md relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-brand/10 blur-[100px] rounded-full mix-blend-screen pointer-events-none" />
 
                         <div className="relative z-10 space-y-4 sm:space-y-6">

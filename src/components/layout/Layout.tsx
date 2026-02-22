@@ -18,10 +18,7 @@ import {
   Menu,
   X,
   LogOut,
-  Sparkles,
-  Sun,
-  MonitorPlay,
-  CircleDollarSign
+  Sparkles
 } from "lucide-react";
 import ErrorBoundary from './ErrorBoundary';
 
@@ -45,8 +42,8 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
   const navItems = [
     { id: 'dashboard' as ViewType, label: 'Dashboard', icon: DashboardIcon },
     { id: 'connections' as ViewType, label: 'Connections', icon: LinkIcon },
-    { id: 'billing' as ViewType, label: 'Billing', icon: CircleDollarSign },
-    { id: 'statistics' as ViewType, label: 'Insights', icon: BarChart3 },
+    { id: 'billing' as ViewType, label: 'Billing', icon: CreditCard },
+    { id: 'statistics' as ViewType, label: 'Statistics', icon: BarChart3 },
     { id: 'settings' as ViewType, label: 'Settings', icon: Settings },
   ];
 
@@ -61,78 +58,102 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
       )}
 
       {/* ═══ SIDEBAR ═══ */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-[#0c0c0e] border-r border-white/5 shadow-2xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex flex-col h-full bg-[#0c0c0e] relative">
-
+      <aside className={`fixed inset-y-0 left-0 z-50 w-[260px] bg-[#020617] border-r border-[#1e293b] shadow-[4px_0_24px_-10px_rgba(0,0,0,0.5)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex flex-col h-full bg-[radial-gradient(ellipse_at_top_left,_rgba(255,255,255,0.02)_0%,_transparent_60%)] relative">
+          {/* Subtle Right Glow Line */}
+          <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-[#22d3ee]/10 to-transparent opacity-50 pointer-events-none" />
           {/* Logo Section */}
-          <div className="px-8 pt-8 pb-8 flex items-center justify-between">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => setView('dashboard')}>
-              <div className="w-8 h-8 rounded-lg overflow-hidden glass-border">
-                <img src="/logo.png" alt="SubScouter Logo" className="w-full h-full object-cover" />
-              </div>
-              <h1 className="text-xl font-black tracking-tighter text-white">
-                <span className="text-[#22d3ee]">Sub</span>Scouter
+          <div className="px-8 pt-10 pb-4 border-b border-[#1e293b]/50 mb-8">
+            <div className="flex flex-col cursor-pointer" onClick={() => setView('dashboard')}>
+              <h1 className="text-[28px] font-black tracking-tight text-white leading-none relative group">
+                <span className="text-[#22d3ee] drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]">Sub</span>Scouter
               </h1>
             </div>
             {/* Mobile Close Button */}
-            <button className="lg:hidden p-2 text-muted-foreground hover:bg-white/5 rounded-lg transition-colors" onClick={() => setSidebarOpen(false)}>
+            <button className="absolute top-8 right-6 lg:hidden p-2 text-muted-foreground hover:bg-white/5 rounded-lg transition-colors" onClick={() => setSidebarOpen(false)}>
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="px-8 mb-6 mt-2">
-            <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.25em]">Intelligence Center</span>
-          </div>
-
           {/* Nav Items */}
-          <nav className="flex-1 px-4 relative z-10 font-sans space-y-2">
+          <nav className="flex-1 px-4 py-8 relative z-10 font-medium">
             {navItems.map((item) => {
               const active = currentView === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className={`w-full flex items-center p-4 rounded-2xl transition-all duration-300 group relative ${active
-                    ? 'bg-[#141414] text-white border border-white'
-                    : 'text-[#8c9fbb] hover:text-white hover:bg-white/5 border border-transparent'
+                  className={`w-full flex items-center justify-between p-3 mb-2 rounded-2xl transition-all duration-300 group relative ${active
+                    ? 'bg-[#1e293b]/40 text-[#cbd5e1] border border-[#334155]/50'
+                    : 'text-[#64748b] hover:text-[#94a3b8] hover:bg-[#1e293b]/20 border border-transparent'
                     }`}
                 >
-                  <div className="flex items-center gap-5">
-                    <item.icon strokeWidth={2} className={`w-[22px] h-[22px] transition-colors duration-300 ${active ? 'text-[#818cf8]' : 'text-[#8c9fbb] group-hover:text-white'}`} />
-                    <span className={`text-[15px] font-medium tracking-wide transition-all duration-300 ${active ? 'font-bold' : ''}`}>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-4 h-4 flex items-center justify-center transition-colors duration-300 ${active ? 'text-[#cbd5e1]' : 'text-[#64748b] group-hover:text-[#94a3b8]'}`}>
+                      <item.icon strokeWidth={2.5} className="w-full h-full" />
+                    </div>
+                    <span className={`text-[14px] tracking-wide transition-all duration-300`}>
                       {item.label}
                     </span>
                   </div>
+
+                  {active && item.id === 'dashboard' && (
+                    <div className="w-4 h-4 rounded-full border border-[#cbd5e1]/50 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-[#cbd5e1]/50 rounded-full" />
+                    </div>
+                  )}
                 </button>
               );
             })}
-
-            {/* Command Box */}
-            <div className="mt-8 mx-2 p-5 bg-[#111111] border border-white/5 rounded-[1.5rem] flex items-center gap-3 cursor-pointer hover:border-white/20 transition-all font-sans" onClick={() => (window as any).toggleCommandPalette?.()}>
-              <MonitorPlay strokeWidth={2.5} className="w-4 h-4 text-[#8c9fbb]" />
-              <span className="text-[13px] font-medium text-[#8c9fbb]">Press</span>
-              <div className="flex items-center gap-1 bg-[#1a1a1a] border border-white/10 px-2 py-1 rounded-md shadow-inner">
-                <span className="text-[11px] font-bold text-white tracking-widest leading-none">⌘K</span>
-              </div>
-              <span className="text-[13px] font-medium text-[#8c9fbb]">for actions</span>
-            </div>
           </nav>
 
-          {/* Anchored Bottom Status Panel */}
-          <div className="p-6 mt-auto border-t border-white/5 bg-[#0c0c0e] relative z-10 w-full space-y-6">
-            <div className="flex items-center justify-between px-2">
-              <div className="flex items-center gap-3 cursor-pointer group w-full" onClick={() => toggleTheme?.()}>
-                <Sun className="w-[20px] h-[20px] text-[#8c9fbb] group-hover:text-white transition-colors" />
-                <span className="text-[14px] font-medium text-[#8c9fbb] group-hover:text-white transition-colors">Light Mode</span>
+          {/* AI Scout Widget */}
+          <div className="px-6 mb-8 relative z-10 w-full">
+            <div className="p-5 rounded-3xl bg-[#0f172a]/40 border border-[#1e293b] hover:border-[#334155]/60 transition-colors flex items-center gap-4 relative overflow-hidden group">
+              <div className="relative w-12 h-12 flex items-center justify-center shrink-0">
+                <div className="absolute inset-0 bg-[#a855f7] rounded-full blur-[20px] opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-700 ease-in-out animate-pulse" />
+                <div className="relative w-8 h-8 bg-gradient-to-br from-[#c084fc] to-[#7e22ce] rounded-full border-2 border-[#d8b4fe]/30 shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
               </div>
+              <div className="flex flex-col relative z-10">
+                <h4 className="text-white text-[15px] font-semibold tracking-tight mb-1">AI Scout</h4>
+                <span className="text-[#64748b] text-[10px] font-semibold uppercase tracking-widest mb-3">Active Scan: 14/50</span>
+
+                {/* Safe Mode / Assassin Mode Toggle */}
+                <div
+                  className="flex items-center gap-2 cursor-pointer group/toggle mt-1"
+                  onClick={() => {
+                    const el = document.getElementById('assassin-mode-toggle');
+                    if (el) el.classList.toggle('translate-x-full');
+                  }}
+                >
+                  <div className="w-8 h-4 rounded-full bg-[#1e293b] border border-[#334155] p-0.5 relative transition-colors">
+                    <div id="assassin-mode-toggle" className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)] transition-transform duration-300" />
+                  </div>
+                  <span className="text-[9px] font-bold text-[#94a3b8] uppercase tracking-widest group-hover/toggle:text-white transition-colors">Safe Mode</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Anchored Bottom User/Status Panel */}
+          <div className="p-4 mt-auto border-t border-[#1e293b]/50 bg-[#020617]/80 backdrop-blur-xl relative z-10 w-full">
+            <div className="flex items-center justify-between mb-4 px-2">
+              <div className="flex items-center gap-2">
+                <div className="relative w-2 h-2 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-[#22d3ee] rounded-full blur-[3px] opacity-70 animate-pulse" />
+                  <div className="relative w-1.5 h-1.5 bg-[#22d3ee] rounded-full" />
+                </div>
+                <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Scout Active</span>
+              </div>
+              <span className="text-[9px] font-bold px-1.5 py-0.5 bg-[#1e293b] rounded text-[#94a3b8] uppercase tracking-widest border border-[#334155]">v2.4</span>
             </div>
 
             {user ? (
               <div
                 onClick={() => setView('settings')}
-                className="flex items-center gap-3 p-3 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-all cursor-pointer group"
+                className="flex items-center gap-3 p-2.5 rounded-[14px] hover:bg-[#1e293b]/50 border border-transparent hover:border-[#1e293b] transition-all cursor-pointer group"
               >
-                <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#1e293b] border border-white/10 shrink-0">
+                <div className="w-9 h-9 rounded-xl overflow-hidden bg-[#1e293b] border border-[#334155] shrink-0">
                   {user.image ? (
                     <img src={user.image} alt="User" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                   ) : (
@@ -140,14 +161,14 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, notific
                   )}
                 </div>
                 <div className="flex flex-col min-w-0">
-                  <span className="text-sm font-bold text-white truncate group-hover:text-[#22d3ee] transition-colors">{user.name || 'User'}</span>
-                  <span className="text-[11px] text-[#8c9fbb] truncate font-medium">{tier === 'pro' ? 'Pro Plan' : 'Free Plan'}</span>
+                  <span className="text-xs font-bold text-white truncate group-hover:text-[#22d3ee] transition-colors">{user.name || 'User'}</span>
+                  <span className="text-[10px] text-[#64748b] truncate font-medium">{tier === 'pro' ? 'Pro Plan' : 'Free Plan'}</span>
                 </div>
               </div>
             ) : (
               <button
                 onClick={() => (window as any).location.href = '/login'}
-                className="w-full flex items-center justify-center gap-2 p-3 rounded-2xl bg-[#1e293b] hover:bg-[#334155] text-white text-sm font-bold transition-all border border-[#334155]"
+                className="w-full flex items-center justify-center gap-2 p-2.5 rounded-[14px] bg-[#1e293b] hover:bg-[#334155] text-white text-xs font-bold transition-all border border-[#334155]"
               >
                 Sign In
               </button>
